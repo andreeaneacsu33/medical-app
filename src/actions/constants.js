@@ -13,4 +13,4 @@ export const STATE='STATE';
 export const REGISTER_SUCCESS='REGISTER_SUCCESS';
 export const REGISTER_FAIL='REGISTER_FAIL';
 export const GET_DOCTOR='GET_DOCTOR';
-
+export const GET_PATIENT='GET_PATIENT';

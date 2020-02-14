@@ -314,3 +314,10 @@ menu .activeStyle .menuText {
     height: 60px;
 }
 
+.__react_component_tooltip.place-bottom:after{
+    display: none;
+}
+
+.__react_component_tooltip.type-dark{
+    background-color: #676767;
+}

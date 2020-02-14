@@ -11,16 +11,22 @@ export default function (state=initialState,action) {
         case GET_ERRORS:
             if(action.payload.status===401){
                 return {
-                    message: 'Invalid credentials!',
+                    message: 'Invalid credentials',
+                    status: action.payload.status,
+                    id: action.payload.id
+                };
+            }else if(action.payload.status===400) {
+                return {
+                    message: 'Email address already in use',
                     status: action.payload.status,
                     id: action.payload.id
                 };
             }else{
-                return{
-                    message: action.payload.message,
-                    status: action.payload.status,
-                    id: action.payload.id
-                }
+                    return{
+                        message: action.payload.message,
+                        status: action.payload.status,
+                        id: action.payload.id
+                    }
             }
         case CLEAR_ERRORS:
             return{

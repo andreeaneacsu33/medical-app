@@ -21,7 +21,7 @@ class Register extends Component{
         specialization: '',
         password: '',
         confirm: '',
-        message: {},
+        message: {}
     };
 
     static propTypes = {
@@ -29,6 +29,11 @@ class Register extends Component{
         clearErrors: PropTypes.func.isRequired,
         register: PropTypes.func.isRequired,
     };
+
+    componentDidMount() {
+        this.props.clearErrors();
+        log('cleared');
+    }
 
     validateFields =() =>{
         const {firstName,lastName,email,role,specialization,password,confirm} = this.state;
@@ -83,6 +88,8 @@ class Register extends Component{
     };
 
     render() {
+        const {error}=this.props;
+        log(JSON.stringify(error));
         const optionsRole=['Doctor','Patient'];
         const optionsSpec=['Pediatrician','Endocrinologist','Neurologist','Rheumatologist','Immunologist'];
         return(
@@ -99,7 +106,7 @@ class Register extends Component{
                             <span style={{paddingLeft: '14px',fontSize: '18px'}}>Access MyDOC</span>
                             <Box style={{flexDirection: 'row', display: 'flex', paddingTop: '15px'}}>
                                 <Box
-                                    className={this.state.message.firstName ? 'inputBox invalid' : 'inputBox'}
+                                    className='inputBox'
                                     direction="row"
                                     margin="small"
                                     round="xsmall"
@@ -116,7 +123,7 @@ class Register extends Component{
                                     />
                                 </Box>
                                 <Box
-                                    className={this.state.message.lastName ? 'inputBox invalid' : 'inputBox'}
+                                    className='inputBox'
                                     direction="row"
                                     margin="small"
                                     round="xsmall"
@@ -135,7 +142,7 @@ class Register extends Component{
                             </Box>
                             <Box style={{paddingTop: '2px'}}>
                                 <Box
-                                    className={this.state.message.email ? 'emailBox invalid' : 'emailBox'}
+                                    className='emailBox'
                                     direction="row"
                                     margin="small"
                                     round="xsmall"
@@ -155,7 +162,7 @@ class Register extends Component{
                             <Box>
                                 <Box
                                     style={{paddingTop: '2px', height: '64px', paddingLeft: '12px'}}
-                                    className={this.state.message.role ? 'select' : 'inputBox'}
+                                    className='inputBox'
                                     direction="row"
                                 >
                                     <Select
@@ -172,7 +179,7 @@ class Register extends Component{
                             {this.state.role==='Doctor' && (<Box style={{paddingTop: '15px', height: '64px',marginBottom: '9px'}}>
                                     <Box
                                         style={{paddingTop: '2px', height: '64px', paddingLeft: '12px'}}
-                                        className={this.state.message.specialization ? 'select' : 'inputBox'}
+                                        className='inputBox'
                                         direction="row"
                                     >
                                         <Select
@@ -189,7 +196,7 @@ class Register extends Component{
                             )}
                             <Box style={{flexDirection: 'row', display: 'flex', paddingTop: '7px'}}>
                                 <Box
-                                    className={this.state.message.password ? 'inputBox invalid' : 'inputBox'}
+                                    className='inputBox'
                                     direction="row"
                                     margin="small"
                                     round="xsmall"
@@ -206,7 +213,7 @@ class Register extends Component{
                                     />
                                 </Box>
                                 <Box
-                                    className={this.state.message.confirm ? 'inputBox invalid' : 'inputBox'}
+                                    className='inputBox'
                                     direction="row"
                                     margin="small"
                                     round="xsmall"
@@ -227,6 +234,12 @@ class Register extends Component{
                                 <Box style={{alignSelf:'start',flexDirection: 'row', display: 'flex'}}>
                                     <CircleInformation className='infoIcon'/>
                                     <span style={{color: '#d50000',fontSize: '13px'}}>Please complete the required fields accordingly.</span>
+                                </Box>
+                            )}
+                            {!(Object.entries(error.message).length===0) && (
+                                <Box style={{alignSelf:'start',flexDirection: 'row', display: 'flex'}}>
+                                    <CircleInformation className='infoIcon'/>
+                                    <span style={{color: '#d50000',fontSize: '13px'}}>{error.message}</span>
                                 </Box>
                             )}
                             <Box className='save'>

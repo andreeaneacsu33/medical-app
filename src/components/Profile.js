@@ -6,6 +6,9 @@ import {Box, Grommet} from "grommet";
 import Toolbar from "./menu/Toolbar";
 import {customTheme} from "../utils/helpers";
 import {getDoctor} from "../actions/doctorActions";
+import {getLogger} from "../utils/logger";
+
+const log=getLogger();
 
 class Profile extends Component{
     static propTypes = {
@@ -15,6 +18,8 @@ class Profile extends Component{
     };
 
     render() {
+        const {user}=this.props;
+        log(JSON.stringify(user));
         return(
             <Grommet theme={customTheme}>
                 <Box className='mainContainer'>

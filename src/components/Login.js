@@ -72,7 +72,7 @@ class Login extends Component {
                         </Box>
                         <Box align='center' margin='medium'>
                             <Box
-                                className={this.state.message ? 'invalid' : 'neutral'}
+                                className='neutral'
                                 width="medium"
                                 direction="row"
                                 margin="small"
@@ -90,7 +90,7 @@ class Login extends Component {
                                 />
                             </Box>
                             <Box
-                                className={this.state.message ? 'invalid' : 'neutral'}
+                                className='neutral'
                                 style={{ overflow: 'hidden' }}
                                 width="medium"
                                 direction="row"
@@ -115,7 +115,7 @@ class Login extends Component {
                             {this.state.message && (
                             <Box style={{alignSelf:'start',flexDirection: 'row', display: 'flex'}}>
                                 <CircleInformation className='infoIcon'/>
-                                <span style={{color: 'red',fontSize: '13px'}}>{this.state.message}</span>
+                                <span style={{color: '#d50000',fontSize: '13px'}}>{this.state.message}</span>
                             </Box>
                             )}
                             <Box style={{flexDirection: 'row', display: 'flex'}}>

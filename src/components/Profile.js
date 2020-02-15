@@ -27,7 +27,7 @@ class Profile extends Component{
                         <Toolbar/>
                         <Box direction="row">
                             <Menu/>
-                            <span>Hello from Home!</span>
+                            <span>Hello from Profile!</span>
                         </Box>
                     </Box>
                 </Box>

@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {logout} from '../actions/authActions';
 import PropTypes from 'prop-types';
-import {Box, Button, Grommet, grommet} from 'grommet';
+import {Box, Button} from 'grommet';
 import '../index.css';
 
 class Logout extends Component{
@@ -12,11 +12,9 @@ class Logout extends Component{
 
     render() {
         return(
-            <Grommet full theme={grommet}>
-                <Box className='logout' style={{paddingLeft: '92px', marginTop: '5px'}}>
+                <Box style={{alignItems:"center", marginTop: "23px"}} className='logout'>
                     <Button onClick={this.props.logout}>Logout</Button>
                 </Box>
-            </Grommet>
         )
     }
 }

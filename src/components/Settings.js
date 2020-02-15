@@ -21,7 +21,7 @@ class Settings extends Component{
                         <Toolbar/>
                         <Box direction="row">
                             <Menu/>
-                            <span>Hello from Home!</span>
+                            <span>Hello from Settings!</span>
                         </Box>
                     </Box>
                 </Box>

@@ -9,6 +9,8 @@ import Menu from "./menu/Menu";
 import Toolbar from "./menu/Toolbar";
 import {customTheme} from "../utils/helpers";
 import {loadUser} from "../actions/authActions";
+import {getDoctor} from "../actions/doctorActions";
+import {getPatient} from "../actions/patientActions";
 
 const log = getLogger('Home ');
 
@@ -23,16 +25,31 @@ class Home extends Component {
         clearErrors: PropTypes.func.isRequired
     };
 
-    componentDidMount() {
+    componentWillMount() {
         const {email} = this.state;
         log('email: ' + email);
         this.props.loadUser({email});
+        if (this.props.user) {
+            if (this.props.user.role.toUpperCase() === 'DOCTOR') {
+                this.props.getDoctor({email});
+                log('doc');
+            } else {
+                this.props.getPatient({email});
+                log('pat');
+            }
+        }
         log('loaded');
     }
 
     render() {
-        const {user} = this.props;
-        log(`home page ${user.email}`);
+        const {user, doctor, patient} = this.props;
+        if (!user) {
+            return <div/>
+        }
+        if(!doctor && !patient){
+            return <div/>
+        }
+        log(`home page ${user}`);
         return (
             <Grommet theme={customTheme}>
                 <Box className='mainContainer'>
@@ -52,11 +69,13 @@ class Home extends Component {
 const mapStateToProps = state => ({
     isAuthenticated: state.auth.isAuthenticated,
     error: state.error,
-    user: state.auth.user
+    user: state.auth.user,
+    doctor: state.doctor.doctor,
+    patient: state.patient.patient
 });
 
 export default connect(
     mapStateToProps,
-    {clearErrors, loadUser}
+    {clearErrors, loadUser, getDoctor, getPatient}
 )(Home);
 

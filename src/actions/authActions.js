@@ -72,7 +72,6 @@ export const register = ({firstName,lastName,email,specialization,role,password}
                 type: REGISTER_SUCCESS,
                 payload: res.data
             });
-            history.push('/home');
         })
         .catch(err=>{
             log(err);

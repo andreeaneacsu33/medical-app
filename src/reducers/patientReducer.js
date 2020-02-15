@@ -4,7 +4,7 @@ import {
 
 const initialState = {
     token: localStorage.getItem('token'),
-    doctor: null,
+    patient: null,
 };
 
 export default function (state=initialState,action) {
@@ -12,7 +12,7 @@ export default function (state=initialState,action) {
         case GET_PATIENT:
             return {
                 ...state,
-                doctor: action.payload
+                patient: action.payload
             };
         default:
             return state;

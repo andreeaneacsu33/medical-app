@@ -1,5 +1,5 @@
 import {
-    GET_DOCTOR,
+    GET_DOCTOR, GET_SPECIALTIES,
 } from '../actions/constants';
 
 const initialState = {
@@ -13,6 +13,11 @@ export default function (state=initialState,action) {
             return {
                 ...state,
                 doctor: action.payload
+            };
+        case GET_SPECIALTIES:
+            return{
+                ...state,
+                specialties: action.payload
             };
         default:
             return state;

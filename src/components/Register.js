@@ -9,6 +9,7 @@ import {USERNAME} from "../actions/constants";
 import {register} from "../actions/authActions";
 import {clearErrors} from "../actions/errorActions";
 import {getLogger} from "../utils/logger";
+import {getSpecialties} from "../actions/doctorActions";
 
 const log=getLogger('Register ');
 
@@ -18,7 +19,7 @@ class Register extends Component{
         lastName: '',
         email: '',
         role: '',
-        specialization: '',
+        specialty: '',
         password: '',
         confirm: '',
         message: {}
@@ -30,13 +31,26 @@ class Register extends Component{
         register: PropTypes.func.isRequired,
     };
 
+    componentWillMount() {
+        this.props.getSpecialties();
+    }
+
+    getSpecialtyNames(){
+        const {specialties}=this.props;
+        let array=[];
+        for(let i=0;i<specialties.length;i++){
+            array.push(specialties[i].name)
+        }
+        return array;
+    }
+
     componentDidMount() {
         this.props.clearErrors();
         log('cleared');
     }
 
     validateFields =() =>{
-        const {firstName,lastName,email,role,specialization,password,confirm} = this.state;
+        const {firstName,lastName,email,role,specialty,password,confirm} = this.state;
         let message={};
         if(firstName===''){
             message['firstName']='Insert your first name';
@@ -47,8 +61,8 @@ class Register extends Component{
         if(role===''){
             message['role']='Select a role';
         }
-        if(role.toUpperCase()==='DOCTOR' && specialization===''){
-            message['specialization']='Select a specialization';
+        if(role.toUpperCase()==='DOCTOR' && specialty===''){
+            message['specialty']='Select a specialty';
         }
         if(password===''){
             message['password']='Insert a password';
@@ -77,8 +91,8 @@ class Register extends Component{
         const message=this.validateFields();
         if(Object.entries(message).length === 0 && message.constructor === Object){
             this.setState({message:this.state.message});
-            const  {firstName,lastName,email,specialization,role, password}=this.state;
-            const userDTO={email, password,firstName, lastName, role, specialization};
+            const  {firstName,lastName,email,specialty,role, password}=this.state;
+            const userDTO={email, password,firstName, lastName, role, specialty};
             localStorage.setItem(USERNAME,email);
             this.props.register(userDTO);
         }else{
@@ -91,7 +105,7 @@ class Register extends Component{
         const {error}=this.props;
         log(JSON.stringify(error));
         const optionsRole=['Doctor','Patient'];
-        const optionsSpec=['Pediatrician','Endocrinologist','Neurologist','Rheumatologist','Immunologist'];
+        const optionsSpecialty=this.getSpecialtyNames();
         return(
             <Grommet theme={customTheme}>
             <Box className='registerForm'>
@@ -184,12 +198,12 @@ class Register extends Component{
                                     >
                                         <Select
                                             className='select'
-                                            id="specialization"
-                                            name="specialization"
-                                            placeholder="Specialization"
-                                            options={optionsSpec}
-                                            value={this.state.specialization}
-                                            onChange={({option})=>this.setState({specialization: option})}
+                                            id="specialty"
+                                            name="specialty"
+                                            placeholder="Specialty"
+                                            options={optionsSpecialty}
+                                            value={this.state.specialty}
+                                            onChange={({option})=>this.setState({specialty: option})}
                                         />
                                     </Box>
                             </Box>
@@ -262,12 +276,13 @@ class Register extends Component{
 
 
 const mapStateToProps = state => ({
-    error: state.error
+    error: state.error,
+    specialties: state.doctor.specialties
 });
 
 export default connect(
     mapStateToProps,
-    {register,clearErrors}
+    {register,clearErrors,getSpecialties}
 )(Register)
 
 const colors = {

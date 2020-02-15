@@ -18,15 +18,16 @@ class Profile extends Component{
     };
 
     render() {
-        const {user}=this.props;
+        const {user,visited}=this.props;
         log(JSON.stringify(user));
+        log(JSON.stringify(visited));
         return(
             <Grommet theme={customTheme}>
                 <Box className='mainContainer'>
                     <Box>
                         <Toolbar/>
                         <Box direction="row">
-                            <Menu/>
+                            <Menu lastUrl={visited}/>
                             <span>Hello from Profile!</span>
                         </Box>
                     </Box>

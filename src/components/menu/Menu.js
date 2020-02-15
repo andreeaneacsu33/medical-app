@@ -11,7 +11,7 @@ const log=getLogger('Menu');
 
 class Menu extends Component{
     state={
-        active:'',
+        active: window.location.pathname,
     };
 
     static propTypes = {
@@ -20,7 +20,7 @@ class Menu extends Component{
 
     handleClick = (value) => {
         this.setState({active: value},()=>{
-            history.push(`/${value}`);
+            history.push(`${value}`);
         });
     };
 
@@ -33,12 +33,12 @@ class Menu extends Component{
                     <Box
                         className="menu"
                     >
-                        <Box round="small" className={active === 'home' ? "activeStyle" : ""}
-                             onClick={()=>this.handleClick('home')}><Box className="menuItem" direction="row" round="small"><ContactInfo className="menuIcon"/><span className="menuText">Home Page</span></Box></Box>
-                        <Box round="small" className={active === 'profile' ? "activeStyle" : ""}
-                             onClick={()=>this.handleClick('profile')}><Box className="menuItem" direction="row" round="small"><Local className="menuIcon"/><span className="menuText">Personal Information</span></Box></Box>
-                        <Box round="small" className={active === 'settings' ? "activeStyle" : ""}
-                             onClick={()=>this.handleClick('settings')}><Box className="menuItem" direction="row" round="small"><SettingsOption className="menuIcon"/><span className="menuText">Settings</span></Box></Box>
+                        <Box round="small" className={active === '/home' ? "activeStyle" : ""}
+                             onClick={()=>this.handleClick('/home')}><Box className="menuItem" direction="row" round="small"><ContactInfo className="menuIcon"/><span className="menuText">Home Page</span></Box></Box>
+                        <Box round="small" className={active === '/profile' ? "activeStyle" : ""}
+                             onClick={()=>this.handleClick('/profile')}><Box className="menuItem" direction="row" round="small"><Local className="menuIcon"/><span className="menuText">Personal Information</span></Box></Box>
+                        <Box round="small" className={active === '/settings' ? "activeStyle" : ""}
+                             onClick={()=>this.handleClick('/settings')}><Box className="menuItem" direction="row" round="small"><SettingsOption className="menuIcon"/><span className="menuText">Settings</span></Box></Box>
                     </Box>
                 </Box>
             </Router>

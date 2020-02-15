@@ -4,10 +4,7 @@ import {Box, Header, Image} from "grommet";
 import {connect} from "react-redux";
 import Tooltip from 'react-tooltip-lite';
 import Logout from "../Logout";
-import {getLogger} from "../../utils/logger";
 import {User} from "grommet-icons";
-
-const log = getLogger();
 
 class Toolbar extends Component {
     constructor(props) {
@@ -16,7 +13,6 @@ class Toolbar extends Component {
             visible: false,
             person: ''
         };
-
     }
 
     static propTypes = {
@@ -26,10 +22,8 @@ class Toolbar extends Component {
     componentWillMount() {
         if (this.props.user.role.toUpperCase() === 'DOCTOR') {
             this.setState({person: this.props.doctor});
-            log('doc2');
         } else {
             this.setState({person: this.props.patient});
-            log('pat2');
         }
     }
 

@@ -5,6 +5,9 @@ import Menu from "./menu/Menu";
 import {Box, Grommet} from "grommet";
 import Toolbar from "./menu/Toolbar";
 import {customTheme} from "../utils/helpers";
+import {getLogger} from "../utils/logger";
+
+const log=getLogger();
 
 class Settings extends Component{
     static propTypes = {
@@ -14,13 +17,15 @@ class Settings extends Component{
     };
 
     render() {
+        const {visited}=this.props;
+        log(JSON.stringify(visited));
         return(
             <Grommet theme={customTheme}>
                 <Box className='mainContainer'>
                     <Box>
                         <Toolbar/>
                         <Box direction="row">
-                            <Menu/>
+                            <Menu lastUrl={visited}/>
                             <span>Hello from Settings!</span>
                         </Box>
                     </Box>

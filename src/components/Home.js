@@ -27,21 +27,19 @@ class Home extends Component {
 
     componentWillMount() {
         const {email} = this.state;
-        log('email: ' + email);
         this.props.loadUser({email});
         if (this.props.user) {
             if (this.props.user.role.toUpperCase() === 'DOCTOR') {
                 this.props.getDoctor({email});
-                log('doc');
             } else {
                 this.props.getPatient({email});
-                log('pat');
             }
         }
-        log('loaded');
     }
 
     render() {
+        const {visited}=this.props;
+        log(JSON.stringify(visited));
         const {user, doctor, patient} = this.props;
         if (!user) {
             return <div/>
@@ -49,14 +47,13 @@ class Home extends Component {
         if(!doctor && !patient){
             return <div/>
         }
-        log(`home page ${user}`);
         return (
             <Grommet theme={customTheme}>
                 <Box className='mainContainer'>
                     <Box>
                         <Toolbar/>
                         <Box direction="row">
-                            <Menu/>
+                            <Menu lastUrl={visited}/>
                             <span>Hello from Home!</span>
                         </Box>
                     </Box>

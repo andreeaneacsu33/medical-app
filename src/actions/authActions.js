@@ -60,11 +60,11 @@ export const login = ({email,password})=>dispatch=>{
         });
 };
 
-export const register = ({firstName,lastName,email,specialization,role,password}) => dispatch => {
+export const register = ({firstName,lastName,email,specialty,role,password}) => dispatch => {
     log(`Register ${email}`);
     const headers={...defaultHeaders};
     const config={headers};
-    const body=JSON.stringify({email,password,firstName,lastName,role,specialization});
+    const body=JSON.stringify({email,password,firstName,lastName,role,specialty});
     axios
         .post(`${url}/signup`,body,config)
         .then(res=>{

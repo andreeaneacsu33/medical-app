@@ -10,8 +10,7 @@ class Toolbar extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            visible: false,
-            person: ''
+            visible: false
         };
     }
 
@@ -19,32 +18,21 @@ class Toolbar extends Component {
         user: PropTypes.object
     };
 
-    componentWillMount() {
-        if (this.props.user.role.toUpperCase() === 'DOCTOR') {
-            this.setState({person: this.props.doctor});
-        } else {
-            this.setState({person: this.props.patient});
-        }
-    }
-
     onClick() {
         this.setState({visible: !this.state.visible});
     }
 
     render() {
         const {visible} = this.state;
-        const {user} = this.props;
+        const {user,doctor,patient} = this.props;
         const fl = user.email && user.email[0].toUpperCase();
-        const {person} = this.state;
-        if (!person)
-            return <div/>;
         return (
-            <Box className="toolbarWrapper">
+            <Box elevation="small" className="toolbarWrapper">
                 <Header className="toolbar">
                     <Box style={{padding: "12px"}} direction="row" align="center" gap="small">
                         <Image className='logo' src={require('../../utils/logo.png')}/>
                         <Box className="wrapperModal"/>
-                        <Box style={{paddingLeft: "850px"}}>
+                        <Box style={{paddingLeft: "1030px"}}>
                             <Tooltip arrow={false} place="bottom" color="white" background="#ababab" direction="down"
                                      content={(
                                          <div>
@@ -65,10 +53,11 @@ class Toolbar extends Component {
                                     <Box className="userInfo">
                                         <User className="icon"/>
                                         <span className="name">
-                                            {`${person.firstName} ${person.lastName}`}
+                                            {user && user.role.toUpperCase()==='DOCTOR' && (`${doctor.firstName} ${doctor.lastName}`)}
+                                            {user && user.role.toUpperCase()==='PATIENT' && (`${patient.firstName} ${patient.lastName}`)}
                                         </span>
                                         <span className="email">
-                                            {person.email}
+                                            {user.email}
                                         </span>
                                         <span className="role">
                                             {user.role}
@@ -89,8 +78,8 @@ const mapStateToProps = state => ({
     isAuthenticated: state.auth.isAuthenticated,
     error: state.error,
     user: state.auth.user,
-    doctor: state.doctor.doctor,
-    patient: state.patient.patient
+    doctor: state.auth.doctor,
+    patient: state.auth.patient
 });
 
 export default connect(

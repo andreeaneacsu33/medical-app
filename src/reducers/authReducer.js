@@ -1,5 +1,5 @@
 import {
-    AUTH_ERROR,
+    AUTH_ERROR, LOAD_DOCTOR, LOAD_PATIENT,
     LOGIN_FAIL,
     LOGIN_SUCCESS,
     LOGOUT_SUCCESS, REGISTER_SUCCESS,
@@ -28,6 +28,16 @@ export default function (state=initialState,action) {
                 isAuthenticated: true,
                 isLoading: false,
                 user: action.payload
+            };
+        case LOAD_DOCTOR:
+            return{
+                ...state,
+                doctor: action.payload
+            };
+        case LOAD_PATIENT:
+            return{
+                ...state,
+                patient: action.payload
             };
         case LOGIN_SUCCESS:
             localStorage.setItem(TOKEN_KEY,action.payload.token);

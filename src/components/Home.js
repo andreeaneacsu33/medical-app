@@ -9,8 +9,6 @@ import Menu from "./menu/Menu";
 import Toolbar from "./menu/Toolbar";
 import {customTheme} from "../utils/helpers";
 import {loadUser} from "../actions/authActions";
-import {getDoctor} from "../actions/doctorActions";
-import {getPatient} from "../actions/patientActions";
 
 const log = getLogger('Home ');
 
@@ -28,23 +26,15 @@ class Home extends Component {
     componentWillMount() {
         const {email} = this.state;
         this.props.loadUser({email});
-        if (this.props.user) {
-            if (this.props.user.role.toUpperCase() === 'DOCTOR') {
-                this.props.getDoctor({email});
-            } else {
-                this.props.getPatient({email});
-            }
-        }
+        log(JSON.stringify(this.props.user));
     }
 
     render() {
-        const {visited}=this.props;
+        log(JSON.stringify(this.props));
+        const {visited} = this.props;
         log(JSON.stringify(visited));
-        const {user, doctor, patient} = this.props;
+        const {user} = this.props;
         if (!user) {
-            return <div/>
-        }
-        if(!doctor && !patient){
             return <div/>
         }
         return (
@@ -67,12 +57,12 @@ const mapStateToProps = state => ({
     isAuthenticated: state.auth.isAuthenticated,
     error: state.error,
     user: state.auth.user,
-    doctor: state.doctor.doctor,
-    patient: state.patient.patient
+    doctor: state.auth.doctor,
+    patient: state.auth.patient
 });
 
 export default connect(
     mapStateToProps,
-    {clearErrors, loadUser, getDoctor, getPatient}
+    {clearErrors, loadUser}
 )(Home);
 

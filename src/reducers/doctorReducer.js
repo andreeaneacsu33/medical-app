@@ -1,5 +1,5 @@
 import {
-    GET_DOCTOR, GET_SPECIALTIES,
+    GET_SPECIALTIES,
 } from '../actions/constants';
 
 const initialState = {
@@ -9,11 +9,6 @@ const initialState = {
 
 export default function (state=initialState,action) {
     switch (action.type) {
-        case GET_DOCTOR:
-            return {
-                ...state,
-                doctor: action.payload
-            };
         case GET_SPECIALTIES:
             return{
                 ...state,

@@ -2,7 +2,7 @@ import axios from 'axios';
 import {returnErrors} from '../actions/errorActions';
 import {
     AUTH_ERROR,
-    CLEAR_ERRORS,
+    CLEAR_ERRORS, LOAD_PATIENT,
     LOGIN_FAIL,
     LOGIN_SUCCESS,
     LOGOUT_SUCCESS, REGISTER_FAIL, REGISTER_SUCCESS,
@@ -12,6 +12,7 @@ import {
 import {history} from '../utils/history';
 import {getLogger} from "../utils/logger";
 import {url} from "../utils/helpers";
+import {DESTROY_SESSION, LOAD_DOCTOR} from "./constants";
 
 const log=getLogger();
 
@@ -72,6 +73,7 @@ export const register = ({firstName,lastName,email,specialty,role,password}) => 
                 type: REGISTER_SUCCESS,
                 payload: res.data
             });
+            history.push('/home');
         })
         .catch(err=>{
             log(err);
@@ -95,7 +97,9 @@ export const loadUser = ({email}) => (dispatch, getState) =>{
             dispatch({
             type: USER_LOADED,
             payload: res.data
-        })})
+        });
+            dispatch(loadDetails({email}))
+        })
         .catch(err=>{
             dispatch(returnErrors(err.response.data,err.response.status));
             dispatch({
@@ -104,8 +108,43 @@ export const loadUser = ({email}) => (dispatch, getState) =>{
         });
 };
 
-export const logout = () =>{
+export const loadDetails = ({email}) => (dispatch, getState) => {
+    const user=getState().auth.user;
+    if(user.role.toUpperCase()==='DOCTOR'){
+        axios
+            .get(`${url}/doctor/${email}`, {
+                headers: tokenConfig(getState)
+            })
+            .then(res=>{
+                console.log(res.data);
+                dispatch({
+                    type: LOAD_DOCTOR,
+                    payload: res.data
+                })})
+            .catch(err=>{
+                dispatch(returnErrors(err.response.data,err.response.status));
+            });
+    }else{
+        axios
+            .get(`${url}/patient/${email}`, {
+                headers: tokenConfig(getState)
+            })
+            .then(res=>{
+                console.log(res.data);
+                dispatch({
+                    type: LOAD_PATIENT,
+                    payload: res.data
+                })})
+            .catch(err=>{
+                dispatch(returnErrors(err.response.data,err.response.status));
+            });
+    }
+};
+
+export const logout = () => dispatch =>{
+    dispatch({type: DESTROY_SESSION});
     return {
         type: LOGOUT_SUCCESS
     }
 };
+

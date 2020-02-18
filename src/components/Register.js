@@ -102,8 +102,11 @@ class Register extends Component{
     };
 
     render() {
+        const {specialties}=this.props;
         const {error}=this.props;
         log(JSON.stringify(error));
+        if(!specialties)
+            return <div/>;
         const optionsRole=['Doctor','Patient'];
         const optionsSpecialty=this.getSpecialtyNames();
         return(

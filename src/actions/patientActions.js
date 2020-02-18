@@ -1,8 +1,5 @@
 import axios from 'axios';
 import {returnErrors} from '../actions/errorActions';
-import {
-    GET_PATIENT
-} from "../actions/constants";
 import {url} from "../utils/helpers";
 
 const defaultHeaders={
@@ -20,19 +17,3 @@ export const tokenConfig = getState => {
     return headers;
 };
 
-
-export const getPatient = ({email}) => (dispatch, getState) =>{
-    axios
-        .get(`${url}/patient/${email}`, {
-            headers: tokenConfig(getState)
-        })
-        .then(res=>{
-            console.log(res.data);
-            dispatch({
-                type: GET_PATIENT,
-                payload: res.data
-            })})
-        .catch(err=>{
-            dispatch(returnErrors(err.response.data,err.response.status));
-        });
-};

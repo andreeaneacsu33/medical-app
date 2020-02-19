@@ -29,10 +29,12 @@ class Toolbar extends Component {
         return (
             <Box elevation="small" className="toolbarWrapper">
                 <Header className="toolbar">
-                    <Box style={{padding: "12px"}} direction="row" align="center" gap="small">
-                        <Image className='logo' src={require('../../utils/logo.png')}/>
+                    <Box width="100%" style={{padding: "12px"}} direction="row" align="center" gap="small">
+                        <Box width="92%">
+                            <Image className='logo' src={require('../../utils/logo.png')}/>
+                        </Box>
                         <Box className="wrapperModal"/>
-                        <Box style={{paddingLeft: "1030px"}}>
+                        <Box>
                             <Tooltip arrow={false} place="bottom" color="white" background="#ababab" direction="down"
                                      content={(
                                          <div>

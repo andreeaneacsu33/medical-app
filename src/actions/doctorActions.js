@@ -1,6 +1,6 @@
 import axios from 'axios';
 import {returnErrors} from '../actions/errorActions';
-import {GET_SPECIALTIES} from "../actions/constants";
+import {GET_AFFILIATION, GET_QUALIFICATION, GET_SPECIALTIES} from "../actions/constants";
 import {url} from "../utils/helpers";
 
 const defaultHeaders={
@@ -18,7 +18,7 @@ export const tokenConfig = getState => {
     return headers;
 };
 
-export const getSpecialties = () => (dispatch, getState) => {
+export const getSpecialties = () => (dispatch) => {
     axios
         .get(`${url}/specialties`, {
             headers: {...defaultHeaders}
@@ -27,6 +27,38 @@ export const getSpecialties = () => (dispatch, getState) => {
             console.log(res.data);
             dispatch({
                 type: GET_SPECIALTIES,
+                payload: res.data
+            })})
+        .catch(err=>{
+            dispatch(returnErrors(err.response.data,err.response.status));
+        });
+};
+
+export const getQualification = (id) => (dispatch,getState) => {
+    axios
+        .get(`${url}/qualification/${id}`,{
+            headers: tokenConfig(getState)
+        })
+        .then(res=>{
+            console.log(res.data);
+            dispatch({
+                type: GET_QUALIFICATION,
+                payload: res.data
+            })})
+        .catch(err=>{
+            dispatch(returnErrors(err.response.data,err.response.status));
+        });
+};
+
+export const getAffiliation = (id) => (dispatch,getState) => {
+    axios
+        .get(`${url}/affiliation/${id}`,{
+            headers: tokenConfig(getState)
+        })
+        .then(res=>{
+            console.log(res.data);
+            dispatch({
+                type: GET_AFFILIATION,
                 payload: res.data
             })})
         .catch(err=>{

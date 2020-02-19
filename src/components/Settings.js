@@ -21,7 +21,7 @@ class Settings extends Component{
         log(JSON.stringify(visited));
         return(
             <Grommet theme={customTheme}>
-                <Box className='mainContainer'>
+                <Box>
                     <Box>
                         <Toolbar/>
                         <Box direction="row">

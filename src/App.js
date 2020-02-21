@@ -12,7 +12,7 @@ class App extends Component {
         return (
             <Grommet full theme={grommet}>
                 <Provider store={store}>
-                    <div className="App">
+                    <div className="App" style={{height:"100%"}}>
                         <Navigation/>
                     </div>
                 </Provider>

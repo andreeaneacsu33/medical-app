@@ -2,12 +2,12 @@ import React, {Component} from "react";
 import {connect} from "react-redux";
 import PropTypes from "prop-types";
 import Menu from "./menu/Menu";
-import {Box, Grommet, List} from "grommet";
+import {Box, Grommet, Layer, List} from "grommet";
 import Toolbar from "./menu/Toolbar";
 import {customTheme} from "../utils/helpers";
 import {getLogger} from "../utils/logger";
 import {getAffiliation, getQualification} from "../actions/doctorActions";
-import {FormEdit, FormNext} from "grommet-icons";
+import {Add} from "grommet-icons";
 
 const log = getLogger();
 
@@ -16,6 +16,11 @@ class Profile extends Component {
         isAuthenticated: PropTypes.bool,
         error: PropTypes.object.isRequired,
         user: PropTypes.object,
+    };
+
+    state={
+        revealActivity: false,
+        revealQualification: false
     };
 
     getPerson(user) {
@@ -56,7 +61,7 @@ class Profile extends Component {
             data.push({key: "CITY", value: `${affiliation.city}`});
             data.push({key: "COUNTRY", value: `${affiliation.country}`});
             data.push({key: "FROM", value: `${affiliation.startDate}`});
-        }else{
+        } else {
             data.push('You have no activity tracked.');
         }
         return data;
@@ -66,14 +71,22 @@ class Profile extends Component {
         let data = [];
         const {qualification} = this.props;
         log(JSON.stringify(qualification));
-        if(qualification){
+        if (qualification) {
             data.push({key: "TITLE", value: `${qualification.title}`});
             data.push({key: "INSTITUTE", value: `${qualification.institute}`});
-            data.push({key: "GRADUATION YEAR",value: `${qualification.graduationYear}`});
-        }else {
+            data.push({key: "GRADUATION YEAR", value: `${qualification.graduationYear}`});
+        } else {
             data.push('You have no qualification tracked.')
         }
         return data;
+    }
+
+    setRevealActivity(value){
+        this.setState({revealActivity: value});
+    }
+
+    setRevealQualification(value){
+        this.setState({revealQualification: value});
     }
 
     render() {
@@ -81,6 +94,9 @@ class Profile extends Component {
         const {visited} = this.props;
         log(JSON.stringify(visited));
         const {user} = this.props;
+        const {revealActivity,revealQualification}=this.state;
+        log(`reveal activity: ${revealActivity}`);
+        log(`reveal qualif: ${revealQualification}`);
         if (!user) {
             return <div/>
         }
@@ -92,17 +108,21 @@ class Profile extends Component {
         const studyInformation = this.formatStudyInformation();
         return (
             <Grommet theme={customTheme}>
-                <Box>
-                    <Box>
+                <Box style={{height: "100%"}}>
+                    <Box style={{height: "inherit"}}>
                         <Toolbar/>
                         <Box direction="row">
                             <Menu lastUrl={visited}/>
                             <Box flex overflow="auto" direction="column">
                                 <Box style={{paddingTop: "24px"}}>
-                                    <h4>Personal Information</h4>
+                                        <h4>Personal Information</h4>
                                     <article className="profile">
                                         <Box align="start" pad="small">
-                                            <h4 style={{fontSize: "1.25rem"}}>Profile</h4>
+                                            <Box direction="row" width="100%">
+                                                <Box width="97%">
+                                                    <h4 style={{fontSize: "1.25rem", textAlign: "start"}}>Profile</h4>
+                                                </Box>
+                                            </Box>
                                         </Box>
                                         <List
                                             data={personalInformation}
@@ -113,23 +133,25 @@ class Profile extends Component {
                                             )}
                                             secondaryKey={item => (
                                                 <span className="value">
-                                                    <Box direction="row">
-                                                        <Box width="95%">
                                                     {item.value}
-                                                        </Box>
-                                                    <Box align="end">
-                                                        <FormNext/>
-                                                    </Box>
-                                                    </Box>
                                                 </span>
                                             )}
                                         />
                                     </article>
                                     <article className="profile" style={{marginTop: "15px"}}>
                                         <Box align="start" pad="small">
-                                            <h4 style={{fontSize: "1.25rem"}}>Activity</h4>
+                                            <Box direction="row" width="100%">
+                                                <Box width="97%">
+                                                    <h4 style={{fontSize: "1.25rem", textAlign: "start"}}>Activity</h4>
+                                                </Box>
+                                                {workInformation.length === 1 && (
+                                                <Box align="end" className="icon" styele={{outlineColor: "white", borderColor: "white"}}onClick={()=>this.setRevealActivity(!revealActivity)}>
+                                                    <Add style={{width:"20px", height:"20px", fill: "#516cfb", stroke: "#516cfb"}}/>
+                                                </Box>
+                                                )}
+                                            </Box>
                                         </Box>
-                                        {workInformation.length===1? (<List data={workInformation}/>):(<List
+                                        {workInformation.length === 1 ? (<List style={{fontSize: "1rem"}} data={workInformation}/>) : (<List
                                             data={workInformation}
                                             primaryKey={item => (
                                                 <span className="key">
@@ -138,23 +160,25 @@ class Profile extends Component {
                                             )}
                                             secondaryKey={item => (
                                                 <span className="value">
-                                                    <Box direction="row">
-                                                        <Box width="95%">
                                                     {item.value}
-                                                        </Box>
-                                                    <Box align="end">
-                                                        <FormNext/>
-                                                    </Box>
-                                                    </Box>
                                                 </span>
                                             )}
                                         />)}
                                     </article>
-                                    <article className="profile" style={{marginTop: "15px", marginBottom:"24px"}}>
+                                    <article className="profile" style={{marginTop: "15px", marginBottom: "24px"}}>
                                         <Box align="start" pad="small">
-                                            <h4 style={{fontSize: "1.25rem"}}>Qualification</h4>
+                                            <Box direction="row" width="100%">
+                                                <Box width="97%">
+                                                    <h4 style={{fontSize: "1.25rem", textAlign: "start"}}>Qualification</h4>
+                                                </Box>
+                                                {workInformation.length === 1 && (
+                                                    <Box align="end" className="icon" onClick={()=>this.setRevealQualification(!revealQualification)}>
+                                                        <Add style={{width:"20px", height:"20px", fill: "#516cfb", stroke: "#516cfb"}}/>
+                                                    </Box>
+                                                )}
+                                            </Box>
                                         </Box>
-                                        {studyInformation.length===1? (<List data={studyInformation}/>):(<List
+                                        {studyInformation.length === 1 ? (<List style={{fontSize: "1rem"}} data={studyInformation}/>) : (<List
                                             data={studyInformation}
                                             primaryKey={item => (
                                                 <span className="key">
@@ -163,18 +187,25 @@ class Profile extends Component {
                                             )}
                                             secondaryKey={item => (
                                                 <span className="value">
-                                                    <Box direction="row">
-                                                        <Box width="95%">
                                                     {item.value}
-                                                        </Box>
-                                                    <Box align="end">
-                                                        <FormNext/>
-                                                    </Box>
-                                                    </Box>
                                                 </span>
                                             )}
                                         />)}
                                     </article>
+                                    {revealActivity && (
+                                        <Layer position="right" onClickOutside={()=>this.setRevealActivity(!revealActivity)}>
+                                            <Box height="xlarge" width="420px" overflow="auto">
+                                                <Box>Add Activity Information</Box>
+                                            </Box>
+                                        </Layer>
+                                    )}
+                                    {revealQualification && (
+                                        <Layer position="right" onClickOutside={()=>this.setRevealQualification(!revealQualification)}>
+                                            <Box height="xlarge" width="420px" overflow="auto">
+                                                <Box>Add Qualification Information</Box>
+                                            </Box>
+                                        </Layer>
+                                    )}
                                 </Box>
                             </Box>
                         </Box>

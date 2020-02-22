@@ -2,6 +2,7 @@ import axios from 'axios';
 import {returnErrors} from '../actions/errorActions';
 import {GET_AFFILIATION, GET_QUALIFICATION, GET_SPECIALTIES} from "../actions/constants";
 import {url} from "../utils/helpers";
+import {SET_AFFILIATION} from "./constants";
 
 const defaultHeaders={
     'Accept':'application/json',
@@ -59,6 +60,23 @@ export const getAffiliation = (id) => (dispatch,getState) => {
             console.log(res.data);
             dispatch({
                 type: GET_AFFILIATION,
+                payload: res.data
+            })})
+        .catch(err=>{
+            dispatch(returnErrors(err.response.data,err.response.status));
+        });
+};
+
+export const setAffiliation = ({email,hospitalName,city,country,startDate}) => (dispatch,getState) => {
+    const body=JSON.stringify({email,hospitalName,city,country,startDate});
+    axios
+        .post(`${url}/affiliation`,body,{
+            headers: tokenConfig(getState)
+        })
+        .then(res=>{
+            console.log(res.data);
+            dispatch({
+                type: SET_AFFILIATION,
                 payload: res.data
             })})
         .catch(err=>{

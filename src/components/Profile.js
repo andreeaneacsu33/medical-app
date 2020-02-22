@@ -2,12 +2,12 @@ import React, {Component} from "react";
 import {connect} from "react-redux";
 import PropTypes from "prop-types";
 import Menu from "./menu/Menu";
-import {Box, Grommet, Layer, List} from "grommet";
+import {Box, Button, Calendar, DropButton, FormField, Grommet, Layer, List, Text, TextInput} from "grommet";
 import Toolbar from "./menu/Toolbar";
 import {customTheme} from "../utils/helpers";
 import {getLogger} from "../utils/logger";
-import {getAffiliation, getQualification} from "../actions/doctorActions";
-import {Add} from "grommet-icons";
+import {getAffiliation, getQualification, setAffiliation} from "../actions/doctorActions";
+import {Add, CircleInformation, Close, FormDown, Save} from "grommet-icons";
 
 const log = getLogger();
 
@@ -20,7 +20,12 @@ class Profile extends Component {
 
     state={
         revealActivity: false,
-        revealQualification: false
+        revealQualification: false,
+        hospitalName: '',
+        city: '',
+        country: '',
+        startDate: '',
+        error: '',
     };
 
     getPerson(user) {
@@ -89,12 +94,39 @@ class Profile extends Component {
         this.setState({revealQualification: value});
     }
 
+    onChange = e => {
+        this.setState({[e.target.name]: e.target.value})
+    };
+
+    onSelect = selectedDate => {
+        this.setState({startDate:selectedDate});
+        this.setState({open:false});
+    };
+
+    setOpen(value){
+        this.setState({open:value})
+    }
+
+    onActivitySave = e => {
+        e.preventDefault();
+        const {hospitalName,city,country,startDate} =this.state;
+        const {email}=this.props.user;
+        if(hospitalName==='' || city==='' || country==='' || startDate===''){
+            this.setState({error: 'Please complete the required fields accordingly.'})
+        }else{
+            this.setState({error: ''});
+            const affiliationDTO={email,hospitalName,city,country,startDate};
+            this.props.setAffiliation(affiliationDTO);
+            this.setRevealActivity(false);
+        }
+    };
+
     render() {
         log(JSON.stringify(this.props));
         const {visited} = this.props;
         log(JSON.stringify(visited));
         const {user} = this.props;
-        const {revealActivity,revealQualification}=this.state;
+        const {revealActivity,revealQualification,open,startDate,error}=this.state;
         log(`reveal activity: ${revealActivity}`);
         log(`reveal qualif: ${revealQualification}`);
         if (!user) {
@@ -171,7 +203,7 @@ class Profile extends Component {
                                                 <Box width="97%">
                                                     <h4 style={{fontSize: "1.25rem", textAlign: "start"}}>Qualification</h4>
                                                 </Box>
-                                                {workInformation.length === 1 && (
+                                                {studyInformation.length === 1 && (
                                                     <Box align="end" className="icon" onClick={()=>this.setRevealQualification(!revealQualification)}>
                                                         <Add style={{width:"20px", height:"20px", fill: "#516cfb", stroke: "#516cfb"}}/>
                                                     </Box>
@@ -194,15 +226,72 @@ class Profile extends Component {
                                     </article>
                                     {revealActivity && (
                                         <Layer position="right" onClickOutside={()=>this.setRevealActivity(!revealActivity)}>
-                                            <Box height="xlarge" width="420px" overflow="auto">
-                                                <Box>Add Activity Information</Box>
+                                            <Box className="affiliation" height="xlarge" width="420px" overflow="auto" align="center">
+                                                <Box direction="row" width="100%">
+                                                    <Box align="center" pad="small" width="90%"><h4 style={{fontSize: "20px"}}>Activity</h4></Box>
+                                                    <Box pad="small" onClick={()=>this.setRevealActivity(!revealActivity)}><Close style={{width: "20px",height: "20px"}}/></Box>
+                                                </Box>
+                                                <Box align="center" width="75%">
+                                                    <FormField htmlFor="text-input">
+                                                        <TextInput
+                                                            placeholder="Hospital"
+                                                            name="hospitalName"
+                                                            plain
+                                                            onChange={this.onChange}
+                                                        />
+                                                    </FormField>
+                                                </Box>
+                                                <Box align="center" width="75%">
+                                                    <FormField htmlFor="text-input">
+                                                        <TextInput
+                                                            placeholder="City"
+                                                            name="city"
+                                                            onChange={this.onChange}
+                                                        />
+                                                    </FormField>
+                                                </Box>
+                                                <Box align="center" width="75%">
+                                                    <FormField htmlFor="text-input">
+                                                        <TextInput
+                                                            placeholder="Country"
+                                                            name="country"
+                                                            onChange={this.onChange}
+                                                        />
+                                                    </FormField>
+                                                </Box>
+                                                <Box align="start">
+                                                    <DropButton
+                                                        open={open}
+                                                        onClose={() => this.setOpen(false)}
+                                                        onOpen={() => this.setOpen(true)}
+                                                        dropContent={<Calendar style={{width: "380px"}} date={startDate} onSelect={this.onSelect} />}
+                                                    >
+                                                        <Box direction="row" gap="small" align="start" pad="small">
+                                                            <Text>
+                                                                {startDate ? new Date(startDate).toLocaleDateString() : "Starting from"}
+                                                            </Text>
+                                                            <FormDown color="brand" />
+                                                        </Box>
+                                                    </DropButton>
+                                                </Box>
+                                                {error && (
+                                                    <Box style={{alignSelf:'center',flexDirection: 'row', display: 'flex'}}>
+                                                        <CircleInformation className='infoIcon'/>
+                                                        <span style={{color: '#d50000',fontSize: '13px'}}>{error}</span>
+                                                    </Box>
+                                                )}
+                                                <Box direction="row" width="100%" style={{paddingTop: "20px"}}>
+                                                    <Box width="65%"/>
+                                                    <Button className='saveButton' type='submit' style={{border: "0.1em solid #676767"}} onClick={this.onActivitySave}><Save style={{fill: "#7D4CDB",stroke: "#7D4CDB", width: "20px", height: "20px",verticalAlign: "middle"}}/><span style={{color: "#7D4CDB"}}>Save</span></Button>
+                                                </Box>
                                             </Box>
                                         </Layer>
                                     )}
                                     {revealQualification && (
                                         <Layer position="right" onClickOutside={()=>this.setRevealQualification(!revealQualification)}>
                                             <Box height="xlarge" width="420px" overflow="auto">
-                                                <Box>Add Qualification Information</Box>
+                                                <Box align="center" pad="small"><h4 style={{fontSize: "20px"}}>Qualification</h4></Box>
+
                                             </Box>
                                         </Layer>
                                     )}
@@ -230,5 +319,5 @@ const mapStateToProps = state => ({
 
 export default connect(
     mapStateToProps,
-    {getQualification, getAffiliation}
+    {getQualification, getAffiliation, setAffiliation}
 )(Profile);

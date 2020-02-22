@@ -1,6 +1,6 @@
 import axios from 'axios';
 import {returnErrors} from '../actions/errorActions';
-import {GET_AFFILIATION, GET_QUALIFICATION, GET_SPECIALTIES} from "../actions/constants";
+import {GET_AFFILIATION, GET_QUALIFICATION, GET_SPECIALTIES, SET_QUALIFICATION} from "../actions/constants";
 import {url} from "../utils/helpers";
 import {SET_AFFILIATION} from "./constants";
 
@@ -77,6 +77,23 @@ export const setAffiliation = ({email,hospitalName,city,country,startDate}) => (
             console.log(res.data);
             dispatch({
                 type: SET_AFFILIATION,
+                payload: res.data
+            })})
+        .catch(err=>{
+            dispatch(returnErrors(err.response.data,err.response.status));
+        });
+};
+
+export const setQualification = ({email,title,institute,graduationYear}) => (dispatch,getState) => {
+    const body=JSON.stringify({email,title,institute,graduationYear});
+    axios
+        .post(`${url}/qualification`,body,{
+            headers: tokenConfig(getState)
+        })
+        .then(res=>{
+            console.log(res.data);
+            dispatch({
+                type: SET_QUALIFICATION,
                 payload: res.data
             })})
         .catch(err=>{

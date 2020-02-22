@@ -1,7 +1,7 @@
 import {
     GET_AFFILIATION,
     GET_QUALIFICATION,
-    GET_SPECIALTIES, SET_AFFILIATION,
+    GET_SPECIALTIES, SET_AFFILIATION, SET_QUALIFICATION,
 } from '../actions/constants';
 
 const initialState = {
@@ -30,6 +30,11 @@ export default function (state=initialState,action) {
             return{
                 ...state,
                 affiliation: action.payload
+            };
+        case SET_QUALIFICATION:
+            return{
+                ...state,
+                qualification: action.payload
             };
         default:
             return state;

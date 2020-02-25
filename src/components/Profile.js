@@ -2,12 +2,23 @@ import React, {Component} from "react";
 import {connect} from "react-redux";
 import PropTypes from "prop-types";
 import Menu from "./menu/Menu";
-import {Box, Button, Calendar, DropButton, FormField, Grommet, Layer, List, Text, TextInput} from "grommet";
+import {
+    Box,
+    Button,
+    Calendar,
+    DropButton,
+    FormField,
+    Grommet,
+    Layer,
+    List,
+    Text,
+    TextInput
+} from "grommet";
 import Toolbar from "./menu/Toolbar";
 import {customTheme} from "../utils/helpers";
 import {getLogger} from "../utils/logger";
 import {getAffiliation, getQualification, setAffiliation, setQualification} from "../actions/doctorActions";
-import {Add, CircleInformation, Close, FormDown, Save} from "grommet-icons";
+import {Add, CircleInformation, Close, FormDown} from "grommet-icons";
 
 const log = getLogger();
 
@@ -52,11 +63,18 @@ class Profile extends Component {
         }
     }
 
-    formatPersonalInformation(person) {
+    formatDoctorPersonalInformation(person) {
         let data = [];
         data.push({key: "NAME", value: `${person.firstName} ${person.lastName}`});
         data.push({key: "EMAIL", value: `${person.email}`});
         data.push({key: "SPECIALTY", value: `${person.specialty.name}`});
+        return data;
+    }
+
+    formatPatientPersonalInformation(person) {
+        let data = [];
+        data.push({key: "NAME", value: `${person.firstName} ${person.lastName}`});
+        data.push({key: "EMAIL", value: `${person.email}`});
         return data;
     }
 
@@ -90,11 +108,11 @@ class Profile extends Component {
     }
 
     setRevealActivity(value) {
-        this.setState({revealActivity: value});
+        this.setState({...this.state,startDate: '',revealActivity: value,error:''});
     }
 
     setRevealQualification(value) {
-        this.setState({revealQualification: value});
+        this.setState({...this.state,startDate: '',revealQualification: value,error:''});
     }
 
     onChange = e => {
@@ -138,10 +156,44 @@ class Profile extends Component {
         }
     };
 
+    renderPatientProfile(user){
+        const person = this.getPerson(user);
+        const personalInformation = this.formatPatientPersonalInformation(person);
+        return(
+            <Box flex overflow="auto" direction="column">
+                <Box style={{paddingTop: "24px"}}>
+                    <h4>Personal Information</h4>
+                    <article className="profile">
+                        <Box align="start" pad="small">
+                            <Box direction="row" width="100%">
+                                <Box width="97%">
+                                    <h4 style={{fontSize: "1.25rem", textAlign: "start"}}>Profile</h4>
+                                </Box>
+                            </Box>
+                        </Box>
+                        <List
+                            data={personalInformation}
+                            primaryKey={item => (
+                                <span className="key">
+                                                    {item.key}
+                                                </span>
+                            )}
+                            secondaryKey={item => (
+                                <span className="value">
+                                                    {item.value}
+                                                </span>
+                            )}
+                        />
+                    </article>
+                </Box>
+            </Box>
+        )
+    }
+
     renderDoctorProfile(user){
         const {revealActivity, revealQualification, open, startDate, error} = this.state;
         const person = this.getPerson(user);
-        const personalInformation = this.formatPersonalInformation(person);
+        const personalInformation = this.formatDoctorPersonalInformation(person);
         const workInformation = this.formatWorkInformation();
         const studyInformation = this.formatStudyInformation();
         return(
@@ -243,9 +295,9 @@ class Profile extends Component {
                         />)}
                     </article>
                     {revealActivity && (
-                        <Layer position="right"
+                        <Layer position="center"
                                onClickOutside={() => this.setRevealActivity(!revealActivity)}>
-                            <Box className="affiliation" height="xlarge" width="420px" overflow="auto"
+                            <Box className="affiliation" height="medium" width="420px" overflow="auto"
                                  align="center">
                                 <Box direction="row" width="100%">
                                     <Box align="center" pad="small" width="90%"><h4
@@ -309,25 +361,18 @@ class Profile extends Component {
                                             style={{color: '#d50000', fontSize: '13px'}}>{error}</span>
                                     </Box>
                                 )}
-                                <Box direction="row" width="100%" style={{paddingTop: "20px"}}>
+                                <Box className='saveButton' direction="row" width="100%" style={{paddingTop: "20px"}}>
                                     <Box width="65%"/>
-                                    <Button className='saveButton' type='submit'
-                                            style={{border: "0.1em solid #7D4CDB"}}
-                                            onClick={this.onActivitySave}><Save style={{
-                                        fill: "#7D4CDB",
-                                        stroke: "#7D4CDB",
-                                        width: "20px",
-                                        height: "20px",
-                                        verticalAlign: "middle"
-                                    }}/><span style={{color: "#7D4CDB"}}>Save</span></Button>
+                                    <Button type='submit'
+                                            onClick={this.onActivitySave}><span>Save</span></Button>
                                 </Box>
                             </Box>
                         </Layer>
                     )}
                     {revealQualification && (
-                        <Layer position="right"
+                        <Layer position="center"
                                onClickOutside={() => this.setRevealQualification(!revealQualification)}>
-                            <Box className="affiliation" height="xlarge" width="420px" overflow="auto"
+                            <Box className="affiliation" height="medium" width="420px" overflow="auto"
                                  align="center">
                                 <Box direction="row" width="100%">
                                     <Box align="center" pad="small" width="90%"><h4
@@ -375,17 +420,10 @@ class Profile extends Component {
                                             style={{color: '#d50000', fontSize: '13px'}}>{error}</span>
                                     </Box>
                                 )}
-                                <Box direction="row" width="100%" style={{paddingTop: "20px"}}>
+                                <Box className='saveButton' direction="row" width="100%" style={{paddingTop: "20px"}}>
                                     <Box width="65%"/>
-                                    <Button className='saveButton' type='submit'
-                                            style={{border: "0.1em solid #7D4CDB"}}
-                                            onClick={this.onQualificationSave}><Save style={{
-                                        fill: "#7D4CDB",
-                                        stroke: "#7D4CDB",
-                                        width: "20px",
-                                        height: "20px",
-                                        verticalAlign: "middle"
-                                    }}/><span style={{color: "#7D4CDB"}}>Save</span></Button>
+                                    <Button type='submit'
+                                            onClick={this.onQualificationSave}><span>Save</span></Button>
                                 </Box>
                             </Box>
                         </Layer>
@@ -412,7 +450,7 @@ class Profile extends Component {
                         <Toolbar/>
                         <Box direction="row">
                             <Menu lastUrl={visited}/>
-                            {user.role.toUpperCase()==='DOCTOR' && this.renderDoctorProfile(user)}
+                            {user.role.toUpperCase()==='DOCTOR' ? this.renderDoctorProfile(user) : this.renderPatientProfile(user)}
                         </Box>
                     </Box>
                 </Box>

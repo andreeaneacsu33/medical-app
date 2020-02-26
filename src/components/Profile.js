@@ -446,7 +446,7 @@ class Profile extends Component {
         return (
             <Grommet theme={customTheme}>
                 <Box style={{height: "100%"}}>
-                    <Box style={{height: "inherit"}}>
+                    <Box>
                         <Toolbar/>
                         <Box direction="row">
                             <Menu lastUrl={visited}/>

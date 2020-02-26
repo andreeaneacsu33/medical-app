@@ -339,6 +339,7 @@ menu .activeStyle{
     border-radius: 8px;
     width: 200px;
     height: 200px;
+    z-index: 1000;
 }
 
 .wrapperModal{
@@ -454,5 +455,16 @@ h4{
 
 .profile li:nth-child(odd) {background: #f2f2f2}
 
+.tile{
+    max-width: 345px;
+    height: 300px;
+}
+
+.tile img{
+    height: 110px;
+    width: 100px;
+    align-self: center;
+    opacity: 0.55;
+}
 
 

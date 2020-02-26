@@ -2,7 +2,7 @@ import axios from 'axios';
 import {returnErrors} from '../actions/errorActions';
 import {GET_AFFILIATION, GET_QUALIFICATION, GET_SPECIALTIES, SET_QUALIFICATION} from "../actions/constants";
 import {url} from "../utils/helpers";
-import {SET_AFFILIATION} from "./constants";
+import {GET_DOCTORS_FROM_PAGE, GET_TOTAL_PAGES, SET_AFFILIATION} from "./constants";
 
 const defaultHeaders={
     'Accept':'application/json',
@@ -94,6 +94,36 @@ export const setQualification = ({email,title,institute,graduationYear}) => (dis
             console.log(res.data);
             dispatch({
                 type: SET_QUALIFICATION,
+                payload: res.data
+            })})
+        .catch(err=>{
+            dispatch(returnErrors(err.response.data,err.response.status));
+        });
+};
+
+export const getTotalPages = () => (dispatch,getState) => {
+    axios.get(`${url}/doctors/total`,{
+        headers: tokenConfig(getState)
+    })
+        .then(res=>{
+            console.log(res.data);
+            dispatch({
+                type: GET_TOTAL_PAGES,
+                payload: res.data
+            })})
+        .catch(err=>{
+            dispatch(returnErrors(err.response.data,err.response.status));
+        });
+};
+
+export const getDoctorsFromPage = ({page}) => (dispatch,getState) => {
+    axios.get(`${url}/doctors/page/${page}`,{
+        headers: tokenConfig(getState)
+    })
+        .then(res=>{
+            console.log(res.data);
+            dispatch({
+                type: GET_DOCTORS_FROM_PAGE,
                 payload: res.data
             })})
         .catch(err=>{

@@ -1,12 +1,13 @@
 import {
-    GET_AFFILIATION,
+    GET_AFFILIATION, GET_DOCTORS_FROM_PAGE,
     GET_QUALIFICATION,
-    GET_SPECIALTIES, SET_AFFILIATION, SET_QUALIFICATION,
+    GET_SPECIALTIES, GET_TOTAL_PAGES, SET_AFFILIATION, SET_QUALIFICATION,
 } from '../actions/constants';
 
 const initialState = {
     token: localStorage.getItem('token'),
     doctor: null,
+    doctors: [],
 };
 
 export default function (state=initialState,action) {
@@ -35,6 +36,16 @@ export default function (state=initialState,action) {
             return{
                 ...state,
                 qualification: action.payload
+            };
+        case GET_TOTAL_PAGES:
+            return{
+                ...state,
+                total: action.payload
+            };
+        case GET_DOCTORS_FROM_PAGE:
+            return {
+                ...state,
+                doctors: action.payload,
             };
         default:
             return state;

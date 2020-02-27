@@ -61,11 +61,11 @@ export const login = ({email,password})=>dispatch=>{
         });
 };
 
-export const register = ({firstName,lastName,email,specialty,role,password}) => dispatch => {
+export const register = ({firstName,lastName,email,gender,specialty,role,password}) => dispatch => {
     log(`Register ${email}`);
     const headers={...defaultHeaders};
     const config={headers};
-    const body=JSON.stringify({email,password,firstName,lastName,role,specialty});
+    const body=JSON.stringify({email,password,firstName,lastName,role,specialty,gender});
     axios
         .post(`${url}/signup`,body,config)
         .then(res=>{
@@ -110,7 +110,7 @@ export const loadUser = ({email}) => (dispatch, getState) =>{
 
 export const loadDetails = ({email}) => (dispatch, getState) => {
     const user=getState().auth.user;
-    if(user.role.toUpperCase()==='DOCTOR'){
+    if(user && user.role.toUpperCase()==='DOCTOR'){
         axios
             .get(`${url}/doctor/${email}`, {
                 headers: tokenConfig(getState)
@@ -124,7 +124,7 @@ export const loadDetails = ({email}) => (dispatch, getState) => {
             .catch(err=>{
                 dispatch(returnErrors(err.response.data,err.response.status));
             });
-    }else{
+    }else if(user && user.role.toUpperCase()==='PATIENT'){
         axios
             .get(`${url}/patient/${email}`, {
                 headers: tokenConfig(getState)

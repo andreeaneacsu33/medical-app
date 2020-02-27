@@ -18,6 +18,7 @@ class Register extends Component{
         firstName: '',
         lastName: '',
         email: '',
+        gender: '',
         role: '',
         specialty: '',
         password: '',
@@ -50,7 +51,7 @@ class Register extends Component{
     }
 
     validateFields =() =>{
-        const {firstName,lastName,email,role,specialty,password,confirm} = this.state;
+        const {firstName,lastName,email,role,specialty,password,confirm,gender} = this.state;
         let message={};
         if(firstName===''){
             message['firstName']='Insert your first name';
@@ -69,6 +70,9 @@ class Register extends Component{
         }
         if(confirm===''){
             message['confirm']='Confirm your password';
+        }
+        if(gender===''){
+            message['gender']='Select a gender';
         }
         const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         if(email===''){
@@ -91,8 +95,8 @@ class Register extends Component{
         const message=this.validateFields();
         if(Object.entries(message).length === 0 && message.constructor === Object){
             this.setState({message:this.state.message});
-            const  {firstName,lastName,email,specialty,role, password}=this.state;
-            const userDTO={email, password,firstName, lastName, role, specialty};
+            const  {firstName,lastName,email,gender,specialty,role, password}=this.state;
+            const userDTO={email, gender, password, firstName, lastName, role, specialty};
             localStorage.setItem(USERNAME,email);
             this.props.register(userDTO);
         }else{
@@ -109,6 +113,7 @@ class Register extends Component{
             return <div/>;
         const optionsRole=['Doctor','Patient'];
         const optionsSpecialty=this.getSpecialtyNames();
+        const optionsGender=['Male','Female'];
         return(
             <Grommet theme={customTheme}>
             <Box className='registerForm'>
@@ -175,6 +180,21 @@ class Register extends Component{
                                         onChange={this.onChange}
                                     />
                                 </Box>
+                            </Box>
+                            <Box
+                                style={{paddingTop: '2px', height: '64px', paddingLeft: '12px'}}
+                                className='inputBox'
+                                direction="row"
+                            >
+                                <Select
+                                    className='select'
+                                    id="specialty"
+                                    name="gender"
+                                    placeholder="Gender"
+                                    options={optionsGender}
+                                    value={this.state.gender}
+                                    onChange={({option})=>this.setState({gender: option})}
+                                />
                             </Box>
                             <Box>
                                 <Box

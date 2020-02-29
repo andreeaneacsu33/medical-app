@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import {deepMerge} from 'grommet/utils';
 import {CircleInformation, LinkPrevious} from 'grommet-icons';
 import {history} from "../utils/history";
-import {USERNAME} from "../actions/constants";
+import {USERNAME} from "../actions/actions";
 import {register} from "../actions/authActions";
 import {clearErrors} from "../actions/errorActions";
 import {getLogger} from "../utils/logger";

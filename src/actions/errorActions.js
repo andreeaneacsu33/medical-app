@@ -1,4 +1,4 @@
-import {GET_ERRORS,CLEAR_ERRORS} from "./constants";
+import {GET_ERRORS,CLEAR_ERRORS} from "./actions";
 
 export const returnErrors = (message,status,id=null)=>{
     return{

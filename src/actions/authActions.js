@@ -8,11 +8,11 @@ import {
     LOGOUT_SUCCESS, REGISTER_FAIL, REGISTER_SUCCESS,
     USER_LOADED,
     USER_LOADING
-} from "../actions/constants";
+} from "./actions";
 import {history} from '../utils/history';
 import {getLogger} from "../utils/logger";
 import {url} from "../utils/helpers";
-import {DESTROY_SESSION, LOAD_DOCTOR} from "./constants";
+import {DESTROY_SESSION, LOAD_DOCTOR} from "./actions";
 
 const log=getLogger();
 

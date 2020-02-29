@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 import {clearErrors} from '../actions/errorActions';
 import PropTypes from 'prop-types';
 import {getLogger} from '../utils/logger';
-import {USERNAME} from '../actions/constants';
+import {USERNAME} from '../actions/actions';
 import Menu from "./menu/Menu";
 import Toolbar from "./menu/Toolbar";
 import {customTheme} from "../utils/helpers";

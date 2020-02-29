@@ -2,7 +2,7 @@ import {
     GET_AFFILIATION, GET_DOCTORS_FROM_PAGE,
     GET_QUALIFICATION,
     GET_SPECIALTIES, GET_TOTAL_PAGES, SET_AFFILIATION, SET_QUALIFICATION,
-} from '../actions/constants';
+} from '../actions/actions';
 
 const initialState = {
     token: localStorage.getItem('token'),

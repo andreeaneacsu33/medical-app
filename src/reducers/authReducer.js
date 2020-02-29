@@ -6,7 +6,7 @@ import {
     TOKEN_KEY,
     USER_LOADED,
     USER_LOADING, USERNAME,
-} from '../actions/constants';
+} from '../actions/actions';
 
 const initialState = {
     token: localStorage.getItem('token'),

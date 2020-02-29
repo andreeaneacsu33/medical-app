@@ -1,8 +1,8 @@
 import axios from 'axios';
 import {returnErrors} from '../actions/errorActions';
-import {GET_AFFILIATION, GET_QUALIFICATION, GET_SPECIALTIES, SET_QUALIFICATION} from "../actions/constants";
+import {GET_AFFILIATION, GET_QUALIFICATION, GET_SPECIALTIES, SET_QUALIFICATION} from "./actions";
 import {url} from "../utils/helpers";
-import {GET_DOCTORS_FROM_PAGE, GET_TOTAL_PAGES, SET_AFFILIATION} from "./constants";
+import {GET_DOCTORS_FROM_PAGE, GET_TOTAL_PAGES, SET_AFFILIATION} from "./actions";
 
 const defaultHeaders={
     'Accept':'application/json',

@@ -3,7 +3,7 @@ import authReducer from "./authReducer";
 import errorReducer from "./errorReducer";
 import doctorReducer from "./doctorReducer";
 import patientReducer from "./patientReducer";
-import {DESTROY_SESSION} from "../actions/constants";
+import {DESTROY_SESSION} from "../actions/actions";
 
 const appReducer = combineReducers({
     error: errorReducer,

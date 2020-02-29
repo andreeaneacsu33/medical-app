@@ -1,4 +1,4 @@
-import {GET_ERRORS,CLEAR_ERRORS} from "../actions/constants";
+import {GET_ERRORS,CLEAR_ERRORS} from "../actions/actions";
 
 const initialState ={
     message: {},

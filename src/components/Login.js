@@ -8,7 +8,7 @@ import {clearErrors} from '../actions/errorActions';
 import {deepMerge} from "grommet/utils";
 import '../index.css';
 import {getLogger} from '../utils/logger';
-import {USERNAME} from '../actions/constants';
+import {USERNAME} from '../actions/actions';
 
 const log=getLogger('Login ');
 

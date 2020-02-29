@@ -5,6 +5,7 @@ import {grommet} from "grommet/themes";
 import {Pagination} from '@material-ui/lab';
 import {getDoctorsFromPage, getTotalPages} from "../actions/doctorActions";
 import {ScheduleNew, Star} from "grommet-icons";
+import {history} from "../utils/history";
 
 
 class ListDoctors extends Component {
@@ -36,7 +37,7 @@ class ListDoctors extends Component {
                 <Box width="100%">
                     <Box direction="row">
                         <Box width="80%"/>
-                        <Box>
+                        <Box style={{padding: "10px"}}>
                             <Pagination count={total} page={page} onChange={this.handlePageChange}/>
                         </Box>
                     </Box>
@@ -55,49 +56,54 @@ class ListDoctors extends Component {
                                     {item.gender === 'male' ? (
                                             <Image src={require('../utils/doctor_man.png')}/>) :
                                         (<Image src={require('../utils/doctor_woman.png')}/>)}
-                                    <Box style={{borderBottom: "1px solid #ccc"}}>
-                                        <span style={{alignSelf: "center"}}>Dr. {item.firstName} {item.lastName}</span>
+                                    <Box style={{borderBottom: "1px solid #ccc",padding: "5px"}}>
+                                        <span style={{alignSelf: "center", paddingBottom: "10px"}}>Dr. {item.firstName} {item.lastName}</span>
                                     </Box>
                                     <span style={{
                                         padding: "5px",
                                         fontSize: ".975rem",
                                         lineHeight: "1.25rem"
                                     }}>{item.specialty.name}</span>
-                                    <Box direction="row" style={{alignItems: "center"}} pad="medium" width="100%">
-                                        <Box width="50%" style={{alignItems:"center"}}>
+                                    <span style={{
+                                        padding: "5px",
+                                        fontSize: ".975rem",
+                                        lineHeight: "1.25rem"
+                                    }}>Overall score: </span>
+                                    <Box direction="row" style={{alignSelf: "center", alignItems: "center"}}
+                                         pad="medium" width="60%">
+                                        <Box width="50%" style={{alignItems: "center"}}>
                                             <Box style={{
                                                 border: "1px solid #ccc",
                                                 backgroundColor: "white",
                                                 width: "43px",
                                                 height: "43px"
-                                            }} onClick={() => {
-                                            }} id="container">
+                                            }} onClick={() => {}} id="container">
                                                 <Box id="name">
                                                     <ScheduleNew style={{
-                                                        width: "30px",
-                                                        height: "30px",
+                                                        width: "25px",
+                                                        height: "25px",
                                                         alignSelf: "center",
-                                                        paddingTop: "5px",
-                                                        stroke: "grey"
+                                                        paddingTop: "6px",
+                                                        fill: "#ababab"
                                                     }}/>
                                                 </Box>
                                             </Box>
                                         </Box>
-                                        <Box width="50%" style={{alignItems:"center"}}>
+                                        <Box width="50%" style={{alignItems: "center"}}>
                                             <Box style={{
                                                 border: "1px solid #ccc",
                                                 backgroundColor: "white",
                                                 width: "43px",
                                                 height: "43px"
-                                            }} onClick={() => {
+                                            }} onClick={() => {history.push("/reviews")
                                             }} id="container">
                                                 <Box id="name">
                                                     <Star style={{
-                                                        width: "30px",
-                                                        height: "30px",
+                                                        width: "25px",
+                                                        height: "25px",
                                                         alignSelf: "center",
-                                                        paddingTop: "5px",
-                                                        stroke: "grey"
+                                                        paddingTop: "6px",
+                                                        fill: "rgb(255,201,94)"
                                                     }}/>
                                                 </Box>
                                             </Box>

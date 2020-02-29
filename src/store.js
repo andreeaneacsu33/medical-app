@@ -2,7 +2,7 @@ import {createStore, compose, applyMiddleware} from 'redux';
 import thunk from 'redux-thunk';
 import rootReducer from './reducers';
 import {getLogger} from "./utils/logger";
-import {STATE} from './actions/constants';
+import {STATE} from './actions/actions';
 
 const log=getLogger('store ');
 const initialState={};

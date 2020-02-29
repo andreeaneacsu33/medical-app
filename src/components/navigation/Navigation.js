@@ -9,7 +9,7 @@ import Home from '../Home';
 import Register from '../Register';
 import Profile from "../Profile";
 import Settings from "../Settings";
-import Reviews from "../Reviews";
+import ListReviews from "../review/ListReviews";
 
 class Navigation extends Component{
     static propTypes = {
@@ -25,7 +25,7 @@ class Navigation extends Component{
                 <PrivateRoute path='/home' component={Home} isAuth={isAuthenticated}/>
                 <PrivateRoute path='/profile' component={Profile} isAuth={isAuthenticated}/>
                 <PrivateRoute path='/settings' component={Settings} isAuth={isAuthenticated}/>
-                <PrivateRoute path='/reviews' component={Reviews} isAuth={isAuthenticated}/>
+                <PrivateRoute path='/reviews' component={ListReviews} isAuth={isAuthenticated}/>
                 <Route exact path='/' render={() => (
                     <Redirect to='/login'/>
                 )}/>

@@ -85,7 +85,7 @@ code {
     color: rgb(134, 150, 255);
 }
 
-.loginForm .infoIcon, .registerForm .infoIcon, .affiliation .infoIcon {
+.loginForm .infoIcon, .registerForm .infoIcon, .affiliation .infoIcon, .review .infoIcon {
     color: #d50000;
     width: 16px;
     height: 16px;

@@ -7,6 +7,10 @@ const colors = {
     selected: "#c5cfff"
 };
 
+export const getHexColor = () => {
+    return'#'+(Math.random()*0xFFFFFF<<0).toString(16);
+};
+
 export const customTheme = deepMerge(grommet, {
     global:{
         colors

@@ -10,7 +10,7 @@ import Toolbar from "./menu/Toolbar";
 import {customTheme} from "../utils/helpers";
 import {loadUser} from "../actions/authActions";
 import ListDoctors from "./ListDoctors";
-import ListReviews from "./ListReviews";
+import ListReviews from "./review/ListReviews";
 
 const log = getLogger('Home ');
 

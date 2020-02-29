@@ -95,7 +95,7 @@ class ListDoctors extends Component {
                                                 backgroundColor: "white",
                                                 width: "43px",
                                                 height: "43px"
-                                            }} onClick={() => {history.push("/reviews")
+                                            }} onClick={() => {history.push("/reviews",{doctor: item})
                                             }} id="container">
                                                 <Box id="name">
                                                     <Star style={{

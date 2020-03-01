@@ -1,4 +1,4 @@
-import { GET_REVIEW_BY_PATIENT_TO_DOCTOR, GET_REVIEWS_FOR_DOCTOR} from "../actions/actions";
+import {CLEAR_REVIEW, CLEAR_REVIEWS, GET_REVIEW_BY_PATIENT_TO_DOCTOR, GET_REVIEWS_FOR_DOCTOR} from "../actions/actions";
 
 const initialState = {
     token: localStorage.getItem('token'),
@@ -17,6 +17,16 @@ export default function (state=initialState,action) {
             return {
                 ...state,
                 reviews: action.payload
+            };
+        case CLEAR_REVIEW:
+            return{
+                ...state,
+                review: null,
+            };
+        case CLEAR_REVIEWS:
+            return{
+                ...state,
+                reviews: []
             };
         default:
             return state;

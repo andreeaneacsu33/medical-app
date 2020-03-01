@@ -9,9 +9,6 @@ import ReviewTile from "./ReviewTile";
 class ListReviews extends Component {
     constructor(props) {
         super(props);
-        this.state ={
-            reviews: this.props.reviews
-        };
         this.rerender = this.rerender.bind(this);
     }
 
@@ -29,14 +26,14 @@ class ListReviews extends Component {
 
     render() {
         const {review} = this.props;
-        const {reviews}=this.state;
+        const {reviews}=this.props;
         const {doctor} = this.props.location.state;
         if(!doctor)
             return <div/>;
-        console.log(JSON.stringify(reviews));
+        console.log(JSON.stringify(doctor));
         return (
             <Grommet theme={customTheme} style={{height: "100%"}}>
-                <Box width="100%" height="100%" style={{paddingTop: "20px"}} background="#fafafa">
+                <Box width="100%" style={{paddingTop: "20px"}} background="#fafafa">
                     <Box width="40%" alignSelf="center" style={{marginBottom: "10px"}}>
                         <span className="reviewHeader" style={{marginBottom: "10px"}}>Reviews</span>
                         {!review && (<Review doctor={doctor} rerender={this.rerender}/>)}

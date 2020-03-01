@@ -3,32 +3,29 @@ import {connect} from "react-redux";
 import {Box, Grid, Grommet, Image,} from "grommet";
 import {grommet} from "grommet/themes";
 import {Pagination} from '@material-ui/lab';
-import {getDoctorsFromPage, getTotalPages} from "../actions/doctorActions";
+import {getDoctorsFromPage, getTotalPages, setCurrentPage} from "../actions/doctorActions";
 import {ScheduleNew, Star} from "grommet-icons";
 import {history} from "../utils/history";
+import {clearReview, clearReviews} from "../actions/reviewActions";
 
 
 class ListDoctors extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            page: 1,
-        }
-    }
 
     componentDidMount() {
         this.props.getTotalPages();
-        this.props.getDoctorsFromPage({page: this.state.page});
+        this.props.getDoctorsFromPage({page: this.props.page});
+        this.props.clearReview();
+        this.props.clearReviews();
     }
 
     handlePageChange = (event, value) => {
-        this.setState({page: value});
+        this.props.setCurrentPage({page: value});
         this.props.getDoctorsFromPage({page: value});
     };
 
 
     render() {
-        const {page} = this.state;
+        const {page} = this.props;
         const {total, doctors} = this.props;
         if (!doctors)
             return <div/>;
@@ -122,9 +119,10 @@ const mapStateToProps = state => ({
     error: state.error,
     total: state.doctor.total,
     doctors: state.doctor.doctors,
+    page: state.doctor.page,
 });
 
 export default connect(
     mapStateToProps,
-    {getTotalPages, getDoctorsFromPage}
+    {getTotalPages, getDoctorsFromPage, clearReview, clearReviews, setCurrentPage}
 )(ListDoctors);

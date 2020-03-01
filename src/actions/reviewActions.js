@@ -1,8 +1,7 @@
-import {getLogger} from "../utils/logger";
 import axios from "axios";
 import {url} from "../utils/helpers";
 import {
-    ADD_REVIEW,
+    ADD_REVIEW, CLEAR_REVIEW, CLEAR_REVIEWS,
     GET_REVIEW_BY_PATIENT_TO_DOCTOR,
     GET_REVIEWS_FOR_DOCTOR,
 } from "./actions";
@@ -70,4 +69,16 @@ export const addReview = ({patientEmail, doctorEmail, description, rating, revie
         .catch(err => {
             dispatch(returnErrors(err.response.data,err.response.status));
         })
+};
+
+export const clearReview = () =>{
+    return{
+        type: CLEAR_REVIEW
+    };
+};
+
+export const clearReviews = () => {
+    return{
+        type: CLEAR_REVIEWS
+    }
 };

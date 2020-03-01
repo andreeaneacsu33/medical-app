@@ -9,10 +9,6 @@ import {Star, StarHalf} from "grommet-icons";
 const log = getLogger('ReviewTile ');
 
 class ReviewTile extends Component {
-    constructor(props) {
-        super(props);
-    }
-
     formatDate(date) {
         const month = date.substr(1, 1);
         const day = date.substr(3, 2);
@@ -35,7 +31,7 @@ class ReviewTile extends Component {
         const date = this.formatDate(review.reviewDate);
         return (
             <Box width="100%" alignSelf="center" background="white"
-                 style={{borderRadius: "8px", border: "1px solid #ccc"}}>
+                 style={{borderRadius: "8px", border: "1px solid #ccc"}} height="auto">
                 <Box direction="row" pad="small">
                     <Box id="container" style={{backgroundColor: `${color}`}}>
                         <Box id="name">

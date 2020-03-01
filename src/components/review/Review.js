@@ -77,12 +77,13 @@ class Review extends Component {
     render() {
         const {user, patient} = this.props;
         const {recommend, message, rating} = this.state;
+        log(rating);
         const fl = user.email && user.email[0].toUpperCase();
         return (
             <Grommet theme={customTheme}>
                 <Box width="100%" alignSelf="center" background="white"
                      style={{borderRadius: "8px", border: "1px solid #ccc"}}>
-                    <Box width="100%" height="320px" className="review">
+                    <Box width="100%" height="100%" className="review">
                         <Box direction="row" pad="small">
                             <Box id="container">
                                 <Box id="name">
@@ -126,9 +127,9 @@ class Review extends Component {
                             <Box width="85%" direction="row">
                                 <Box pad="small" style={{verticalAlign: "middle"}}>
                                     <span style={{fontSize: "16px"}}>Rate your experience </span></Box>
-                                <Rating style={{paddingLeft: "7px", paddingTop: "12px"}} name="half-rating"
+                                <Rating style={{paddingLeft: "7px", paddingTop: "12px"}} name="rating"
                                         defaultValue={rating}
-                                        precision={0.5}/>
+                                        precision={0.5} onChange={this.onChange}/>
                             </Box>
                         </Box>
                         {message && (

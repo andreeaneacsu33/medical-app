@@ -1,6 +1,6 @@
 import axios from 'axios';
 import {returnErrors} from '../actions/errorActions';
-import {GET_AFFILIATION, GET_QUALIFICATION, GET_SPECIALTIES, SET_QUALIFICATION} from "./actions";
+import {GET_AFFILIATION, GET_QUALIFICATION, GET_SPECIALTIES, SET_CURRENT_PAGE, SET_QUALIFICATION} from "./actions";
 import {url} from "../utils/helpers";
 import {GET_DOCTORS_FROM_PAGE, GET_TOTAL_PAGES, SET_AFFILIATION} from "./actions";
 
@@ -129,4 +129,11 @@ export const getDoctorsFromPage = ({page}) => (dispatch,getState) => {
         .catch(err=>{
             dispatch(returnErrors(err.response.data,err.response.status));
         });
+};
+
+export const setCurrentPage = ({page}) => dispatch => {
+    dispatch({
+        type: SET_CURRENT_PAGE,
+        payload: page,
+    })
 };

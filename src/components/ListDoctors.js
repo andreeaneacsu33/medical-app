@@ -3,7 +3,13 @@ import {connect} from "react-redux";
 import {Box, Grid, Grommet, Image,} from "grommet";
 import {grommet} from "grommet/themes";
 import {Pagination} from '@material-ui/lab';
-import {getDoctorsFromPage, getTotalPages, setCurrentPage} from "../actions/doctorActions";
+import {
+    getDoctorsFromPage,
+    getOverallRating,
+    getOverallWaitingTime,
+    getTotalPages,
+    setCurrentPage
+} from "../actions/doctorActions";
 import {ScheduleNew, Star} from "grommet-icons";
 import {history} from "../utils/history";
 import {clearReview, clearReviews} from "../actions/reviewActions";
@@ -18,15 +24,18 @@ class ListDoctors extends Component {
         this.props.clearReviews();
     }
 
+
     handlePageChange = (event, value) => {
         this.props.setCurrentPage({page: value});
         this.props.getDoctorsFromPage({page: value});
     };
 
-
     render() {
         const {page} = this.props;
-        const {total, doctors} = this.props;
+        const {total} = this.props;
+        let {doctors, loading} = this.props;
+        if (loading)
+            return <div/>;
         if (!doctors)
             return <div/>;
         return (
@@ -48,13 +57,23 @@ class ListDoctors extends Component {
                     >
                         {doctors.map((item) => {
                             return (
-                                <Box style={{border: "1px solid #ccc", borderRadius: "8px", width: "300px"}} pad="small"
+                                <Box style={{
+                                    border: "1px solid #ccc",
+                                    borderRadius: "8px",
+                                    width: "300px",
+                                    height: "300px"
+                                }} pad="small"
                                      className="tile">
                                     {item.gender === 'male' ? (
                                             <Image src={require('../utils/doctor_man.png')}/>) :
                                         (<Image src={require('../utils/doctor_woman.png')}/>)}
-                                    <Box style={{borderBottom: "1px solid #ccc",padding: "5px"}}>
-                                        <span style={{alignSelf: "center", paddingBottom: "10px"}}>Dr. {item.firstName} {item.lastName}</span>
+                                    <Box style={{
+                                        borderBottom: "1px solid #ccc", padding: "5px", height: "40px"
+                                    }}>
+                                        <span style={{
+                                            alignSelf: "center",
+                                            paddingBottom: "5px",
+                                        }}>Dr. {item.firstName} {item.lastName}</span>
                                     </Box>
                                     <span style={{
                                         padding: "5px",
@@ -63,9 +82,14 @@ class ListDoctors extends Component {
                                     }}>{item.specialty.name}</span>
                                     <span style={{
                                         padding: "5px",
-                                        fontSize: ".975rem",
-                                        lineHeight: "1.25rem"
-                                    }}>Overall score: </span>
+                                        fontSize: "14px",
+                                        lineHeight: "1rem"
+                                    }}>Overall score: {item.rating}</span>
+                                    <span style={{
+                                        padding: "5px",
+                                        fontSize: "14px",
+                                        lineHeight: "1rem"
+                                    }}>Average waiting time: {item.waitingTime} min</span>
                                     <Box direction="row" style={{alignSelf: "center", alignItems: "center"}}
                                          pad="medium" width="60%">
                                         <Box width="50%" style={{alignItems: "center"}}>
@@ -74,7 +98,8 @@ class ListDoctors extends Component {
                                                 backgroundColor: "white",
                                                 width: "43px",
                                                 height: "43px"
-                                            }} onClick={() => {}} id="container">
+                                            }} onClick={() => {
+                                            }} id="container">
                                                 <Box id="name">
                                                     <ScheduleNew style={{
                                                         width: "25px",
@@ -92,7 +117,8 @@ class ListDoctors extends Component {
                                                 backgroundColor: "white",
                                                 width: "43px",
                                                 height: "43px"
-                                            }} onClick={() => {history.push("/reviews",{doctor: item})
+                                            }} onClick={() => {
+                                                history.push("/reviews", {doctor: item})
                                             }} id="container">
                                                 <Box id="name">
                                                     <Star style={{
@@ -120,9 +146,18 @@ const mapStateToProps = state => ({
     total: state.doctor.total,
     doctors: state.doctor.doctors,
     page: state.doctor.page,
+    loading: state.doctor.loading,
 });
 
 export default connect(
     mapStateToProps,
-    {getTotalPages, getDoctorsFromPage, clearReview, clearReviews, setCurrentPage}
+    {
+        getTotalPages,
+        getDoctorsFromPage,
+        clearReview,
+        clearReviews,
+        setCurrentPage,
+        getOverallRating,
+        getOverallWaitingTime,
+    }
 )(ListDoctors);

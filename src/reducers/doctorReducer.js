@@ -1,7 +1,7 @@
 import {
-    GET_AFFILIATION, GET_DOCTORS_FROM_PAGE,
+    GET_AFFILIATION, GET_DOCTORS_FROM_PAGE, GET_OVERALL_RATING, GET_OVERALL_WAITING_TIME,
     GET_QUALIFICATION,
-    GET_SPECIALTIES, GET_TOTAL_PAGES, SET_AFFILIATION, SET_CURRENT_PAGE, SET_QUALIFICATION,
+    GET_SPECIALTIES, GET_TOTAL_PAGES, SET_AFFILIATION, SET_CURRENT_PAGE, SET_LOADING, SET_QUALIFICATION,
 } from '../actions/actions';
 
 const initialState = {
@@ -9,6 +9,7 @@ const initialState = {
     doctor: null,
     doctors: [],
     page: 1,
+    loading: false,
 };
 
 export default function (state=initialState,action) {
@@ -52,6 +53,27 @@ export default function (state=initialState,action) {
             return{
                 ...state,
                 page: action.payload
+            };
+        case GET_OVERALL_RATING:
+            return{
+                ...state,
+                doctors: state.doctors.map(doc => doc.id === action.id ?
+                    { ...doc, rating: action.payload } :
+                    doc
+                )
+            };
+        case GET_OVERALL_WAITING_TIME:
+            return {
+                ...state,
+                doctors: state.doctors.map(doc => doc.id === action.id ?
+                    { ...doc, waitingTime: action.payload } :
+                    doc
+                )
+            };
+        case SET_LOADING:
+            return {
+                ...state,
+                loading: action.payload,
             };
         default:
             return state;

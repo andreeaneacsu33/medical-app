@@ -10,7 +10,6 @@ import Toolbar from "./menu/Toolbar";
 import {customTheme} from "../utils/helpers";
 import {loadUser} from "../actions/authActions";
 import ListDoctors from "./ListDoctors";
-import ListReviews from "./review/ListReviews";
 
 const log = getLogger('Home ');
 
@@ -47,7 +46,7 @@ class Home extends Component {
                         <Toolbar/>
                         <Box direction="row">
                             <Menu lastUrl={visited}/>
-                            {user.role.toUpperCase()==='PATIENT' ? <ListDoctors/> : <ListReviews/>}
+                            {user.role.toUpperCase()==='PATIENT' ? <ListDoctors/> : <Box/>}
                         </Box>
                     </Box>
                 </Box>

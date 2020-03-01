@@ -32,7 +32,7 @@ class ListReviews extends Component {
             return <div/>;
         console.log(JSON.stringify(doctor));
         return (
-            <Grommet theme={customTheme} style={{height: "100%"}}>
+            <Grommet theme={customTheme} style={{height: "100%", backgroundColor: "#fafafa"}}>
                 <Box width="100%" style={{paddingTop: "20px"}} background="#fafafa">
                     <Box width="40%" alignSelf="center" style={{marginBottom: "10px"}}>
                         <span className="reviewHeader" style={{marginBottom: "10px"}}>Reviews</span>

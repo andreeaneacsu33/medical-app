@@ -297,10 +297,10 @@ menu .activeStyle {
 
 /*not currently used*/
 .mainContainer {
-    max-width: 1200px;
+   /* max-width: 1200px;*/
     border-radius: 8px;
     border: 1px solid #dadce0;
-    width: 1200px;
+    /*width: 1200px;*/
     height: 700px;
     position: absolute;
     top: 50%;

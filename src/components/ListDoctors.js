@@ -48,12 +48,14 @@ class ListDoctors extends Component {
                         </Box>
                     </Box>
                     <Grid
-                        style={{marginLeft: "100px"}}
+                        style={{marginLeft: "100px", maxWidth: "74%"}}
                         columns={{
                             count: 3,
                             size: "auto"
                         }}
                         gap="large"
+                        align="center"
+                        fill="horizontal"
                     >
                         {doctors.map((item) => {
                             return (

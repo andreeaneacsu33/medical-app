@@ -29,7 +29,7 @@ class Menu extends Component{
         log("logg"+ JSON.stringify(active));
         return(
             <Router history={history}>
-                <Box>
+                <Box style={{ minWidth: "280px"}}>
                     <Box
                         className="menu"
                     >

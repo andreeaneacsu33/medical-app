@@ -101,6 +101,7 @@ class ListDoctors extends Component {
                                                 width: "43px",
                                                 height: "43px"
                                             }} onClick={() => {
+                                                history.push("/appointment", {doctor: item})
                                             }} id="container">
                                                 <Box id="name">
                                                     <ScheduleNew style={{

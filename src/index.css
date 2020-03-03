@@ -221,6 +221,11 @@ code {
 .calendar {
     width: 780px;
     height: 600px;
+    align-self: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 /*menu styling*/
@@ -467,8 +472,8 @@ h4 {
 }
 
 .tile img {
-    height: 110px;
-    width: 100px;
+    height: 90px;
+    width: 80px;
     align-self: center;
     opacity: 0.55;
 }

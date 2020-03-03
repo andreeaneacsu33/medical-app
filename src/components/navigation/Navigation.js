@@ -10,6 +10,7 @@ import Register from '../Register';
 import Profile from "../Profile";
 import Settings from "../Settings";
 import ListReviews from "../review/ListReviews";
+import Appointment from "../appointment/Appointment";
 
 class Navigation extends Component{
     static propTypes = {
@@ -26,6 +27,7 @@ class Navigation extends Component{
                 <PrivateRoute path='/profile' component={Profile} isAuth={isAuthenticated}/>
                 <PrivateRoute path='/settings' component={Settings} isAuth={isAuthenticated}/>
                 <PrivateRoute path='/reviews' component={ListReviews} isAuth={isAuthenticated}/>
+                <PrivateRoute path='/appointment' component={Appointment} isAuth={isAuthenticated}/>
                 <Route exact path='/' render={() => (
                     <Redirect to='/login'/>
                 )}/>

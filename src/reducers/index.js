@@ -5,13 +5,15 @@ import doctorReducer from "./doctorReducer";
 import patientReducer from "./patientReducer";
 import {DESTROY_SESSION} from "../actions/actions";
 import reviewReducer from "./reviewReducer";
+import appointmentReducer from "./appointmentReducer";
 
 const appReducer = combineReducers({
     error: errorReducer,
     auth: authReducer,
     doctor: doctorReducer,
     patient: patientReducer,
-    review: reviewReducer
+    review: reviewReducer,
+    appointment: appointmentReducer
 });
 
 const rootReducer = (state, action) => {

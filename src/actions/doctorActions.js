@@ -32,7 +32,6 @@ export const getSpecialties = () => (dispatch) => {
             headers: {...defaultHeaders}
         })
         .then(res => {
-            console.log(res.data);
             dispatch({
                 type: GET_SPECIALTIES,
                 payload: res.data
@@ -49,7 +48,6 @@ export const getQualification = (id) => (dispatch, getState) => {
             headers: tokenConfig(getState)
         })
         .then(res => {
-            console.log(res.data);
             dispatch({
                 type: GET_QUALIFICATION,
                 payload: res.data
@@ -66,7 +64,6 @@ export const getAffiliation = (id) => (dispatch, getState) => {
             headers: tokenConfig(getState)
         })
         .then(res => {
-            console.log(res.data);
             dispatch({
                 type: GET_AFFILIATION,
                 payload: res.data
@@ -84,7 +81,6 @@ export const setAffiliation = ({email, hospitalName, city, country, startDate}) 
             headers: tokenConfig(getState)
         })
         .then(res => {
-            console.log(res.data);
             dispatch({
                 type: SET_AFFILIATION,
                 payload: res.data
@@ -102,7 +98,6 @@ export const setQualification = ({email, title, institute, graduationYear}) => (
             headers: tokenConfig(getState)
         })
         .then(res => {
-            console.log(res.data);
             dispatch({
                 type: SET_QUALIFICATION,
                 payload: res.data
@@ -118,7 +113,6 @@ export const getTotalPages = () => (dispatch, getState) => {
         headers: tokenConfig(getState)
     })
         .then(res => {
-            console.log(res.data);
             dispatch({
                 type: GET_TOTAL_PAGES,
                 payload: res.data
@@ -134,7 +128,6 @@ export const getDoctorsFromPage = ({page}) => (dispatch, getState) => {
         headers: tokenConfig(getState)
     })
         .then(res => {
-            console.log(res.data);
             dispatch({
                 type: GET_DOCTORS_FROM_PAGE,
                 payload: res.data
@@ -164,7 +157,6 @@ export const getOverallRating = ({idDoctor}) => (dispatch, getState) => {
         headers: tokenConfig(getState)
     })
         .then(res => {
-            console.log(res.data);
             dispatch({
                 type: GET_OVERALL_RATING,
                 payload: res.data,
@@ -181,7 +173,6 @@ export const getOverallWaitingTime = ({idDoctor}) => (dispatch, getState) => {
         headers: tokenConfig(getState)
     })
         .then(res => {
-            console.log(res.data);
             dispatch({
                 type: GET_OVERALL_WAITING_TIME,
                 payload: res.data,

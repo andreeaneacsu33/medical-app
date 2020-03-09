@@ -106,7 +106,7 @@ code {
     border-radius: 8px;
     border: 1px solid #dadce0;
     width: 750px;
-    height: 600px;
+    height: auto;
     position: absolute;
     top: 50%;
     left: 50%;
@@ -116,14 +116,16 @@ code {
 
 .registerForm .contentLeft {
     width: 70%;
-    height: 600px;
+    height: auto;
     padding-left: 17px;
+    padding-bottom: 20px;
 }
 
 .registerForm .contentRight {
     width: 30%;
-    height: 600px;
+    height: auto;
     padding-right: 17px;
+    padding-bottom: 20px;
 }
 
 .registerForm h1 {
@@ -220,7 +222,6 @@ code {
 
 .calendar {
     width: 780px;
-    height: 600px;
     align-self: center;
     position: absolute;
     top: 50%;
@@ -485,6 +486,10 @@ h4 {
 
 .MuiRating-decimal {
     color: rgb(255,201,94);
+}
+
+.MuiGrid-root .MuiFormControlLabel-root {
+    visibility: hidden;
 }
 
 

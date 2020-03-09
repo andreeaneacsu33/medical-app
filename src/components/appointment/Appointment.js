@@ -6,9 +6,11 @@ import Calendar from "./Calendar";
 class Appointment extends Component {
 
     render() {
+        const {doctor} = this.props.location.state;
+        console.log(JSON.stringify(doctor));
         return (
             <Box>
-                <Calendar/>
+                <Calendar doctor={doctor}/>
             </Box>
         )
     }

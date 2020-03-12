@@ -10,6 +10,7 @@ const initialState = {
     doctors: [],
     page: 1,
     loading: false,
+    affiliation: [],
 };
 
 export default function (state=initialState,action) {
@@ -32,7 +33,7 @@ export default function (state=initialState,action) {
         case SET_AFFILIATION:
             return{
                 ...state,
-                affiliation: action.payload
+                affiliation: [...state.affiliation,action.payload]
             };
         case SET_QUALIFICATION:
             return{

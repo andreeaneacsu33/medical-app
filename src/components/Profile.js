@@ -81,12 +81,18 @@ class Profile extends Component {
     formatWorkInformation() {
         let data = [];
         const {affiliation} = this.props;
+        let allAffiliations=[];
         log(JSON.stringify(affiliation));
         if (affiliation) {
-            data.push({key: "HOSPITAL", value: `${affiliation.hospitalName}`});
-            data.push({key: "CITY", value: `${affiliation.city}`});
-            data.push({key: "COUNTRY", value: `${affiliation.country}`});
-            data.push({key: "FROM", value: `${affiliation.startDate}`});
+            for(let i=0;i<affiliation.length;i++){
+                data.push({key: "HOSPITAL", value: `${affiliation[i].hospitalName}`});
+                data.push({key: "CITY", value: `${affiliation[i].city}`});
+                data.push({key: "COUNTRY", value: `${affiliation[i].country}`});
+                data.push({key: "FROM", value: `${affiliation[i].startDate}`});
+                allAffiliations.push(data);
+                data=[];
+            }
+            return allAffiliations;
         } else {
             data.push('You have no activity tracked.');
         }
@@ -108,11 +114,11 @@ class Profile extends Component {
     }
 
     setRevealActivity(value) {
-        this.setState({...this.state,startDate: '',revealActivity: value,error:''});
+        this.setState({...this.state, startDate: '', revealActivity: value, error: ''});
     }
 
     setRevealQualification(value) {
-        this.setState({...this.state,startDate: '',revealQualification: value,error:''});
+        this.setState({...this.state, startDate: '', revealQualification: value, error: ''});
     }
 
     onChange = e => {
@@ -156,10 +162,10 @@ class Profile extends Component {
         }
     };
 
-    renderPatientProfile(user){
+    renderPatientProfile(user) {
         const person = this.getPerson(user);
         const personalInformation = this.formatPatientPersonalInformation(person);
-        return(
+        return (
             <Box flex overflow="auto" direction="column">
                 <Box style={{paddingTop: "24px"}}>
                     <h4>Personal Information</h4>
@@ -190,13 +196,13 @@ class Profile extends Component {
         )
     }
 
-    renderDoctorProfile(user){
+    renderDoctorProfile(user) {
         const {revealActivity, revealQualification, open, startDate, error} = this.state;
         const person = this.getPerson(user);
         const personalInformation = this.formatDoctorPersonalInformation(person);
         const workInformation = this.formatWorkInformation();
         const studyInformation = this.formatStudyInformation();
-        return(
+        return (
             <Box flex overflow="auto" direction="column">
                 <Box style={{paddingTop: "24px"}}>
                     <h4>Personal Information</h4>
@@ -228,23 +234,21 @@ class Profile extends Component {
                                 <Box width="97%">
                                     <h4 style={{fontSize: "1.25rem", textAlign: "start"}}>Activity</h4>
                                 </Box>
-                                {workInformation.length === 1 && (
-                                    <Box align="end" className="icon"
-                                         styele={{outlineColor: "white", borderColor: "white"}}
-                                         onClick={() => this.setRevealActivity(!revealActivity)}>
-                                        <Add style={{
-                                            width: "20px",
-                                            height: "20px",
-                                            fill: "#516cfb",
-                                            stroke: "#516cfb"
-                                        }}/>
-                                    </Box>
-                                )}
+                                <Box align="end" className="icon"
+                                     styele={{outlineColor: "white", borderColor: "white"}}
+                                     onClick={() => this.setRevealActivity(!revealActivity)}>
+                                    <Add style={{
+                                        width: "20px",
+                                        height: "20px",
+                                        fill: "#516cfb",
+                                        stroke: "#516cfb"
+                                    }}/>
+                                </Box>
                             </Box>
                         </Box>
                         {workInformation.length === 1 ? (
-                            <List style={{fontSize: "1rem"}} data={workInformation}/>) : (<List
-                            data={workInformation}
+                            <List style={{fontSize: "1rem"}} data={workInformation}/>) : workInformation.map((affiliation)=>(<List style={{paddingTop: '5px'}}
+                            data={affiliation}
                             primaryKey={item => (
                                 <span className="key">
                                                     {item.key}
@@ -255,7 +259,7 @@ class Profile extends Component {
                                                     {item.value}
                                                 </span>
                             )}
-                        />)}
+                        />)) }
                     </article>
                     <article className="profile" style={{marginTop: "15px", marginBottom: "24px"}}>
                         <Box align="start" pad="small">
@@ -450,7 +454,7 @@ class Profile extends Component {
                         <Toolbar/>
                         <Box direction="row">
                             <Menu lastUrl={visited}/>
-                            {user.role.toUpperCase()==='DOCTOR' ? this.renderDoctorProfile(user) : this.renderPatientProfile(user)}
+                            {user.role.toUpperCase() === 'DOCTOR' ? this.renderDoctorProfile(user) : this.renderPatientProfile(user)}
                         </Box>
                     </Box>
                 </Box>

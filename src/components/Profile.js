@@ -453,7 +453,7 @@ class Profile extends Component {
                     <Box>
                         <Toolbar/>
                         <Box direction="row">
-                            <Menu lastUrl={visited}/>
+                            <Menu/>
                             {user.role.toUpperCase() === 'DOCTOR' ? this.renderDoctorProfile(user) : this.renderPatientProfile(user)}
                         </Box>
                     </Box>

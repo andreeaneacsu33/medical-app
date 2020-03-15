@@ -13,6 +13,8 @@ import {
 import {ScheduleNew, Star} from "grommet-icons";
 import {history} from "../utils/history";
 import {clearReview, clearReviews} from "../actions/reviewActions";
+import FilterComponent from "./FilterComponent";
+import {getCities} from "../actions/patientActions";
 
 
 class ListDoctors extends Component {
@@ -42,7 +44,9 @@ class ListDoctors extends Component {
             <Grommet theme={grommet} full>
                 <Box width="100%">
                     <Box direction="row">
-                        <Box width="80%"/>
+                        <Box width="80%" style={{paddingLeft:"5px"}} direction='row'>
+                            <FilterComponent/>
+                        </Box>
                         <Box style={{padding: "10px"}}>
                             <Pagination count={total} page={page} onChange={this.handlePageChange}/>
                         </Box>
@@ -150,6 +154,7 @@ const mapStateToProps = state => ({
     doctors: state.doctor.doctors,
     page: state.doctor.page,
     loading: state.doctor.loading,
+    cities: state.patient.cities,
 });
 
 export default connect(
@@ -162,5 +167,6 @@ export default connect(
         setCurrentPage,
         getOverallRating,
         getOverallWaitingTime,
+        getCities
     }
 )(ListDoctors);

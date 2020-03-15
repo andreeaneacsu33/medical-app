@@ -243,7 +243,7 @@ code {
 
 .menu {
     width: 280px;
-    height: auto;
+    height: 100%;
 }
 
 .menu .menuItem {
@@ -346,6 +346,12 @@ menu .activeStyle {
     cursor: pointer;
 }
 
+#filter :hover{
+    cursor: pointer;
+    border: 1px solid #c5cfff;
+    border-radius: 5px;
+}
+
 .modal {
     background: #fff;
     border: 1px solid rgba(0, 0, 0, .2);
@@ -374,6 +380,7 @@ menu .activeStyle {
     right: 0;
     margin-right: 4px;
 }
+
 
 .userInfo {
     letter-spacing: .29px;
@@ -500,6 +507,39 @@ h4 {
 
 .MuiGrid-root .MuiFormControlLabel-root {
     visibility: hidden;
+}
+
+.wrapperFilter {
+    overflow: hidden;
+    top: 0;
+    visibility: hidden;
+    width: 400px;
+    z-index: 991;
+    position: absolute;
+    height: 468px;
+    margin-top: 57px;
+    right: 0;
+    margin-right: 400px;
+}
+
+.filterModal {
+    background: #fff;
+    border: 1px solid rgba(0, 0, 0, .2);
+    color: #000;
+    -webkit-box-shadow: 0 2px 10px rgba(0, 0, 0, .2);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, .2);
+    overflow: hidden;
+    position: absolute;
+    right: 407px;
+    top: 100px;
+    border-radius: 8px;
+    width: 400px;
+    height: 200px;
+    z-index: 1000;
+}
+
+.filterOptions{
+
 }
 
 

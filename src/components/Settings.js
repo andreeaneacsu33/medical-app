@@ -25,7 +25,7 @@ class Settings extends Component{
                     <Box>
                         <Toolbar/>
                         <Box direction="row">
-                            <Menu lastUrl={visited}/>
+                            <Menu/>
                             <span>Hello from Settings!</span>
                         </Box>
                     </Box>

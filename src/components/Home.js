@@ -45,7 +45,7 @@ class Home extends Component {
                     <Box>
                         <Toolbar/>
                         <Box direction="row">
-                            <Menu lastUrl={visited}/>
+                            <Menu/>
                             {user.role.toUpperCase()==='PATIENT' ? <ListDoctors/> : <Box/>}
                         </Box>
                     </Box>

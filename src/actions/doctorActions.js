@@ -2,10 +2,18 @@ import axios from 'axios';
 import {returnErrors} from '../actions/errorActions';
 import {
     GET_AFFILIATION,
-    GET_OVERALL_RATING, GET_OVERALL_WAITING_TIME,
+    GET_DOCTORS_FROM_PAGE_FOR_CITIES_AND_HOSPITALS_FILTER,
+    GET_DOCTORS_FROM_PAGE_FOR_CITIES_FILTER,
+    GET_DOCTORS_FROM_PAGE_FOR_HOSPITALS_FILTER,
+    GET_OVERALL_RATING,
+    GET_OVERALL_WAITING_TIME,
     GET_QUALIFICATION,
     GET_SPECIALTIES,
-    SET_CURRENT_PAGE, SET_LOADING,
+    GET_TOTAL_PAGES_FOR_CITIES_AND_HOSPITALS_FILTER,
+    GET_TOTAL_PAGES_FOR_CITIES_FILTER,
+    GET_TOTAL_PAGES_FOR_HOSPITALS_FILTER,
+    SET_CURRENT_PAGE,
+    SET_LOADING,
     SET_QUALIFICATION
 } from "./actions";
 import {url} from "../utils/helpers";
@@ -189,4 +197,115 @@ export const setLoading = ({value}) => dispatch => {
         type: SET_LOADING,
         loading: value,
     })
+};
+
+export const getPagesForCitiesFilter = ({cities}) => (dispatch, getState) => {
+    axios.get(`${url}/doctors/filter/cities/${cities}/total`, {
+        headers: tokenConfig(getState)
+    })
+        .then(res => {
+            dispatch({
+                type: GET_TOTAL_PAGES_FOR_CITIES_FILTER,
+                payload: res.data
+            })
+        })
+        .catch(err => {
+            dispatch(returnErrors(err.response.data, err.response.status));
+        });
+};
+
+export const getPagesForHospitalsFilter = ({hospitals}) => (dispatch, getState) => {
+    axios.get(`${url}/doctors/filter/hospitals/${hospitals}/total`, {
+        headers: tokenConfig(getState)
+    })
+        .then(res => {
+            dispatch({
+                type: GET_TOTAL_PAGES_FOR_HOSPITALS_FILTER,
+                payload: res.data
+            })
+        })
+        .catch(err => {
+            dispatch(returnErrors(err.response.data, err.response.status));
+        });
+};
+
+export const getPagesForCitiesAndHospitalsFilter = ({cities,hospitals}) => (dispatch, getState) => {
+    axios.get(`${url}/doctors/filter/cities/${cities}/hospitals/${hospitals}/total`, {
+        headers: tokenConfig(getState)
+    })
+        .then(res => {
+            dispatch({
+                type: GET_TOTAL_PAGES_FOR_CITIES_AND_HOSPITALS_FILTER,
+                payload: res.data
+            })
+        })
+        .catch(err => {
+            dispatch(returnErrors(err.response.data, err.response.status));
+        });
+};
+
+export const getDoctorsFromPageForCitiesFilter = ({cities,page}) => (dispatch, getState) => {
+    axios.get(`${url}/doctors/filter/cities/${cities}/page/${page}`, {
+        headers: tokenConfig(getState)
+    })
+        .then(res => {
+            dispatch({
+                type: GET_DOCTORS_FROM_PAGE_FOR_CITIES_FILTER,
+                payload: res.data
+            });
+            dispatch(setLoading({value: true}));
+            const {doctors}=getState().doctor;
+            for(let i=0;i<doctors.length;i++){
+                dispatch(getOverallRating({idDoctor: doctors[i].id}));
+                dispatch(getOverallWaitingTime({idDoctor: doctors[i].id}));
+            }
+            dispatch(setLoading({value: false}));
+        })
+        .catch(err => {
+            dispatch(returnErrors(err.response.data, err.response.status));
+        });
+};
+
+export const getDoctorsFromPageForHospitalsFilter = ({hospitals,page}) => (dispatch, getState) => {
+    axios.get(`${url}/doctors/filter/hospitals/${hospitals}/page/${page}`, {
+        headers: tokenConfig(getState)
+    })
+        .then(res => {
+            dispatch({
+                type: GET_DOCTORS_FROM_PAGE_FOR_HOSPITALS_FILTER,
+                payload: res.data
+            });
+            dispatch(setLoading({value: true}));
+            const {doctors}=getState().doctor;
+            for(let i=0;i<doctors.length;i++){
+                dispatch(getOverallRating({idDoctor: doctors[i].id}));
+                dispatch(getOverallWaitingTime({idDoctor: doctors[i].id}));
+            }
+            dispatch(setLoading({value: false}));
+        })
+        .catch(err => {
+            dispatch(returnErrors(err.response.data, err.response.status));
+        });
+};
+
+export const getDoctorsFromPageForCitiesAndHospitalsFilter = ({cities,hospitals,page}) => (dispatch, getState) => {
+    axios.get(`${url}/doctors/filter/cities/${cities}/hospitals/${hospitals}/page/${page}`, {
+        headers: tokenConfig(getState)
+    })
+        .then(res => {
+            dispatch({
+                type: GET_DOCTORS_FROM_PAGE_FOR_CITIES_AND_HOSPITALS_FILTER,
+                payload: res.data
+            });
+            dispatch(setLoading({value: true}));
+            const {doctors}=getState().doctor;
+            for(let i=0;i<doctors.length;i++){
+                dispatch(getOverallRating({idDoctor: doctors[i].id}));
+                dispatch(getOverallWaitingTime({idDoctor: doctors[i].id}));
+            }
+            dispatch(setLoading({value: false}));
+        })
+        .catch(err => {
+            dispatch(returnErrors(err.response.data, err.response.status));
+        });
 };

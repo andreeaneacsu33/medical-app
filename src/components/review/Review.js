@@ -77,7 +77,6 @@ class Review extends Component {
     render() {
         const {user, patient} = this.props;
         const {recommend, message, rating} = this.state;
-        log(rating);
         const fl = user.email && user.email[0].toUpperCase();
         return (
             <Grommet theme={customTheme}>

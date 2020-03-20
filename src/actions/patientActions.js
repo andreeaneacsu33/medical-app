@@ -6,7 +6,7 @@ import {
     GET_CITIES,
     GET_HOSPITALS,
     REMOVE_CITY_FILTER, REMOVE_HOSPITAL_FILTER,
-    SET_CITY_FILTER,
+    SET_CITY_FILTER, SET_FILTER_TYPE,
     SET_HOSPITAL_FILTER
 } from "./actions";
 
@@ -74,7 +74,7 @@ export const setHospitalFilter = ({hospitalFilter}) => (dispatch) => {
 export const clearFilters = () => (dispatch) => {
     dispatch({
         type: CLEAR_FILTERS
-    })
+    });
 };
 
 export const removeCityFilter = ({cityFilter}) => (dispatch) => {
@@ -91,6 +91,12 @@ export const removeHospitalFilter = ({hospitalFilter}) => (dispatch) => {
     })
 };
 
+export const setFilterType = ({filterType}) => (dispatch) => {
+    dispatch({
+        type: SET_FILTER_TYPE,
+        payload: filterType,
+    });
+};
 
 
 

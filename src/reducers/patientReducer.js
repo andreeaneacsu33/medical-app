@@ -3,9 +3,10 @@ import {
     GET_CITIES,
     GET_HOSPITALS,
     REMOVE_CITY_FILTER, REMOVE_HOSPITAL_FILTER,
-    SET_CITY_FILTER,
+    SET_CITY_FILTER, SET_FILTER_TYPE,
     SET_HOSPITAL_FILTER
 } from "../actions/actions";
+import {filters} from "../utils/helpers";
 
 const initialState = {
     token: localStorage.getItem('token'),
@@ -14,6 +15,8 @@ const initialState = {
     hospitals: [],
     cityFilters: [],
     hospitalFilters: [],
+    filterType: filters.NONE,
+    loading: false,
 };
 
 export default function (state = initialState, action) {
@@ -53,6 +56,11 @@ export default function (state = initialState, action) {
                 ...state,
                 cityFilters: [],
                 hospitalFilters: []
+            };
+        case SET_FILTER_TYPE:
+            return{
+                ...state,
+                filterType: action.payload,
             };
         default:
             return state;

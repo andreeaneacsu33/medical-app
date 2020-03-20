@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import {Box, Button, Layer} from "grommet";
 import {connect} from "react-redux";
-import {Close, Filter} from "grommet-icons";
+import {Close, Filter, Radial} from "grommet-icons";
 import FormGroup from "@material-ui/core/FormGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
@@ -13,9 +13,10 @@ import {
     getCities,
     getHospitals, removeCityFilter,
     removeHospitalFilter,
-    setCityFilter,
+    setCityFilter, setFilterType,
     setHospitalFilter
 } from "../actions/patientActions";
+import {filters} from "../utils/helpers";
 
 const useStyles = theme => ({
     root: {
@@ -68,12 +69,36 @@ class FilterComponent extends Component {
                 this.props.removeHospitalFilter({hospitalFilter: value});
             }
         }
-    }
+    };
+
+    applyFilters() {
+        const {cityFilters, hospitalFilters} = this.props;
+        let filter = filters.NONE;
+        console.log(cityFilters);
+        console.log(hospitalFilters);
+        if (cityFilters.length !== 0 && hospitalFilters.length !== 0) {
+            filter = filters.CITY_HOSPITAL;
+        } else if (cityFilters.length === 0 && hospitalFilters.length !== 0) {
+            filter = filters.HOSPITAL;
+        } else if (cityFilters.length !== 0 && hospitalFilters.length === 0) {
+            filter = filters.CITY;
+        }
+        this.props.setFilterType({filterType: filter});
+        this.setVisibility(false);
+        this.props.rerender(filter);
+    };
+
+    clearFilters() {
+        this.props.clearFilters();
+        this.props.setFilterType({filterType: filters.NONE});
+        this.setVisibility(false);
+        this.props.rerender(filters.NONE);
+    };
 
     render() {
         const classes = this.props;
         const {visible} = this.state;
-        const {cityFilters, hospitalFilters} = this.props;
+        const {cityFilters, hospitalFilters, filterType} = this.props;
         let optionsCity = this.props.cities;
         let optionsHospital = this.props.hospitals;
         if (!optionsCity)
@@ -83,10 +108,13 @@ class FilterComponent extends Component {
         return (
             <Box style={{paddingTop: '5px'}}>
                 <Box>
-                    <Box id='filter'
-                         style={{border: "1px solid #dadce0", borderRadius: "5px", width: "28px", height: '28px'}}
-                         direction='row' onClick={() => this.setVisibility(!visible)}>
-                        <Filter/>
+                    <Box>
+                        {filterType!==filters.NONE && (<Radial id='filterRadial'/>)}
+                        <Box id='filter'
+                             style={{border: "1px solid #dadce0", borderRadius: "5px", width: "28px", height: '28px'}}
+                             direction='row' onClick={() => this.setVisibility(!visible)}>
+                            <Filter/>
+                        </Box>
                     </Box>
                     <Box className="wrapperFilter"/>
                     {visible && (
@@ -169,12 +197,12 @@ class FilterComponent extends Component {
                                      direction='row'>
                                     <Box style={{paddingRight: '5px'}}>
                                         <Button onClick={() => {
-                                            console.log(cityFilters)
+                                            this.applyFilters();
                                         }}>Apply</Button>
                                     </Box>
                                     <Box style={{paddingLeft: '5px'}}>
                                         <Button onClick={() => {
-                                            this.props.clearFilters()
+                                            this.clearFilters();
                                         }}>Clear</Button>
                                     </Box>
                                 </Box>
@@ -193,11 +221,22 @@ const mapStateToProps = state => ({
     cities: state.patient.cities,
     hospitals: state.patient.hospitals,
     cityFilters: state.patient.cityFilters,
-    hospitalFilters: state.patient.hospitalFilters
+    hospitalFilters: state.patient.hospitalFilters,
+    filterType: state.patient.filterType,
+    loading: state.patient.loading
 });
 
 export default connect(
     mapStateToProps,
-    {getCities, getHospitals, setCityFilter, setHospitalFilter, clearFilters, removeCityFilter, removeHospitalFilter}
+    {
+        getCities,
+        getHospitals,
+        setCityFilter,
+        setHospitalFilter,
+        clearFilters,
+        removeCityFilter,
+        removeHospitalFilter,
+        setFilterType
+    }
 )(withStyles(useStyles)(FilterComponent));
 

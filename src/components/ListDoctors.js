@@ -5,8 +5,14 @@ import {grommet} from "grommet/themes";
 import {Pagination} from '@material-ui/lab';
 import {
     getDoctorsFromPage,
+    getDoctorsFromPageForCitiesAndHospitalsFilter,
+    getDoctorsFromPageForCitiesFilter,
+    getDoctorsFromPageForHospitalsFilter,
     getOverallRating,
     getOverallWaitingTime,
+    getPagesForCitiesAndHospitalsFilter,
+    getPagesForCitiesFilter,
+    getPagesForHospitalsFilter,
     getTotalPages,
     setCurrentPage
 } from "../actions/doctorActions";
@@ -14,27 +20,61 @@ import {ScheduleNew, Star} from "grommet-icons";
 import {history} from "../utils/history";
 import {clearReview, clearReviews} from "../actions/reviewActions";
 import FilterComponent from "./FilterComponent";
-import {getCities} from "../actions/patientActions";
+import {filters} from "../utils/helpers";
 
 
 class ListDoctors extends Component {
+    constructor(props){
+        super(props);
+        this.rerender = this.rerender.bind(this);
+    }
 
-    componentDidMount() {
-        this.props.getTotalPages();
-        this.props.getDoctorsFromPage({page: this.props.page});
+    renderFilteredList(filterType){
+        const {cityFilters,hospitalFilters}=this.props;
+        if(filterType===filters.NONE){
+            this.props.getTotalPages();
+            this.props.getDoctorsFromPage({page: this.props.page});
+        }else if(filterType===filters.CITY){
+            this.props.getPagesForCitiesFilter({cities: cityFilters});
+            this.props.getDoctorsFromPageForCitiesFilter({cities: cityFilters,page: this.props.page});
+        }else if(filterType===filters.HOSPITAL){
+            this.props.getPagesForHospitalsFilter({hospitals: hospitalFilters});
+            this.props.getDoctorsFromPageForHospitalsFilter({hospitals: hospitalFilters,page: this.props.page});
+
+        }else if(filterType===filters.CITY_HOSPITAL){
+            this.props.getPagesForCitiesAndHospitalsFilter({cities: cityFilters,hospitals: hospitalFilters});
+            this.props.getDoctorsFromPageForCitiesAndHospitalsFilter({cities: cityFilters,hospitals: hospitalFilters,page: this.props.page});
+        }
         this.props.clearReview();
         this.props.clearReviews();
     }
 
+    rerender(filter){
+        this.renderFilteredList(filter);
+    }
+
+    componentDidMount() {
+        const {filterType}=this.props;
+        this.renderFilteredList(filterType);
+    }
+
 
     handlePageChange = (event, value) => {
+        const {filterType,cityFilters,hospitalFilters} = this.props;
         this.props.setCurrentPage({page: value});
-        this.props.getDoctorsFromPage({page: value});
+        if(filterType===filters.NONE){
+            this.props.getDoctorsFromPage({page: value});
+        }else if(filterType===filters.CITY){
+            this.props.getDoctorsFromPageForCitiesFilter({page: value,cities: cityFilters});
+        }else if(filterType===filters.HOSPITAL){
+            this.props.getDoctorsFromPageForHospitalsFilter({page: value, hospitals: hospitalFilters});
+        }else if(filterType===filters.CITY_HOSPITAL){
+            this.props.getDoctorsFromPageForCitiesAndHospitalsFilter({page: value, cities: cityFilters, hospitals: hospitalFilters});
+        }
     };
 
     render() {
-        const {page} = this.props;
-        const {total} = this.props;
+        const {page, total} = this.props;
         let {doctors, loading} = this.props;
         if (loading)
             return <div/>;
@@ -45,7 +85,7 @@ class ListDoctors extends Component {
                 <Box width="100%">
                     <Box direction="row">
                         <Box width="80%" style={{paddingLeft:"5px"}} direction='row'>
-                            <FilterComponent/>
+                            <FilterComponent rerender={this.rerender}/>
                         </Box>
                         <Box style={{padding: "10px"}}>
                             <Pagination count={total} page={page} onChange={this.handlePageChange}/>
@@ -154,7 +194,9 @@ const mapStateToProps = state => ({
     doctors: state.doctor.doctors,
     page: state.doctor.page,
     loading: state.doctor.loading,
-    cities: state.patient.cities,
+    filterType: state.patient.filterType,
+    cityFilters: state.patient.cityFilters,
+    hospitalFilters: state.patient.hospitalFilters
 });
 
 export default connect(
@@ -167,6 +209,11 @@ export default connect(
         setCurrentPage,
         getOverallRating,
         getOverallWaitingTime,
-        getCities
+        getPagesForCitiesFilter,
+        getPagesForHospitalsFilter,
+        getPagesForCitiesAndHospitalsFilter,
+        getDoctorsFromPageForCitiesFilter,
+        getDoctorsFromPageForHospitalsFilter,
+        getDoctorsFromPageForCitiesAndHospitalsFilter
     }
 )(ListDoctors);

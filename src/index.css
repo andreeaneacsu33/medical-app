@@ -538,8 +538,17 @@ h4 {
     z-index: 1000;
 }
 
-.filterOptions{
+#filterRadial{
+    width: 10px;
+    height: 10px;
+    stroke: #b1bbff;
+    position: absolute;
+    margin-top: -2px;
+    margin-left: 22px;
+}
 
+#filterRadial circle{
+    fill: #b1bbff;
 }
 
 

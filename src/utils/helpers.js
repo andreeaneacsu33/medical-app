@@ -31,3 +31,10 @@ export const customTheme = deepMerge(grommet, {
     }
 });
 
+
+export const filters={
+    CITY: 'CITY',
+    HOSPITAL: 'HOSPITAL',
+    CITY_HOSPITAL: 'CITY_HOSPITAL',
+    NONE: 'NONE',
+};

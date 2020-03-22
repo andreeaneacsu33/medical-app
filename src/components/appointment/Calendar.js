@@ -54,8 +54,9 @@ const TextEditor = (props) => {
 };
 
 const BasicLayout = ({onFieldChange, appointmentData, ...restProps}) => {
+    console.log(restProps);
     const onCustomFieldChange = (nextValue) => {
-        onFieldChange({customField: nextValue});
+        onFieldChange({notes: nextValue});
     };
 
     return (
@@ -65,11 +66,24 @@ const BasicLayout = ({onFieldChange, appointmentData, ...restProps}) => {
             {...restProps}
         >
             <AppointmentForm.Label
+                text="Hospital"
+                type="title"
+            />
+            <AppointmentForm.Select
+                //value={appointmentData.notes}
+                //onValueChange={onCustomFieldChange}
+                placeholder="Hospital"
+            >
+                {restProps.affiliation.map((element)=>
+                    (<AppointmentForm.MenuItem value={element.hospitalName}>{element.hospitalName}</AppointmentForm.MenuItem>)
+                )}
+            </AppointmentForm.Select>
+            <AppointmentForm.Label
                 text="Notes"
                 type="title"
             />
             <AppointmentForm.TextEditor
-                value={appointmentData.customField}
+                value={appointmentData.notes}
                 onValueChange={onCustomFieldChange}
                 placeholder="Notes"
             />
@@ -108,7 +122,6 @@ class Calendar extends Component {
 
     componentDidMount() {
         const {doctor} = this.props;
-        console.log(doctor);
         this.props.getAppointments({idDoctor: doctor.id});
         const {appointments} = this.props;
         this.setState({data: appointments})
@@ -156,7 +169,8 @@ class Calendar extends Component {
 
     render() {
         const {addedAppointment, appointmentChanges, editingAppointmentId} = this.state;
-        const {appointments} = this.props;
+        const {appointments,affiliation} = this.props;
+        console.log(affiliation);
         const exDays = [6, 0];
         if (!appointments) {
             return <div/>
@@ -192,6 +206,7 @@ class Calendar extends Component {
                             <ConfirmationDialog/>
                             <AppointmentForm
                                 basicLayoutComponent={BasicLayout}
+                                affiliation={affiliation}
                                 textEditorComponent={TextEditor}
                                 messages={messages}
                             />
@@ -208,7 +223,8 @@ const mapStateToProps = state => ({
     error: state.error,
     user: state.auth.user,
     patient: state.auth.patient,
-    appointments: state.appointment.appointments
+    appointments: state.appointment.appointments,
+    affiliation: state.doctor.affiliation
 });
 
 export default connect(

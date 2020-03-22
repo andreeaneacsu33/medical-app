@@ -551,4 +551,11 @@ h4 {
     fill: #b1bbff;
 }
 
+.appointmentCalendar{
+    top: 50%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(0, 50%);
+}
+
 

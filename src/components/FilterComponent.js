@@ -108,7 +108,7 @@ class FilterComponent extends Component {
         return (
             <Box style={{paddingTop: '5px'}}>
                 <Box>
-                    <Box>
+                    <Box style={{position: "relative"}}>
                         {filterType!==filters.NONE && (<Radial id='filterRadial'/>)}
                         <Box id='filter'
                              style={{border: "1px solid #dadce0", borderRadius: "5px", width: "28px", height: '28px'}}

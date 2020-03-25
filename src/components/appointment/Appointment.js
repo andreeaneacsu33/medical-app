@@ -1,10 +1,11 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
-import {Box, Button, Calendar, Layer, Text, TextInput} from "grommet";
+import {Box, Button, Calendar, Grommet, Layer, Select, Text, TextInput} from "grommet";
 import {getAffiliation} from "../../actions/doctorActions";
 import {Add, Close, LinkPrevious} from "grommet-icons/es6";
-import {getAppointments} from "../../actions/appointmentActions";
+import {addAppointment, getAppointments} from "../../actions/appointmentActions";
 import {Lock, StatusWarning} from "grommet-icons";
+import {customTheme} from "../../utils/helpers";
 
 class Appointment extends Component {
     constructor(props) {
@@ -17,17 +18,18 @@ class Appointment extends Component {
             booked: [],
             message: '',
             renderNotification: false,
-            renderToAdd: null,
+            startHour: null,
             title: '',
             notes: '',
+            hospital: '',
         }
     }
 
     setRenderAdd(value) {
-        this.setState({renderToAdd: value});
-        if(value!==null){
+        this.setState({startHour: value});
+        if (value !== null) {
             this.setState({visibilityAdd: true});
-        }else{
+        } else {
             this.setState({visibilityAdd: false});
         }
     }
@@ -57,11 +59,18 @@ class Appointment extends Component {
     }
 
     handleDateClick(date) {
+        const dayOfWeek = new Date(date).getDay();
         this.setState({date: date});
         const dateNow = Date.now();
         const dateCalendar = new Date(date);
         if (dateNow > dateCalendar) {
-            this.setState({message: 'Can not book any appointments on this date because it has passed.'});
+            this.setState({message: 'Cannot book any appointments on this date because it has passed.'});
+            this.setState({renderNotification: true});
+            setTimeout(function () { //Start the timer
+                this.setState({renderNotification: false}) //After 1 second, set render to true
+            }.bind(this), 3000)
+        } else if (dayOfWeek === 6 || dayOfWeek === 0) {
+            this.setState({message: 'Cannot book any appointments on Saturday or Sunday.'});
             this.setState({renderNotification: true});
             setTimeout(function () { //Start the timer
                 this.setState({renderNotification: false}) //After 1 second, set render to true
@@ -89,7 +98,7 @@ class Appointment extends Component {
     setVisibility(value) {
         this.setState({visibilityHours: value});
         if (value === false) {
-            this.setRenderAdd({renderToAdd: null});
+            this.setRenderAdd({startHour: null});
             this.setState({booked: []});
             this.setState({visibilityAdd: false});
         }
@@ -103,126 +112,193 @@ class Appointment extends Component {
         this.setState({hours: hours});
     }
 
+    getAffiliationOptions() {
+        const {affiliation} = this.props;
+        let options = [];
+        for (let i = 0; i < affiliation.length; i++) {
+            options.push(`${affiliation[i].hospitalName} - ${affiliation[i].city}`);
+        }
+        return options;
+    }
+
+    onAppointmentSave = e =>{
+        const {doctor} = this.props.location.state;
+        const {patient} = this.props;
+        const {title,notes,date,startHour} = this.state;
+        console.log(date);
+        console.log(new Date(date.slice(0,10)+'T'+startHour));
+        const appointmentDTO={idDoctor: doctor.id,idPatient: patient.id, startDate: date, endDate: date, title: title, notes: notes};
+        //this.props.addAppointment(appointmentDTO);
+    };
+
     render() {
         const {doctor} = this.props.location.state;
         const {affiliation, appointments} = this.props;
-        const {visibilityHours, visibilityAdd, date, hours, booked, message, renderNotification} = this.state;
-        console.log(JSON.stringify(doctor));
+        const {visibilityHours, visibilityAdd, date, hours, booked, message, renderNotification, startHour} = this.state;
+        const optionsAffiliation = this.getAffiliationOptions();
+        console.log(affiliation);
         console.log(booked);
         if (!affiliation && !appointments)
             return <div/>;
         return (
-            <Box className="appointmentCalendar" style={{alignItems: "center"}}>
-                <Calendar date={date} onSelect={(date) => this.handleDateClick(date)}/>
-                {renderNotification && message && (
-                    <Box
-                        align="center"
-                        direction="row"
-                        gap="small"
-                        justify="between"
-                        round="small"
-                        elevation="medium"
-                        pad={{vertical: "small", horizontal: "small"}}
-                        background="#ffe6e6"
-                    >
-                        <Box align="center" direction="row" gap="xsmall">
-                            <StatusWarning style={{
-                                width: "20px",
-                                height: "20px",
-                                fill: "#d50000",
-                                stroke: "#d50000"
-                            }}/>
-                            <Text style={{color: "#d50000"}}>{message}</Text>
-                        </Box>
-                    </Box>
-                )}
-                {visibilityHours && (<Box>
-                    <Layer position="right" onClickOutside={() => this.setVisibility(!visibilityHours)}
-                           style={{width: "420px", height: "100%"}}>
-                        <Box style={{paddingTop: "10px", maxHeight: "90%"}}>
-                            <Box direction="row" width="100%">
-                                {visibilityAdd && <Box style={{paddingLeft: '12px', paddingTop:'14px'}}><Button className="backButton" onClick={()=>this.setState({visibilityAdd:!visibilityAdd})}><LinkPrevious/></Button></Box>}
-                                <Box align="center" pad="small" width="90%"><h4
-                                    style={{fontSize: "20px"}}>{this.formatDate(date)}</h4></Box>
-                                <Box pad="small"
-                                     onClick={() => this.setVisibility(!visibilityHours)}><Close
-                                    style={{width: "20px", height: "20px"}}/></Box>
+            <Grommet theme={customTheme}>
+                <Box className="appointmentCalendar" style={{alignItems: "center"}}>
+                    <Calendar date={date} daysOfWeek={true} onSelect={(date) => this.handleDateClick(date)}/>
+                    {renderNotification && message && (
+                        <Box
+                            align="center"
+                            direction="row"
+                            gap="small"
+                            justify="between"
+                            round="small"
+                            elevation="medium"
+                            pad={{vertical: "small", horizontal: "small"}}
+                            background="#ffe6e6"
+                        >
+                            <Box align="center" direction="row" gap="xsmall">
+                                <StatusWarning style={{
+                                    width: "20px",
+                                    height: "20px",
+                                    fill: "#d50000",
+                                    stroke: "#d50000"
+                                }}/>
+                                <Text style={{color: "#d50000"}}>{message}</Text>
                             </Box>
-                            {visibilityAdd ? (
-                                <Box>
-                                    <Box
-                                        className='inputBox'
-                                        direction="row"
-                                        margin="small"
-                                        round="xsmall"
-                                        border
-                                    >
-                                        <TextInput
-                                            className='input'
-                                            name='title'
-                                            id='title'
-                                            plain
-                                            placeholder='Title'
-                                            type='text'
-                                            onChange={this.onChange}
-                                        />
-                                    </Box>
-                                </Box>
-                            ) : (
-                                <Box flex overflow="auto" direction='column' style={{paddingLeft: "30px"}}>
-                                {!message && hours.length !== 0 && hours.map((hour) => (
-                                    <Box pad='small' style={{
-                                        minHeight: "70px",
-                                        maxWidth: "90%"
-                                    }}>
-                                        {booked.includes(hour) ? (
-                                            <Box style={{
-                                                borderRadius: "8px",
-                                                minHeight: "50px",
-                                                border: "1px solid #ccc"
-                                            }} direction='row'>
-                                                <Box pad='small' width='97%'>
-                                                    {hour}
-                                                </Box>
-                                                <Box pad='small' align="end" className="icon">
-                                                    <Lock style={{
-                                                        width: "20px",
-                                                        height: "20px",
-                                                        fill: "#d50000",
-                                                        stroke: "#d50000"
-                                                    }}/>
-                                                </Box>
-                                            </Box>
-                                        ) :  (
-                                            <Box style={{
-                                                borderRadius: "8px",
-                                                minHeight: "50px",
-                                                border: "1px solid #ccc"
-                                            }} direction='row'>
-                                                <Box pad='small' width='97%'>
-                                                    {hour}
-                                                </Box>
-                                                <Box pad='small' align="end" className="icon"
-                                                     onClick={() => {
-                                                         this.setRenderAdd(hour)
-                                                     }}>
-                                                    <Add style={{
-                                                        width: "20px",
-                                                        height: "20px",
-                                                        fill: "#516cfb",
-                                                        stroke: "#516cfb"
-                                                    }}/>
-                                                </Box>
-                                            </Box>
-                                        )}
-                                    </Box>
-                                ))}
-                                </Box>
-                                )}
                         </Box>
-                    </Layer>
-                </Box>)}
-            </Box>
+                    )}
+                    {visibilityHours && (<Box>
+                        <Layer position="right" onClickOutside={() => this.setVisibility(!visibilityHours)}
+                               style={{width: "420px", height: "100%"}}>
+                            <Box style={{paddingTop: "10px", maxHeight: "90%"}}>
+                                <Box direction="row" width="100%">
+                                    {visibilityAdd && <Box style={{paddingLeft: '30px', paddingTop: '14px'}}><Button
+                                        className="backButton"
+                                        onClick={() => this.setState({visibilityAdd: !visibilityAdd})}><LinkPrevious/></Button></Box>}
+                                    <Box align="center" pad="small" width="90%"><h4
+                                        style={{fontSize: "20px"}}>{this.formatDate(date)}</h4></Box>
+                                    <Box pad="small"
+                                         onClick={() => this.setVisibility(!visibilityHours)}><Close
+                                        style={{width: "20px", height: "20px"}}/></Box>
+                                </Box>
+                                {visibilityAdd ? (
+                                    <Box flex overflow="auto" direction='column'
+                                         style={{paddingLeft: "30px", paddingRight: '30px',alignItems: 'center'}} className='addAppointment'>
+                                        <Box style={{paddingTop: "2px", paddingBottom: "10px", alignItems: 'center'}}>
+                                            {startHour}
+                                        </Box>
+                                        <Box
+                                            className='inputBox'
+                                            direction="row"
+                                            margin="small"
+                                            round="xsmall"
+                                            border
+                                            style={{paddingLeft: "11px"}}
+                                        >
+                                            <TextInput
+                                                className='input'
+                                                name='title'
+                                                id='title'
+                                                plain
+                                                placeholder='Title'
+                                                type='text'
+                                                onChange={this.onChange}
+                                            />
+                                        </Box>
+                                        <Box
+                                            className='inputBox'
+                                            direction="row"
+                                            margin="small"
+                                            round="xsmall"
+                                            border
+                                            style={{paddingLeft: "11px"}}
+                                        >
+                                            <TextInput
+                                                className='input'
+                                                name='notes'
+                                                id='notes'
+                                                plain
+                                                placeholder='Notes'
+                                                type='text'
+                                                onChange={this.onChange}
+                                            />
+                                        </Box>
+                                        <Box
+                                            style={{paddingTop: '12px', height: '64px'}}
+                                            className='inputBox'
+                                            direction="row"
+                                        >
+                                            <Select
+                                                className='select'
+                                                id="role"
+                                                name="role"
+                                                placeholder="Role"
+                                                options={optionsAffiliation}
+                                                value={this.state.hospital}
+                                                onChange={({option}) => this.setState({hospital: option})}
+                                            />
+                                        </Box>
+                                        <Box className='saveButton' direction="row" width="100%" style={{paddingTop: "20px"}}>
+                                            <Box width="65%"/>
+                                            <Button type='submit'
+                                                    onClick={this.onAppointmentSave}><span>Save</span></Button>
+                                        </Box>
+                                    </Box>
+                                ) : (
+                                    <Box flex overflow="auto" direction='column' style={{paddingLeft: "30px"}}>
+                                        {!message && hours.length !== 0 && hours.map((hour) => (
+                                            <Box pad='small' style={{
+                                                minHeight: "70px",
+                                                maxWidth: "90%"
+                                            }}>
+                                                {booked.includes(hour) ? (
+                                                    <Box style={{
+                                                        borderRadius: "8px",
+                                                        minHeight: "50px",
+                                                        border: "1px solid #ccc"
+                                                    }} direction='row'>
+                                                        <Box pad='small' width='97%'>
+                                                            {hour}
+                                                        </Box>
+                                                        <Box pad='small' align="end" className="icon">
+                                                            <Lock style={{
+                                                                width: "20px",
+                                                                height: "20px",
+                                                                fill: "#d50000",
+                                                                stroke: "#d50000"
+                                                            }}/>
+                                                        </Box>
+                                                    </Box>
+                                                ) : (
+                                                    <Box style={{
+                                                        borderRadius: "8px",
+                                                        minHeight: "50px",
+                                                        border: "1px solid #ccc"
+                                                    }} direction='row'>
+                                                        <Box pad='small' width='97%'>
+                                                            {hour}
+                                                        </Box>
+                                                        <Box pad='small' align="end" className="icon"
+                                                             onClick={() => {
+                                                                 this.setRenderAdd(hour)
+                                                             }}>
+                                                            <Add style={{
+                                                                width: "20px",
+                                                                height: "20px",
+                                                                fill: "#516cfb",
+                                                                stroke: "#516cfb"
+                                                            }}/>
+                                                        </Box>
+                                                    </Box>
+                                                )}
+                                            </Box>
+                                        ))}
+                                    </Box>
+                                )}
+                            </Box>
+                        </Layer>
+                    </Box>)}
+                </Box>
+            </Grommet>
         )
     }
 }
@@ -231,11 +307,12 @@ const mapStateToProps = state => ({
     isAuthenticated: state.auth.isAuthenticated,
     error: state.error,
     user: state.auth.user,
+    patient: state.auth.patient,
     affiliation: state.doctor.affiliation,
     appointments: state.appointment.appointments,
 });
 
 export default connect(
     mapStateToProps,
-    {getAffiliation, getAppointments}
+    {getAffiliation, getAppointments, addAppointment}
 )(Appointment);

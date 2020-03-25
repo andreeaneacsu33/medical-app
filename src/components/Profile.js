@@ -20,7 +20,7 @@ import {getLogger} from "../utils/logger";
 import {getAffiliation, getQualification, setAffiliation, setQualification} from "../actions/doctorActions";
 import {Add, CircleInformation, Close, FormDown} from "grommet-icons";
 
-const log = getLogger();
+const log = getLogger('Profile ');
 
 class Profile extends Component {
     static propTypes = {
@@ -82,8 +82,9 @@ class Profile extends Component {
         let data = [];
         const {affiliation} = this.props;
         let allAffiliations=[];
+        log('affiliation');
         log(JSON.stringify(affiliation));
-        if (affiliation) {
+        if (affiliation && affiliation.length!==0) {
             for(let i=0;i<affiliation.length;i++){
                 data.push({key: "HOSPITAL", value: `${affiliation[i].hospitalName}`});
                 data.push({key: "CITY", value: `${affiliation[i].city}`});
@@ -96,13 +97,13 @@ class Profile extends Component {
         } else {
             data.push('You have no activity tracked.');
         }
+        console.log(data);
         return data;
     }
 
     formatStudyInformation() {
         let data = [];
         const {qualification} = this.props;
-        log(JSON.stringify(qualification));
         if (qualification) {
             data.push({key: "TITLE", value: `${qualification.title}`});
             data.push({key: "INSTITUTE", value: `${qualification.institute}`});
@@ -202,6 +203,7 @@ class Profile extends Component {
         const personalInformation = this.formatDoctorPersonalInformation(person);
         const workInformation = this.formatWorkInformation();
         const studyInformation = this.formatStudyInformation();
+        console.log(studyInformation);
         return (
             <Box flex overflow="auto" direction="column">
                 <Box style={{paddingTop: "24px"}}>
@@ -246,7 +248,7 @@ class Profile extends Component {
                                 </Box>
                             </Box>
                         </Box>
-                        {workInformation.length === 1 ? (
+                        {workInformation.length===1 && typeof workInformation[0] === 'string' ? (
                             <List style={{fontSize: "1rem"}} data={workInformation}/>) : workInformation.map((affiliation)=>(<List style={{paddingTop: '5px'}}
                             data={affiliation}
                             primaryKey={item => (

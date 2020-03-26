@@ -21,8 +21,8 @@ export const tokenConfig = getState => {
     return headers;
 };
 
-export const addAppointment = ({idDoctor, idPatient, startDate, endDate, title, notes}) => (dispatch, getState) => {
-    const body = JSON.stringify({idDoctor, idPatient, startDate, endDate, title, notes});
+export const addAppointment = ({idDoctor, idPatient, idAffiliation, startDate, endDate, title, notes}) => (dispatch, getState) => {
+    const body = JSON.stringify({idDoctor, idPatient, idAffiliation, startDate, endDate, title, notes});
     axios
         .post(`${url}/appointment`, body, {headers: tokenConfig(getState)})
         .then(res => {

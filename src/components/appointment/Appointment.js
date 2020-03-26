@@ -1,11 +1,12 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
-import {Box, Button, Calendar, Grommet, Layer, Select, Text, TextInput} from "grommet";
+import {Box, Button, Calendar, Grommet, Layer, Select, TextInput} from "grommet";
 import {getAffiliation} from "../../actions/doctorActions";
-import {Add, Close, LinkPrevious} from "grommet-icons/es6";
+import {Add, CircleInformation, Close, LinkPrevious} from "grommet-icons/es6";
 import {addAppointment, getAppointments} from "../../actions/appointmentActions";
-import {Lock, StatusWarning} from "grommet-icons";
+import {Lock, StatusGood, StatusWarning} from "grommet-icons";
 import {customTheme} from "../../utils/helpers";
+import Notification from "../Notification";
 
 class Appointment extends Component {
     constructor(props) {
@@ -18,6 +19,8 @@ class Appointment extends Component {
             booked: [],
             message: '',
             renderNotification: false,
+            renderSaveMessage: false,
+            valid: true,
             startHour: null,
             title: '',
             notes: '',
@@ -85,6 +88,8 @@ class Appointment extends Component {
     formatAppointments(date) {
         let booked = [];
         let formDate = date.substr(0, 10);
+        const {doctor} = this.props.location.state;
+        this.props.getAppointments({idDoctor: doctor.id});
         const {appointments} = this.props;
         for (let i = 0; i < appointments.length; i++) {
             let str = appointments[i].startDate.split(' ');
@@ -92,6 +97,7 @@ class Appointment extends Component {
                 booked.push(str[1]);
             }
         }
+        console.log(`booked` + booked);
         this.setState({booked: booked});
     }
 
@@ -121,20 +127,66 @@ class Appointment extends Component {
         return options;
     }
 
-    onAppointmentSave = e =>{
+    findAffiliationId(affiliationName) {
+        const {affiliation} = this.props;
+        const attr = affiliationName.split(' - ');
+        console.log(attr);
+        for (let i = 0; i < affiliation.length; i++) {
+            if (affiliation[i].hospitalName === attr[0] && affiliation[i].city === attr[1]) {
+                console.log(`aff` + affiliation[i].id);
+                return affiliation[i].id;
+            }
+        }
+        return -1;
+    }
+
+    onAppointmentSave = e => {
+        e.preventDefault();
         const {doctor} = this.props.location.state;
         const {patient} = this.props;
-        const {title,notes,date,startHour} = this.state;
-        console.log(date);
-        console.log(new Date(date.slice(0,10)+'T'+startHour));
-        const appointmentDTO={idDoctor: doctor.id,idPatient: patient.id, startDate: date, endDate: date, title: title, notes: notes};
-        //this.props.addAppointment(appointmentDTO);
+        const {title, notes, date, startHour, hospital} = this.state;
+        const idAffiliation = this.findAffiliationId(hospital);
+        if (idAffiliation === -1 || title === '' || hospital === '') {
+            this.setState({message: 'Please complete the required fields accordingly.'});
+            this.setState({valid: false});
+        } else {
+            const hourComponents = startHour.split(':');
+            let endHour;
+            if (hourComponents[1] === '00')
+                endHour = hourComponents[0] + ':30';
+            else {
+                const intValue = parseInt(hourComponents[0], 10) + 1;
+                endHour = intValue + ':00';
+            }
+            const startDate = date.slice(0, 10) + 'T' + startHour + ':00.000Z';
+            const endDate = date.slice(0, 10) + 'T' + endHour + ':00.000Z';
+            const appointmentDTO = {
+                idDoctor: doctor.id,
+                idPatient: patient.id,
+                idAffiliation: idAffiliation,
+                startDate: startDate,
+                endDate: endDate,
+                title: title,
+                notes: notes
+            };
+            this.props.addAppointment(appointmentDTO);
+            this.setState({hospital: ''});
+            this.setState({title: ''});
+            this.setState({notes: ''});
+            this.setState({visibilityAdd: false});
+            this.setState({visibilityHours: false});
+            this.setState({message: 'Your appointment was successfully booked.'});
+            this.setState({renderSaveMessage: true});
+            setTimeout(function () { //Start the timer
+                this.setState({renderSaveMessage: false})
+            }.bind(this), 3000)
+        }
     };
 
     render() {
         const {doctor} = this.props.location.state;
         const {affiliation, appointments} = this.props;
-        const {visibilityHours, visibilityAdd, date, hours, booked, message, renderNotification, startHour} = this.state;
+        const {visibilityHours, visibilityAdd, date, hours, booked, message, renderNotification, startHour, renderSaveMessage,valid} = this.state;
         const optionsAffiliation = this.getAffiliationOptions();
         console.log(affiliation);
         console.log(booked);
@@ -145,26 +197,20 @@ class Appointment extends Component {
                 <Box className="appointmentCalendar" style={{alignItems: "center"}}>
                     <Calendar date={date} daysOfWeek={true} onSelect={(date) => this.handleDateClick(date)}/>
                     {renderNotification && message && (
-                        <Box
-                            align="center"
-                            direction="row"
-                            gap="small"
-                            justify="between"
-                            round="small"
-                            elevation="medium"
-                            pad={{vertical: "small", horizontal: "small"}}
-                            background="#ffe6e6"
-                        >
-                            <Box align="center" direction="row" gap="xsmall">
-                                <StatusWarning style={{
-                                    width: "20px",
-                                    height: "20px",
-                                    fill: "#d50000",
-                                    stroke: "#d50000"
-                                }}/>
-                                <Text style={{color: "#d50000"}}>{message}</Text>
-                            </Box>
-                        </Box>
+                        <Notification icon={<StatusWarning style={{
+                            width: "20px",
+                            height: "20px",
+                            fill: "#d50000",
+                            stroke: "#d50000"
+                        }}/>} backgroundColor="#ffe6e6" textColor="#d50000" message={message}/>
+                    )}
+                    {renderSaveMessage && message && (
+                        <Notification icon={<StatusGood style={{
+                            width: "20px",
+                            height: "20px",
+                            fill: "#009933",
+                            stroke: "#009933"
+                        }}/>} backgroundColor="#c3ffbf" textColor="#009933" message={message}/>
                     )}
                     {visibilityHours && (<Box>
                         <Layer position="right" onClickOutside={() => this.setVisibility(!visibilityHours)}
@@ -182,7 +228,8 @@ class Appointment extends Component {
                                 </Box>
                                 {visibilityAdd ? (
                                     <Box flex overflow="auto" direction='column'
-                                         style={{paddingLeft: "30px", paddingRight: '30px',alignItems: 'center'}} className='addAppointment'>
+                                         style={{paddingLeft: "30px", paddingRight: '30px', alignItems: 'center'}}
+                                         className='addAppointment'>
                                         <Box style={{paddingTop: "2px", paddingBottom: "10px", alignItems: 'center'}}>
                                             {startHour}
                                         </Box>
@@ -237,7 +284,14 @@ class Appointment extends Component {
                                                 onChange={({option}) => this.setState({hospital: option})}
                                             />
                                         </Box>
-                                        <Box className='saveButton' direction="row" width="100%" style={{paddingTop: "20px"}}>
+                                        {!valid && (
+                                            <Box style={{paddingLeft: '12px',flexDirection: 'row', display: 'flex'}}>
+                                                <CircleInformation className='infoIcon'/>
+                                                <span style={{color: '#d50000',fontSize: '13px'}}>{message}</span>
+                                            </Box>
+                                        )}
+                                        <Box className='saveButton' direction="row" width="100%"
+                                             style={{paddingTop: "20px"}}>
                                             <Box width="65%"/>
                                             <Button type='submit'
                                                     onClick={this.onAppointmentSave}><span>Save</span></Button>

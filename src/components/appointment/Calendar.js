@@ -13,7 +13,7 @@ import Paper from "@material-ui/core/Paper";
 import {MuiThemeProvider, createMuiTheme, withStyles} from "@material-ui/core/styles";
 import {grey} from "@material-ui/core/colors";
 import {Box} from "grommet";
-import {addAppointment, getAppointments} from "../../actions/appointmentActions";
+import {addAppointment, getDoctorAppointments} from "../../actions/appointmentActions";
 import Grid from "@material-ui/core/Grid";
 import {Note} from "@material-ui/icons";
 
@@ -122,7 +122,7 @@ class Calendar extends Component {
 
     componentDidMount() {
         const {doctor} = this.props;
-        this.props.getAppointments({idDoctor: doctor.id});
+        this.props.getDoctorAppointments({idDoctor: doctor.id});
         const {appointments} = this.props;
         this.setState({data: appointments})
     }
@@ -229,5 +229,5 @@ const mapStateToProps = state => ({
 
 export default connect(
     mapStateToProps,
-    {getAppointments, addAppointment}
+    {getDoctorAppointments, addAppointment}
 )(Calendar);

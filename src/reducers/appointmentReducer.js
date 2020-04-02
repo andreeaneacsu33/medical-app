@@ -1,4 +1,9 @@
-import {ADD_APPOINTMENT,GET_DOCTOR_APPOINTMENTS} from "../actions/actions";
+import {
+    ADD_APPOINTMENT,
+    GET_DOCTOR_APPOINTMENTS,
+    GET_PATIENT_APPOINTMENTS,
+    REMOVE_APPOINTMENT
+} from "../actions/actions";
 
 const initialState={
     appointments: [],
@@ -17,6 +22,16 @@ export default function (state=initialState,action) {
             return {
                 ...state,
                 appointments: action.payload
+            };
+        case GET_PATIENT_APPOINTMENTS:
+            return{
+                ...state,
+                appointments: action.payload
+            };
+        case REMOVE_APPOINTMENT:
+            return {
+                ...state,
+                appointments: state.appointments.filter(app=>app.id!==action.payload)
             };
         default:
             return state;

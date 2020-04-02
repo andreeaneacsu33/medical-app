@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import {Box} from "grommet";
-import {ContactInfo, Local, SettingsOption} from "grommet-icons";
+import {ContactInfo, Local, Schedules} from "grommet-icons";
 import {Router} from 'react-router-dom';
 import {history} from "../../utils/history";
 import PropTypes from "prop-types";
@@ -37,10 +37,10 @@ class Menu extends Component {
                              onClick={() => this.handleClick('/profile')}><Box className="menuItem" direction="row"
                                                                                round="small"><Local
                             className="menuIcon"/><span className="menuText">Personal Information</span></Box></Box>
-                        <Box round="small" className={active === '/settings' ? "activeStyle" : ""}
-                             onClick={() => this.handleClick('/settings')}><Box className="menuItem" direction="row"
-                                                                                round="small"><SettingsOption
-                            className="menuIcon"/><span className="menuText">Settings</span></Box></Box>
+                        <Box round="small" className={active === '/upcoming-appointments' ? "activeStyle" : ""}
+                             onClick={() => this.handleClick('/upcoming-appointments')}><Box className="menuItem" direction="row"
+                                                                                round="small"><Schedules
+                            className="menuIcon"/><span className="menuText">Upcoming Appointments</span></Box></Box>
                     </Box>
                 </Box>
             </Router>

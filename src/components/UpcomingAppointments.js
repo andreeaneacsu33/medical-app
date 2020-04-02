@@ -6,10 +6,11 @@ import {Box, Grommet} from "grommet";
 import Toolbar from "./menu/Toolbar";
 import {customTheme} from "../utils/helpers";
 import {getLogger} from "../utils/logger";
+import ListAppointments from "./appointment/ListAppointments";
 
 const log=getLogger();
 
-class Settings extends Component{
+class UpcomingAppointments extends Component{
     static propTypes = {
         isAuthenticated: PropTypes.bool,
         error: PropTypes.object.isRequired,
@@ -26,7 +27,7 @@ class Settings extends Component{
                         <Toolbar/>
                         <Box direction="row">
                             <Menu/>
-                            <span>Hello from Settings!</span>
+                            <ListAppointments/>
                         </Box>
                     </Box>
                 </Box>
@@ -44,4 +45,4 @@ const mapStateToProps = state => ({
 export default connect(
     mapStateToProps,
     null
-)(Settings);
+)(UpcomingAppointments);

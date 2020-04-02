@@ -3,7 +3,7 @@ import {connect} from "react-redux";
 import {Box, Button, Calendar, Grommet, Layer, Select, TextInput} from "grommet";
 import {getAffiliation} from "../../actions/doctorActions";
 import {Add, CircleInformation, Close, LinkPrevious} from "grommet-icons/es6";
-import {addAppointment, getAppointments} from "../../actions/appointmentActions";
+import {addAppointment, getDoctorAppointments} from "../../actions/appointmentActions";
 import {Lock, StatusGood, StatusWarning} from "grommet-icons";
 import {customTheme} from "../../utils/helpers";
 import Notification from "../Notification";
@@ -89,7 +89,7 @@ class Appointment extends Component {
         let booked = [];
         let formDate = date.substr(0, 10);
         const {doctor} = this.props.location.state;
-        this.props.getAppointments({idDoctor: doctor.id});
+        this.props.getDoctorAppointments({idDoctor: doctor.id});
         const {appointments} = this.props;
         for (let i = 0; i < appointments.length; i++) {
             let str = appointments[i].startDate.split(' ');
@@ -113,7 +113,7 @@ class Appointment extends Component {
     componentDidMount() {
         const {doctor} = this.props.location.state;
         this.props.getAffiliation(doctor.id);
-        this.props.getAppointments({idDoctor: doctor.id});
+        this.props.getDoctorAppointments({idDoctor: doctor.id});
         const hours = this.generateHours();
         this.setState({hours: hours});
     }
@@ -170,6 +170,7 @@ class Appointment extends Component {
                 notes: notes
             };
             this.props.addAppointment(appointmentDTO);
+            this.setState({valid: true});
             this.setState({hospital: ''});
             this.setState({title: ''});
             this.setState({notes: ''});
@@ -219,7 +220,7 @@ class Appointment extends Component {
                                 <Box direction="row" width="100%">
                                     {visibilityAdd && <Box style={{paddingLeft: '30px', paddingTop: '14px'}}><Button
                                         className="backButton"
-                                        onClick={() => this.setState({visibilityAdd: !visibilityAdd})}><LinkPrevious/></Button></Box>}
+                                        onClick={() => {this.setState({visibilityAdd: !visibilityAdd}); this.setState({message: ''})}}><LinkPrevious/></Button></Box>}
                                     <Box align="center" pad="small" width="90%"><h4
                                         style={{fontSize: "20px"}}>{this.formatDate(date)}</h4></Box>
                                     <Box pad="small"
@@ -278,13 +279,13 @@ class Appointment extends Component {
                                                 className='select'
                                                 id="role"
                                                 name="role"
-                                                placeholder="Role"
+                                                placeholder="Hospital"
                                                 options={optionsAffiliation}
                                                 value={this.state.hospital}
                                                 onChange={({option}) => this.setState({hospital: option})}
                                             />
                                         </Box>
-                                        {!valid && (
+                                        {!valid && message && (
                                             <Box style={{paddingLeft: '12px',flexDirection: 'row', display: 'flex'}}>
                                                 <CircleInformation className='infoIcon'/>
                                                 <span style={{color: '#d50000',fontSize: '13px'}}>{message}</span>
@@ -368,5 +369,5 @@ const mapStateToProps = state => ({
 
 export default connect(
     mapStateToProps,
-    {getAffiliation, getAppointments, addAppointment}
+    {getAffiliation, getDoctorAppointments, addAppointment}
 )(Appointment);

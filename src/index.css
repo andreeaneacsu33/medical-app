@@ -360,7 +360,7 @@ menu .activeStyle {
     border-radius: 8px;
 }
 
-#container :hover {
+#container :hover, #trashIcon :hover {
     cursor: pointer;
 }
 

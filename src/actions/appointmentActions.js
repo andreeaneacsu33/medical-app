@@ -1,6 +1,12 @@
 import axios from "axios";
 import {url} from "../utils/helpers";
-import {ADD_APPOINTMENT, GET_DOCTOR_APPOINTMENTS, GET_PATIENT_APPOINTMENTS, REMOVE_APPOINTMENT} from "./actions";
+import {
+    ADD_APPOINTMENT,
+    CLEAR_ERRORS,
+    GET_DOCTOR_APPOINTMENTS,
+    GET_PATIENT_APPOINTMENTS,
+    REMOVE_APPOINTMENT
+} from "./actions";
 import {returnErrors} from "./errorActions";
 import {getLogger} from "../utils/logger";
 
@@ -81,7 +87,10 @@ export const removeAppointment = ({idAppointment}) => (dispatch,getState) => {
             dispatch({
                 type: REMOVE_APPOINTMENT,
                 payload: idAppointment
-            })
+            });
+            dispatch({
+                type: CLEAR_ERRORS
+            });
         })
         .catch(err => {
             dispatch(returnErrors(err.response.data, err.response.status));

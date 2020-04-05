@@ -3,6 +3,7 @@ import {connect} from "react-redux";
 import {Box} from "grommet";
 import {getPatientAppointments} from "../../actions/appointmentActions";
 import AppointmentTile from "./AppointmentTile";
+import {ScheduleNew} from "grommet-icons";
 
 class ListAppointments extends Component{
 
@@ -20,9 +21,23 @@ class ListAppointments extends Component{
             return <div/>;
         return(
             <Box pad='medium' style={{ alignItems: "center"}} flex overflow="auto" direction='column'>
-                {appointments.map((appointment) => (
+                {appointments.length!==0?appointments.map((appointment) => (
                     <AppointmentTile appointment={appointment} />
-                ))}
+                )):(
+                    <Box direction='row' alignItems='center' style={{paddingTop: '100px', paddingLeft: '100px'}}>
+                        <Box width='10%' height='100px' style={{verticalAlign: 'middle'}}>
+                            <ScheduleNew
+                                style={{
+                                    width: "30px",
+                                    height: "30px",
+                                }}
+                            />
+                        </Box>
+                        <Box width='60%'>
+                            You have no appointments booked. If you wish to make an appointment, go the the Home page...
+                        </Box>
+                    </Box>
+                )}
             </Box>
         )
     }

@@ -10,7 +10,6 @@ class ListAppointments extends Component{
     componentDidMount() {
         const {patient} = this.props;
         const currentDate=new Date().toISOString();
-        console.log(currentDate);
         this.props.getPatientAppointments({idPatient: patient.id, date: currentDate});
     }
 

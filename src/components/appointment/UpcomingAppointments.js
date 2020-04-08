@@ -1,12 +1,13 @@
 import React,{Component} from "react";
 import {connect} from "react-redux";
 import PropTypes from "prop-types";
-import Menu from "./menu/Menu";
+import Menu from "../menu/Menu";
 import {Box, Grommet} from "grommet";
-import Toolbar from "./menu/Toolbar";
-import {customTheme} from "../utils/helpers";
-import {getLogger} from "../utils/logger";
-import ListAppointments from "./appointment/ListAppointments";
+import Toolbar from "../menu/Toolbar";
+import {customTheme} from "../../utils/helpers";
+import {getLogger} from "../../utils/logger";
+import ListAppointments from "./ListAppointments";
+import ListDoctorAppointments from "./ListDoctorAppointments";
 
 const log=getLogger();
 
@@ -18,8 +19,7 @@ class UpcomingAppointments extends Component{
     };
 
     render() {
-        const {visited}=this.props;
-        log(JSON.stringify(visited));
+        const {user}=this.props;
         return(
             <Grommet theme={customTheme}>
                 <Box>
@@ -27,7 +27,7 @@ class UpcomingAppointments extends Component{
                         <Toolbar/>
                         <Box direction="row">
                             <Menu/>
-                            <ListAppointments/>
+                            {user.role.toUpperCase()==='PATIENT' ? <ListAppointments/> : <ListDoctorAppointments/>}
                         </Box>
                     </Box>
                 </Box>

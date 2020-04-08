@@ -3,7 +3,7 @@ import {url} from "../utils/helpers";
 import {
     ADD_APPOINTMENT,
     CLEAR_ERRORS,
-    GET_DOCTOR_APPOINTMENTS,
+    GET_DOCTOR_APPOINTMENTS, GET_DOCTOR_APPOINTMENTS_FROM_DATE,
     GET_PATIENT_APPOINTMENTS,
     REMOVE_APPOINTMENT
 } from "./actions";
@@ -52,6 +52,23 @@ export const getDoctorAppointments = ({idDoctor}) => (dispatch,getState) => {
             console.log(res.data);
             dispatch({
                 type: GET_DOCTOR_APPOINTMENTS,
+                payload: res.data
+            })
+        })
+        .catch(err => {
+            dispatch(returnErrors(err.response.data, err.response.status));
+        });
+};
+
+export const getDoctorAppointmentsFromDate = ({idDoctor,date}) => (dispatch,getState) => {
+    axios
+        .get(`${url}/appointments/doctor/${idDoctor}/date/${date}`, {
+            headers: tokenConfig(getState)
+        })
+        .then(res => {
+            console.log(res.data);
+            dispatch({
+                type: GET_DOCTOR_APPOINTMENTS_FROM_DATE,
                 payload: res.data
             })
         })

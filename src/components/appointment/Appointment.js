@@ -1,12 +1,15 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
-import {Box, Button, Calendar, Grommet, Layer, Select, TextInput} from "grommet";
-import {getAffiliation} from "../../actions/doctorActions";
+import {Box, Button, Calendar, Grommet, Layer, Select, Text, TextInput} from "grommet";
+import {getAffiliation, getQualification} from "../../actions/doctorActions";
 import {Add, CircleInformation, Close, LinkPrevious} from "grommet-icons/es6";
 import {addAppointment, getDoctorAppointments} from "../../actions/appointmentActions";
 import {Lock, StatusGood, StatusWarning} from "grommet-icons";
 import {customTheme} from "../../utils/helpers";
 import Notification from "../Notification";
+import DoctorDetails from "../doctor/DoctorDetails";
+import Toolbar from "../menu/Toolbar";
+import {history} from "../../utils/history";
 
 class Appointment extends Component {
     constructor(props) {
@@ -113,6 +116,7 @@ class Appointment extends Component {
     componentDidMount() {
         const {doctor} = this.props.location.state;
         this.props.getAffiliation(doctor.id);
+        this.props.getQualification(doctor.id);
         this.props.getDoctorAppointments({idDoctor: doctor.id});
         const hours = this.generateHours();
         this.setState({hours: hours});
@@ -186,17 +190,33 @@ class Appointment extends Component {
 
     render() {
         const {doctor} = this.props.location.state;
-        const {affiliation, appointments} = this.props;
+        const {affiliation, appointments, qualification} = this.props;
         const {visibilityHours, visibilityAdd, date, hours, booked, message, renderNotification, startHour, renderSaveMessage,valid} = this.state;
         const optionsAffiliation = this.getAffiliationOptions();
         console.log(affiliation);
         console.log(booked);
-        if (!affiliation && !appointments)
+        if (!affiliation && !appointments && !qualification)
             return <div/>;
         return (
             <Grommet theme={customTheme}>
+                <Toolbar/>
+                <Box height='20%' direction='row'>
+                    <Box width='40%'>
+                        <Button style={{paddingTop: '20px', paddingLeft: '20px'}} alignSelf='start' className="backButton" onClick={()=>history.push(`/home`)}><LinkPrevious/></Button>
+                    </Box>
+                    <Box style={{paddingTop: '20px'}}>
+                        <Box direction='row' style={{padding: '10px',borderRadius: '10px'}}>
+                            <Text style={{fontSize: '24px',fontStyle: '\'Google Sans\',Roboto,RobotoDraft,Helvetica,Arial,sans-serif', fontWeight: 350, color: '#8b8b8b'}}>Appointment booking</Text>
+                        </Box>
+                    </Box>
+                </Box>
                 <Box className="appointmentCalendar" style={{alignItems: "center"}}>
-                    <Calendar date={date} daysOfWeek={true} onSelect={(date) => this.handleDateClick(date)}/>
+                    <Box direction='row'>
+                        <Box style={{marginRight: '50px'}}>
+                            <DoctorDetails doctor={doctor} affiliation={affiliation} qualification={qualification}/>
+                        </Box>
+                        <Calendar date={date} daysOfWeek={true} onSelect={(date) => this.handleDateClick(date)}/>
+                    </Box>
                     {renderNotification && message && (
                         <Notification icon={<StatusWarning style={{
                             width: "20px",
@@ -364,10 +384,11 @@ const mapStateToProps = state => ({
     user: state.auth.user,
     patient: state.auth.patient,
     affiliation: state.doctor.affiliation,
+    qualification: state.doctor.qualification,
     appointments: state.appointment.appointments,
 });
 
 export default connect(
     mapStateToProps,
-    {getAffiliation, getDoctorAppointments, addAppointment}
+    {getAffiliation, getDoctorAppointments, addAppointment, getQualification}
 )(Appointment);

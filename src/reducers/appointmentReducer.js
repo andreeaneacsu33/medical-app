@@ -1,6 +1,6 @@
 import {
     ADD_APPOINTMENT,
-    GET_DOCTOR_APPOINTMENTS,
+    GET_DOCTOR_APPOINTMENTS, GET_DOCTOR_APPOINTMENTS_FROM_DATE,
     GET_PATIENT_APPOINTMENTS,
     REMOVE_APPOINTMENT
 } from "../actions/actions";
@@ -32,6 +32,11 @@ export default function (state=initialState,action) {
             return {
                 ...state,
                 appointments: state.appointments.filter(app=>app.id!==action.payload)
+            };
+        case GET_DOCTOR_APPOINTMENTS_FROM_DATE:
+            return{
+                ...state,
+                appointments: state.appointments
             };
         default:
             return state;

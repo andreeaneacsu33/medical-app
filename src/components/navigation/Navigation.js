@@ -10,7 +10,7 @@ import Register from '../Register';
 import Profile from "../Profile";
 import ListReviews from "../review/ListReviews";
 import Appointment from "../appointment/Appointment";
-import UpcomingAppointments from "../UpcomingAppointments";
+import UpcomingAppointments from "../appointment/UpcomingAppointments";
 
 class Navigation extends Component{
     static propTypes = {

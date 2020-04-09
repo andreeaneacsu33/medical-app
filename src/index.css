@@ -37,6 +37,14 @@ code {
     transform: translate(-50%, -50%);
 }
 
+.alignLeftMiddle{
+    position: absolute;
+    top: 50%;
+    left: 25%;
+    margin-right: -75%;
+    transform: translate(-120%, -50%);
+}
+
 .loginForm input, select, .affiliation input, .addAppointment .input {
     font: 400 16px Roboto, RobotoDraft, Helvetica, Arial, sans-serif;
     color: #202124;

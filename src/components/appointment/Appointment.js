@@ -212,7 +212,7 @@ class Appointment extends Component {
                 </Box>
                 <Box className="appointmentCalendar" style={{alignItems: "center"}}>
                     <Box direction='row'>
-                        <Box style={{marginRight: '50px'}}>
+                        <Box style={{marginRight: '50px', height: '430px'}} overflow='auto'>
                             <DoctorDetails doctor={doctor} affiliation={affiliation} qualification={qualification}/>
                         </Box>
                         <Calendar date={date} daysOfWeek={true} onSelect={(date) => this.handleDateClick(date)}/>

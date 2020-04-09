@@ -1,10 +1,13 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
-import {Box, Grommet} from "grommet/es6";
+import {Box, Button, Grommet, Text} from "grommet/es6";
 import Review from "./Review";
 import {customTheme} from "../../utils/helpers";
 import {getReview, getReviews} from "../../actions/reviewActions";
 import ReviewTile from "./ReviewTile";
+import Toolbar from "../menu/Toolbar";
+import {history} from "../../utils/history";
+import {LinkPrevious} from "grommet-icons/es6";
 
 class ListReviews extends Component {
     constructor(props) {
@@ -33,6 +36,17 @@ class ListReviews extends Component {
         console.log(JSON.stringify(doctor));
         return (
             <Grommet theme={customTheme} style={{height: "100%", backgroundColor: "#fafafa"}}>
+                <Toolbar/>
+                <Box height='10%' direction='row'>
+                    <Box width='42%'>
+                        <Button style={{paddingTop: '20px', paddingLeft: '20px'}} alignSelf='start' className="backButton" onClick={()=>history.push(`/home`)}><LinkPrevious/></Button>
+                    </Box>
+                    <Box style={{paddingTop: '20px'}}>
+                        <Box direction='row' style={{padding: '10px',borderRadius: '10px'}}>
+                            <Text style={{fontSize: '24px',fontStyle: '\'Google Sans\',Roboto,RobotoDraft,Helvetica,Arial,sans-serif', fontWeight: 350, color: '#8b8b8b'}}>Review your doctor</Text>
+                        </Box>
+                    </Box>
+                </Box>
                 <Box width="100%" style={{paddingTop: "20px"}} background="#fafafa">
                     <Box width="40%" alignSelf="center" style={{marginBottom: "10px"}}>
                         <span className="reviewHeader" style={{marginBottom: "10px"}}>Reviews</span>

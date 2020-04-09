@@ -1,43 +1,122 @@
-import React,{Component} from 'react';
+import React, {Component} from 'react';
 import {connect} from "react-redux";
 import {Box} from "grommet";
 
-class DoctorDetails extends Component{
+class DoctorDetails extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-
-        }
+        this.state = {}
     }
 
     render() {
         const {doctor, affiliation, qualification} = this.props;
-        return(
-            <Box width='380px' height='430px' style={{borderRadius: '8px',border: "1px solid #ccc"}} flex overflow='auto'>
-                <Box alignSelf='center' style={{padding: '13px', fontSize: '20px'}}>
+        return (
+            <Box width='380px' style={{borderRadius: '8px', border: "1px solid #ccc", maxHeight: '430px'}} overflow='auto'>
+                <Box alignSelf='center' style={{margin: '13px', fontSize: '20px'}}>
                     Dr. {doctor.firstName} {doctor.lastName}
                 </Box>
-                <Box style={{padding: '15px'}}>
+                <Box style={{margin: '15px', maxHeight: '430px'}}>
                     <Box direction='row'>
-                        <span style={{padding: '5px',fontWeight: 375}}>Contact </span> <span style={{paddingLeft: '20px', paddingTop: '5px',fontSize: '17px'}}>{doctor.email}</span>
+                        <span style={{margin: '5px', fontWeight: 375}}>Contact </span> <span
+                        style={{marginLeft: '20px', marginTop: '5px', fontSize: '17px'}}>{doctor.email}</span>
                     </Box>
                     <Box direction='row'>
-                        <span style={{padding: '5px',fontWeight: 375}}>Qualification </span>
+                        <span style={{margin: '5px', fontWeight: 375}}>Qualification </span>
                     </Box>
+                    {
+                        qualification ? (
+                            <Box>
+                                <Box direction='row'>
+                                    <span
+                                        style={{marginTop: '5px', marginLeft: '15px', fontWeight: 350}}>Title </span>
+                                    <span style={{
+                                        marginLeft: '20px',
+                                        marginTop: '5px',
+                                        fontSize: '17px'
+                                    }}>{qualification.title}</span>
+                                </Box>
+                                <Box direction='row'>
+                                    <span style={{
+                                        marginTop: '5px',
+                                        marginLeft: '15px',
+                                        fontWeight: 350
+                                    }}>Institute </span> <span style={{
+                                    marginLeft: '20px',
+                                    marginTop: '5px',
+                                    fontSize: '17px'
+                                }}>{qualification.institute}</span>
+                                </Box>
+                                <Box direction='row'>
+                                    <span style={{marginTop: '5px', marginLeft: '15px', fontWeight: 350}}>Graduation Year </span>
+                                    <span style={{
+                                        marginLeft: '20px',
+                                        marginTop: '5px',
+                                        fontSize: '17px'
+                                    }}>{qualification.graduationYear}</span>
+                                </Box>
+                            </Box>
+                        ) : (
+                            <Box>
+                                <span style={{
+                                    marginLeft: '20px',
+                                    marginTop: '5px',
+                                    fontSize: '17px'
+                                }}>No qualification provided</span>
+                            </Box>
+                        )
+                    }
+                    {
+                        Object.entries(affiliation).length!==0 ? (
+                                <Box style={{marginTop: '5px'}}>
+                                    <span style={{
+                                        marginTop: '10px',
+                                        marginLeft: '5px',
+                                        marginRight: '5px',
+                                        marginBottom: '5px',
+                                        fontWeight: 375
+                                    }}>Affiliation </span>
+                                    {affiliation.map((aff)=>(
+                                        <Box style={{marginTop: '10px', marginBottom: '10px'}}>
+                                            <Box direction='row'>
+                                                <span style={{marginTop: '5px', marginLeft: '15px', fontWeight: 350}}>Hospital </span>
+                                                <span style={{
+                                                    marginLeft: '20px',
+                                                    marginTop: '5px',
+                                                    fontSize: '17px'
+                                                }}>{aff.hospitalName}</span>
+                                            </Box>
+                                            <Box direction='row'>
+                                                <span style={{marginTop: '5px', marginLeft: '15px', fontWeight: 350}}>City </span>
+                                                <span style={{
+                                                    marginLeft: '52px',
+                                                    marginTop: '5px',
+                                                    fontSize: '17px'
+                                                }}>{aff.city}</span>
+                                            </Box>
+                                            <Box direction='row'>
+                                                <span style={{marginTop: '5px', marginLeft: '15px', fontWeight: 350}}>Country </span>
+                                                <span style={{
+                                                    marginLeft: '20px',
+                                                    marginTop: '5px',
+                                                    fontSize: '17px'
+                                                }}>{aff.country}</span>
+                                            </Box>
+                                        </Box>
+                                    ))}
+                                </Box>
+                        ) : (
+                            <Box>
+                                <span style={{margin: '5px', fontWeight: 375}}>Affiliation </span>
+                                <span style={{
+                                    marginLeft: '20px',
+                                    marginTop: '5px',
+                                    fontSize: '17px'
+                                }}>No affiliation provided</span>
+                            </Box>
+                        )
+                    }
                     <Box direction='row'>
-                        <span style={{paddingTop: '5px', paddingLeft: '15px',fontWeight: 350}}>Title </span> <span style={{paddingLeft: '20px', paddingTop: '5px',fontSize: '17px'}}>{qualification.title}</span>
-                    </Box>
-                    <Box direction='row'>
-                        <span style={{paddingTop: '5px', paddingLeft: '15px',fontWeight: 350}}>Institute </span> <span style={{paddingLeft: '20px', paddingTop: '5px',fontSize: '17px'}}>{qualification.institute}</span>
-                    </Box>
-                    <Box direction='row'>
-                        <span style={{paddingTop: '5px', paddingLeft: '15px',fontWeight: 350}}>Graduation Year </span> <span style={{paddingLeft: '20px', paddingTop: '5px',fontSize: '17px'}}>{qualification.graduationYear}</span>
-                    </Box>
-                    <Box direction='row'>
-                        <span style={{paddingTop:'10px',paddingLeft: '5px', paddingRight: '5px', paddingBottom: '5px',fontWeight: 375}}>Affiliation </span>
-                    </Box>
-                    <Box direction='row'>
-                        <span style={{paddingTop:'10px',paddingLeft: '5px', paddingRight: '5px', paddingBottom: '5px',fontWeight: 375}}>Affiliation </span>
+
                     </Box>
                 </Box>
             </Box>

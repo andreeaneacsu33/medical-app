@@ -10,6 +10,8 @@ class DoctorDetails extends Component {
 
     render() {
         const {doctor, affiliation, qualification} = this.props;
+        if(!qualification && !affiliation)
+            return 'loading';
         return (
             <Box width='380px' style={{borderRadius: '8px', border: "1px solid #ccc", maxHeight: '430px'}} overflow='auto'>
                 <Box alignSelf='center' style={{margin: '13px', fontSize: '20px'}}>

@@ -5,11 +5,8 @@ import Menu from "../menu/Menu";
 import {Box, Grommet} from "grommet";
 import Toolbar from "../menu/Toolbar";
 import {customTheme} from "../../utils/helpers";
-import {getLogger} from "../../utils/logger";
-import ListAppointments from "./ListAppointments";
+import ListAppointments from "./ListPatientAppointments";
 import ListDoctorAppointments from "./ListDoctorAppointments";
-
-const log=getLogger();
 
 class UpcomingAppointments extends Component{
     static propTypes = {

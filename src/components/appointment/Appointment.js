@@ -193,8 +193,6 @@ class Appointment extends Component {
         const {affiliation, appointments, qualification} = this.props;
         const {visibilityHours, visibilityAdd, date, hours, booked, message, renderNotification, startHour, renderSaveMessage,valid} = this.state;
         const optionsAffiliation = this.getAffiliationOptions();
-        console.log(affiliation);
-        console.log(booked);
         if (!affiliation && !appointments && !qualification)
             return <div/>;
         return (

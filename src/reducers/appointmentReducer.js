@@ -36,7 +36,7 @@ export default function (state=initialState,action) {
         case GET_DOCTOR_APPOINTMENTS_FROM_DATE:
             return{
                 ...state,
-                appointments: state.appointments
+                appointments: action.payload
             };
         default:
             return state;

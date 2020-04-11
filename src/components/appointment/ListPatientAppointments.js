@@ -2,10 +2,10 @@ import React,{Component} from "react";
 import {connect} from "react-redux";
 import {Box} from "grommet";
 import {getPatientAppointments} from "../../actions/appointmentActions";
-import AppointmentTile from "./AppointmentTile";
+import PatientAppointmentTile from "./PatientAppointmentTile";
 import {ScheduleNew} from "grommet-icons";
 
-class ListAppointments extends Component{
+class ListPatientAppointments extends Component{
 
     componentDidMount() {
         const {patient} = this.props;
@@ -21,7 +21,7 @@ class ListAppointments extends Component{
         return(
             <Box pad='medium' style={{ alignItems: "center"}} flex overflow="auto" direction='column'>
                 {appointments.length!==0?appointments.map((appointment) => (
-                    <AppointmentTile appointment={appointment} />
+                    <PatientAppointmentTile appointment={appointment} />
                 )):(
                     <Box direction='row' alignItems='center' style={{paddingTop: '100px', paddingLeft: '100px'}}>
                         <Box width='10%' height='100px' style={{verticalAlign: 'middle'}}>
@@ -53,4 +53,4 @@ const mapStateToProps = state => ({
 export default connect(
     mapStateToProps,
     {getPatientAppointments}
-)(ListAppointments);
+)(ListPatientAppointments);

@@ -6,7 +6,7 @@ import {Close, StatusWarning, Trash} from "grommet-icons";
 import {removeAppointment} from "../../actions/appointmentActions";
 import Notification from "../Notification";
 
-class AppointmentTile extends Component {
+class PatientAppointmentTile extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -133,10 +133,9 @@ class AppointmentTile extends Component {
 const mapStateToProps = state => ({
     isAuthenticated: state.auth.isAuthenticated,
     error: state.error,
-    user: state.auth.user,
 });
 
 export default connect(
     mapStateToProps,
     {removeAppointment}
-)(AppointmentTile);
+)(PatientAppointmentTile);

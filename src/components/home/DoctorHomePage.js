@@ -18,7 +18,7 @@ class DoctorHomePage extends Component{
         return(
             <Box width='100%'>
                 <Box direction='row'>
-                    <Box width='80%'/>
+                    <Box width='70%'/>
                     <Box>
                         <Dashboard/>
                     </Box>

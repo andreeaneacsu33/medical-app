@@ -6,7 +6,7 @@ import {
     GET_DOCTORS_FROM_PAGE_FOR_CITIES_FILTER,
     GET_DOCTORS_FROM_PAGE_FOR_HOSPITALS_FILTER,
     GET_OVERALL_RATING, GET_OVERALL_RATING_STATISTICS,
-    GET_OVERALL_WAITING_TIME,
+    GET_OVERALL_WAITING_TIME, GET_OVERALL_WAITING_TIME_STATISTICS,
     GET_QUALIFICATION,
     GET_SPECIALTIES,
     GET_TOTAL_PAGES_FOR_CITIES_AND_HOSPITALS_FILTER,
@@ -177,12 +177,28 @@ export const getOverallRating = ({idDoctor}) => (dispatch, getState) => {
 };
 
 export const getOverallRatingStatistics = ({idDoctor}) => (dispatch, getState) => {
-    axios.get(`${url}/doctor/${idDoctor}/statistics`, {
+    axios.get(`${url}/doctor/${idDoctor}/rating/statistics`, {
         headers: tokenConfig(getState)
     })
         .then(res => {
             dispatch({
                 type: GET_OVERALL_RATING_STATISTICS,
+                payload: res.data,
+                id: idDoctor
+            })
+        })
+        .catch(err => {
+            dispatch(returnErrors(err.response.data, err.response.status));
+        });
+};
+
+export const getOverallWaitingTimeStatistics = ({idDoctor}) => (dispatch, getState) => {
+    axios.get(`${url}/doctor/${idDoctor}/waiting-time/statistics`, {
+        headers: tokenConfig(getState)
+    })
+        .then(res => {
+            dispatch({
+                type: GET_OVERALL_WAITING_TIME_STATISTICS,
                 payload: res.data,
                 id: idDoctor
             })

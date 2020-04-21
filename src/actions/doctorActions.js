@@ -5,7 +5,7 @@ import {
     GET_DOCTORS_FROM_PAGE_FOR_CITIES_AND_HOSPITALS_FILTER,
     GET_DOCTORS_FROM_PAGE_FOR_CITIES_FILTER,
     GET_DOCTORS_FROM_PAGE_FOR_HOSPITALS_FILTER,
-    GET_OVERALL_RATING,
+    GET_OVERALL_RATING, GET_OVERALL_RATING_STATISTICS,
     GET_OVERALL_WAITING_TIME,
     GET_QUALIFICATION,
     GET_SPECIALTIES,
@@ -167,6 +167,22 @@ export const getOverallRating = ({idDoctor}) => (dispatch, getState) => {
         .then(res => {
             dispatch({
                 type: GET_OVERALL_RATING,
+                payload: res.data,
+                id: idDoctor
+            })
+        })
+        .catch(err => {
+            dispatch(returnErrors(err.response.data, err.response.status));
+        });
+};
+
+export const getOverallRatingStatistics = ({idDoctor}) => (dispatch, getState) => {
+    axios.get(`${url}/doctor/${idDoctor}/statistics`, {
+        headers: tokenConfig(getState)
+    })
+        .then(res => {
+            dispatch({
+                type: GET_OVERALL_RATING_STATISTICS,
                 payload: res.data,
                 id: idDoctor
             })

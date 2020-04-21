@@ -1,15 +1,16 @@
 import React, {Component} from 'react';
 import {Box, Grommet} from 'grommet';
 import {connect} from 'react-redux';
-import {clearErrors} from '../actions/errorActions';
+import {clearErrors} from '../../actions/errorActions';
 import PropTypes from 'prop-types';
-import {getLogger} from '../utils/logger';
-import {USERNAME} from '../actions/actions';
-import Menu from "./menu/Menu";
-import Toolbar from "./menu/Toolbar";
-import {customTheme} from "../utils/helpers";
-import {loadUser} from "../actions/authActions";
-import ListDoctors from "./ListDoctors";
+import {getLogger} from '../../utils/logger';
+import {USERNAME} from '../../actions/actions';
+import Menu from "../menu/Menu";
+import Toolbar from "../menu/Toolbar";
+import {customTheme} from "../../utils/helpers";
+import {loadUser} from "../../actions/authActions";
+import ListDoctors from "../ListDoctors";
+import DoctorHomePage from "./DoctorHomePage";
 
 const log = getLogger('Home ');
 
@@ -46,7 +47,7 @@ class Home extends Component {
                         <Toolbar/>
                         <Box direction="row">
                             <Menu/>
-                            {user.role.toUpperCase()==='PATIENT' ? <ListDoctors/> : <Box/>}
+                            {user.role.toUpperCase()==='PATIENT' ? <ListDoctors/> : <DoctorHomePage/>}
                         </Box>
                     </Box>
                 </Box>

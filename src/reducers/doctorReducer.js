@@ -4,7 +4,7 @@ import {
     GET_DOCTORS_FROM_PAGE_FOR_CITIES_AND_HOSPITALS_FILTER,
     GET_DOCTORS_FROM_PAGE_FOR_CITIES_FILTER,
     GET_DOCTORS_FROM_PAGE_FOR_HOSPITALS_FILTER,
-    GET_OVERALL_RATING,
+    GET_OVERALL_RATING, GET_OVERALL_RATING_STATISTICS,
     GET_OVERALL_WAITING_TIME,
     GET_QUALIFICATION,
     GET_SPECIALTIES,
@@ -24,7 +24,9 @@ const initialState = {
     doctors: [],
     page: 1,
     loading: false,
-    affiliation: []
+    affiliation: [],
+    rating: null,
+    statistics: [],
 };
 
 export default function (state = initialState, action) {
@@ -105,7 +107,13 @@ export default function (state = initialState, action) {
                 doctors: state.doctors.map(doc => doc.id === action.id ?
                     {...doc, rating: action.payload} :
                     doc
-                )
+                ),
+                rating: action.payload
+            };
+        case GET_OVERALL_RATING_STATISTICS:
+            return{
+                ...state,
+                statistics: action.payload,
             };
         case GET_OVERALL_WAITING_TIME:
             return {

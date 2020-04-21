@@ -5,7 +5,7 @@ import {history} from "../../utils/history";
 import Login from "../Login";
 import {PrivateRoute} from "./PrivateRoute";
 import {Router, Route, Redirect} from 'react-router-dom';
-import Home from '../Home';
+import Home from '../home/Home';
 import Register from '../Register';
 import Profile from "../Profile";
 import ListReviews from "../review/ListReviews";

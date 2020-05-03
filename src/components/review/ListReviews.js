@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
 import {Box, Button, Grommet, Text} from "grommet/es6";
-import Review from "./Review";
+import ReviewInput from "./ReviewInput";
 import {customTheme} from "../../utils/helpers";
 import {getReview, getReviews} from "../../actions/reviewActions";
 import ReviewTile from "./ReviewTile";
@@ -50,7 +50,7 @@ class ListReviews extends Component {
                 <Box width="100%" style={{paddingTop: "20px"}} background="#fafafa">
                     <Box width="40%" alignSelf="center" style={{marginBottom: "10px"}}>
                         <span className="reviewHeader" style={{marginBottom: "10px"}}>Reviews</span>
-                        {!review && (<Review doctor={doctor} rerender={this.rerender}/>)}
+                        {!review && (<ReviewInput doctor={doctor} rerender={this.rerender}/>)}
                         {reviews.length === 0 ? (<Box alignSelf="center" style={{marginTop: "20px"}}>
                             <span
                                 style={{fontWeight: 350}}>There are no reviews. Be the first one to give a review!</span>

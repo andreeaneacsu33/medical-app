@@ -2,6 +2,7 @@ import React,{Component} from "react";
 import {Box} from "grommet";
 import {connect} from "react-redux";
 import Dashboard from "../Dashboard";
+import ListReviews from "../doctor/ListReviews";
 
 class DoctorHomePage extends Component{
     constructor(props) {
@@ -18,11 +19,12 @@ class DoctorHomePage extends Component{
         return(
             <Box width='100%'>
                 <Box direction='row'>
-                    <Box width='70%'/>
-                    <Box>
+                    <Box width='60%'/>
+                    <Box width='40%'>
                         <Dashboard/>
                     </Box>
                 </Box>
+                <ListReviews/>
             </Box>
         )
     }

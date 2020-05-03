@@ -18,7 +18,7 @@ class Dashboard extends Component {
             activeWaitingTime: false,
             labelRating: undefined,
             labelWaitingTime: undefined,
-            dashboardVisible: true,
+            dashboardVisible: false,
         }
     }
 
@@ -67,8 +67,6 @@ class Dashboard extends Component {
             totalRating = sumRating;
         if (sumWaiting !== 0)
             totalWaiting = sumWaiting;
-        if (!rating || !waiting)
-            return <div/>;
         return (
             <Box align="center" pad="small">
                 {dashboardVisible? (<Box width='100%' style={{borderRadius: "8px", border: "1px solid #ccc"}}>
@@ -86,7 +84,7 @@ class Dashboard extends Component {
                             }}/>
                         </Box>
                     </Box>
-                    <Box pad='medium' direction='row'>
+                    <Box pad='small' direction='row'>
                         <Stack anchor="center">
                             <Meter
                                 type="circle"
@@ -99,7 +97,7 @@ class Dashboard extends Component {
                                     }
                                 }))}
                                 max={totalRating}
-                                size="small"
+                                size="medium"
                                 thickness="medium"
                             />
                             <Box align="center">
@@ -125,7 +123,7 @@ class Dashboard extends Component {
                                     }
                                 }))}
                                 max={totalWaiting}
-                                size="small"
+                                size="medium"
                                 thickness="medium"
                             />
                             <Box align="center">
@@ -142,12 +140,13 @@ class Dashboard extends Component {
                         </Stack>
                     </Box>
                 </Box>) :
-                    (<Box width='100%' style={{borderRadius: "8px", border: "1px solid #ccc"}}>
-                            <Box pad='small' direction='row'>
-                                <Box width='95%' alignContent='center'>
+                    (<Box width='100%'>
+                            <Box pad='small' direction='row' alignSelf='end' style={{borderRadius: "8px", border: "1px solid #ccc"}}>
+                                <Box alignContent='center'>
                                     <Text style={{
                                         fontFamily: "'Google Sans', Roboto, Arial, sans-serif",
-                                        fontSize: '20px'
+                                        fontSize: '20px',
+                                        paddingRight: '10px'
                                     }} alignSelf='center'>Dashboard</Text>
                                 </Box>
                                 <Box align='end' onClick={()=>{this.setVisible(!dashboardVisible)}}>

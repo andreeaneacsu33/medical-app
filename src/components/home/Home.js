@@ -9,7 +9,7 @@ import Menu from "../menu/Menu";
 import Toolbar from "../menu/Toolbar";
 import {customTheme} from "../../utils/helpers";
 import {loadUser} from "../../actions/authActions";
-import ListDoctors from "../ListDoctors";
+import PatientHomePage from "./PatientHomePage";
 import DoctorHomePage from "./DoctorHomePage";
 
 const log = getLogger('Home ');
@@ -47,7 +47,7 @@ class Home extends Component {
                         <Toolbar/>
                         <Box direction="row">
                             <Menu/>
-                            {user.role.toUpperCase()==='PATIENT' ? <ListDoctors/> : <DoctorHomePage/>}
+                            {user.role.toUpperCase()==='PATIENT' ? <PatientHomePage/> : <DoctorHomePage/>}
                         </Box>
                     </Box>
                 </Box>

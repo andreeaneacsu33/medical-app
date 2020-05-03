@@ -15,15 +15,15 @@ import {
     getPagesForHospitalsFilter,
     getTotalPages,
     setCurrentPage
-} from "../actions/doctorActions";
+} from "../../actions/doctorActions";
 import {ScheduleNew, Star} from "grommet-icons";
-import {history} from "../utils/history";
-import {clearReview, clearReviews} from "../actions/reviewActions";
-import FilterComponent from "./FilterComponent";
-import {filters} from "../utils/helpers";
+import {history} from "../../utils/history";
+import {clearReview, clearReviews} from "../../actions/reviewActions";
+import FilterComponent from "../FilterComponent";
+import {filters} from "../../utils/helpers";
 
 
-class ListDoctors extends Component {
+class PatientHomePage extends Component {
     constructor(props){
         super(props);
         this.rerender = this.rerender.bind(this);
@@ -111,8 +111,8 @@ class ListDoctors extends Component {
                                 }} pad="small"
                                      className="tile">
                                     {item.gender === 'male' ? (
-                                            <Image src={require('../utils/doctor_man.png')}/>) :
-                                        (<Image src={require('../utils/doctor_woman.png')}/>)}
+                                            <Image src={require('../../utils/doctor_man.png')}/>) :
+                                        (<Image src={require('../../utils/doctor_woman.png')}/>)}
                                     <Box style={{
                                         borderBottom: "1px solid #ccc", padding: "5px", height: "40px"
                                     }}>
@@ -216,4 +216,4 @@ export default connect(
         getDoctorsFromPageForHospitalsFilter,
         getDoctorsFromPageForCitiesAndHospitalsFilter
     }
-)(ListDoctors);
+)(PatientHomePage);

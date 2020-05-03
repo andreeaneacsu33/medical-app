@@ -10,7 +10,7 @@ import {CircleInformation} from "grommet-icons/es6";
 
 const log = getLogger('Reviews');
 
-class Review extends Component {
+class ReviewInput extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -156,4 +156,4 @@ const mapStateToProps = state => ({
 export default connect(
     mapStateToProps,
     {clearErrors, addReview, getReview}
-)(Review);
+)(ReviewInput);

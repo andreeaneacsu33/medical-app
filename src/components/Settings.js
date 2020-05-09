@@ -66,9 +66,8 @@ class Settings extends Component {
     };
 
     render() {
-        const {user} = this.props;
+        const {from} = this.props.location.state;
         const {type, message, render} = this.state;
-        console.log(user);
         return (
             <Grommet theme={customTheme}>
                 <Box>
@@ -77,7 +76,7 @@ class Settings extends Component {
                         <Box width='40%'>
                             <Button style={{paddingTop: '20px', paddingLeft: '20px'}} alignSelf='start'
                                     className="backButton"
-                                    onClick={() => history.push(`/home`)}><LinkPrevious/></Button>
+                                    onClick={() => history.push(from?from : '/home')}><LinkPrevious/></Button>
                         </Box>
                         <Box style={{paddingTop: '20px'}}>
                             <Box direction='row' style={{padding: '15px', borderRadius: '10px'}}>

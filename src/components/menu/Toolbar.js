@@ -45,7 +45,7 @@ class Toolbar extends Component {
                                              }}>Settings</span>
                                          </div>
                                      )}>
-                            <Box id='settings' style={{paddingRight: '20px'}} onClick={()=>history.push("/settings")}>
+                            <Box id='settings' style={{paddingRight: '20px'}} onClick={()=>history.push("/settings",{from: window.location.pathname})}>
                                 <SettingsOption style={{
                                     width: "28px",
                                     height: "28px",

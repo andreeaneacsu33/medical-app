@@ -67,7 +67,7 @@ class Login extends Component {
                 {/*       style={{opacity: "0.6", width: '100%', height: "100%"}}/>*/}
                 <Box width='100%' height='100%' alignContent='end'>
                     <Box className='loginForm'>
-                        <Image className='logo' src={require('../utils/logo.png')}/>
+                        <Image className='logo' src={require('../utils/images/logo.png')}/>
                         <Form onSubmit={this.onSubmit}>
                             <Box align='center'>
                                 <h1>Connect</h1>

@@ -11,6 +11,7 @@ import Profile from "../Profile";
 import ListReviews from "../review/ListReviews";
 import Appointment from "../appointment/Appointment";
 import UpcomingAppointments from "../appointment/UpcomingAppointments";
+import Settings from "../Settings";
 
 class Navigation extends Component{
     static propTypes = {
@@ -28,6 +29,7 @@ class Navigation extends Component{
                 <PrivateRoute path='/upcoming-appointments' component={UpcomingAppointments} isAuth={isAuthenticated}/>
                 <PrivateRoute path='/reviews' component={ListReviews} isAuth={isAuthenticated}/>
                 <PrivateRoute path='/appointment' component={Appointment} isAuth={isAuthenticated}/>
+                <PrivateRoute path='/settings' component={Settings} isAuth={isAuthenticated}/>
                 <Route exact path='/' render={() => (
                     <Redirect to='/login'/>
                 )}/>

@@ -1,5 +1,5 @@
 import {
-    AUTH_ERROR, LOAD_DOCTOR, LOAD_PATIENT,
+    AUTH_ERROR, CHANGE_PASSWORD, CHECK_OLD_PASSWORD, LOAD_DOCTOR, LOAD_PATIENT,
     LOGIN_FAIL,
     LOGIN_SUCCESS,
     LOGOUT_SUCCESS, REGISTER_SUCCESS,
@@ -13,6 +13,7 @@ const initialState = {
     isAuthenticated: false,
     isLoading: false,
     user: null,
+    isEqual: false,
 };
 
 export default function (state=initialState,action) {
@@ -65,6 +66,16 @@ export default function (state=initialState,action) {
                 isAuthenticated: true,
                 isLoading: false,
                 token:action.payload.token
+            };
+        case CHECK_OLD_PASSWORD:
+            return {
+                ...state,
+                isEqual: action.payload,
+            };
+        case CHANGE_PASSWORD:
+            return{
+                ...state,
+                user: action.payload
             };
         default:
             return state;

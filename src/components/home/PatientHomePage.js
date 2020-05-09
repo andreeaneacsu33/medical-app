@@ -111,8 +111,8 @@ class PatientHomePage extends Component {
                                 }} pad="small"
                                      className="tile">
                                     {item.gender === 'male' ? (
-                                            <Image src={require('../../utils/doctor_man.png')}/>) :
-                                        (<Image src={require('../../utils/doctor_woman.png')}/>)}
+                                            <Image src={require('../../utils/images/doctor_man.png')}/>) :
+                                        (<Image src={require('../../utils/images/doctor_woman.png')}/>)}
                                     <Box style={{
                                         borderBottom: "1px solid #ccc", padding: "5px", height: "40px"
                                     }}>

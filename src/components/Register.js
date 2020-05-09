@@ -121,7 +121,7 @@ class Register extends Component{
                     <Box className='contentLeft'>
                         <Box style={{flexDirection: 'row', display: 'flex', paddingLeft: '14px'}}>
                             <Button className="backButton" onClick={()=>history.push("/login")}><LinkPrevious/></Button>
-                            <Image className='logo' src={require('../utils/logo.png')}/>
+                            <Image className='logo' src={require('../utils/images/logo.png')}/>
                         </Box>
                         <Form>
                             <h1>Create your MyDOC account</h1>
@@ -286,7 +286,7 @@ class Register extends Component{
                     </Box>
                     <Box className='contentRight'>
                         <Box style={{paddingRight: '14px'}}>
-                            <Image className='registerIcon' src={require('../utils/user-register.png')} />
+                            <Image className='registerIcon' src={require('../utils/images/user-register.png')} />
                             <Box className='text'>One account. All the medical services you need.</Box>
                         </Box>
                     </Box>

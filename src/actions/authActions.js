@@ -1,7 +1,7 @@
 import axios from 'axios';
 import {returnErrors} from '../actions/errorActions';
 import {
-    AUTH_ERROR,
+    AUTH_ERROR, CHANGE_PASSWORD, CHECK_OLD_PASSWORD,
     CLEAR_ERRORS, LOAD_PATIENT,
     LOGIN_FAIL,
     LOGIN_SUCCESS,
@@ -19,7 +19,7 @@ const log=getLogger();
 const defaultHeaders={
     'Accept':'application/json',
     'Content-Type':'application/json',
-    'Access-Control-Allow-Origin': '*'
+    'Access-Control-Allow-Origin': '*',
 };
 
 export const tokenConfig = getState => {
@@ -146,5 +146,42 @@ export const logout = () => dispatch =>{
     return {
         type: LOGOUT_SUCCESS
     }
+};
+
+export const checkOldPassword = ({email,password}) => (dispatch, getState) => {
+    const body=JSON.stringify({email:email,password:password});
+    axios
+        .get(`${url}/user/email/${email}/password/${password}`, {
+            params: body,
+            headers: tokenConfig(getState)
+        })
+        .then(res=>{
+            console.log(res.data);
+            dispatch({
+                type: CHECK_OLD_PASSWORD,
+                payload: res.data
+            })
+        })
+        .catch(err=>{
+            dispatch(returnErrors(err.response.data,err.response.status));
+        });
+};
+
+export const changePassword = ({email,oldPassword,newPassword}) => (dispatch, getState) => {
+    const body=JSON.stringify({email:email,password:oldPassword,newPassword:newPassword});
+    axios
+        .put(`${url}/user`, body,{
+            headers: tokenConfig(getState)
+        })
+        .then(res=>{
+            console.log(res.data);
+            dispatch({
+                type: CHANGE_PASSWORD,
+                payload: res.data
+            })})
+        .catch(err=>{
+            console.log(err.response.data);
+            dispatch(returnErrors(err.response.data,err.response.status,'CHANGE_PASSWORD_FAIL'));
+        });
 };
 

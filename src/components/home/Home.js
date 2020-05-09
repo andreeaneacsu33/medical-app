@@ -36,7 +36,7 @@ class Home extends Component {
         const {visited} = this.props;
         log(JSON.stringify(visited));
         const {user} = this.props;
-        log(JSON.stringify(user));
+        log(user);
         if (!user) {
             return <div/>
         }

@@ -466,7 +466,7 @@ h4 {
     border-radius: 8px;
     border: 1px solid #dadce0;
     box-sizing: border-box;
-    width: 70%;
+    width: 60%;
     align-self: center;
     height: auto;
 }
@@ -506,7 +506,7 @@ h4 {
     width: 100%;
 }
 
-.profile .icon :hover {
+.profile .icon :hover, #settings :hover {
     cursor: pointer;
 }
 

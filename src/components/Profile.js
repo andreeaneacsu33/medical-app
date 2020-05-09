@@ -67,6 +67,7 @@ class Profile extends Component {
         let data = [];
         data.push({key: "NAME", value: `${person.firstName} ${person.lastName}`});
         data.push({key: "EMAIL", value: `${person.email}`});
+        data.push({key: "GENDER", value: `${person.gender==='female'?'F':'M'}`});
         data.push({key: "SPECIALTY", value: `${person.specialty.name}`});
         return data;
     }
@@ -75,6 +76,7 @@ class Profile extends Component {
         let data = [];
         data.push({key: "NAME", value: `${person.firstName} ${person.lastName}`});
         data.push({key: "EMAIL", value: `${person.email}`});
+        data.push({key: "GENDER", value: `${person.gender==='female'?'F':'M'}`});
         return data;
     }
 

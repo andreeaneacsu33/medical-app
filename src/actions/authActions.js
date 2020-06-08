@@ -3,7 +3,7 @@ import {returnErrors} from '../actions/errorActions';
 import {
     AUTH_ERROR, CHANGE_PASSWORD, CHECK_OLD_PASSWORD,
     CLEAR_ERRORS, LOAD_PATIENT,
-    LOGIN_FAIL,
+    LOGIN_FAIL, LOGIN_STARTED,
     LOGIN_SUCCESS,
     LOGOUT_SUCCESS, REGISTER_FAIL, REGISTER_SUCCESS,
     USER_LOADED,
@@ -31,10 +31,11 @@ export const tokenConfig = getState => {
     return headers;
 };
 
-export const login = ({email,password})=>dispatch=>{
+export const login = ({email,password}) => dispatch => {
     log(`Login user: ${email}`);
     const headers={...defaultHeaders};
     const config={headers};
+    dispatch({type: LOGIN_STARTED});
     const body=JSON.stringify({email:email,password:password});
     axios
         .post(`${url}/login`,body,config)

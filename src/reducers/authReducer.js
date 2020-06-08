@@ -1,6 +1,6 @@
 import {
     AUTH_ERROR, CHANGE_PASSWORD, CHECK_OLD_PASSWORD, LOAD_DOCTOR, LOAD_PATIENT,
-    LOGIN_FAIL,
+    LOGIN_FAIL, LOGIN_STARTED,
     LOGIN_SUCCESS,
     LOGOUT_SUCCESS, REGISTER_SUCCESS,
     TOKEN_KEY,
@@ -12,6 +12,7 @@ const initialState = {
     token: localStorage.getItem('token'),
     isAuthenticated: false,
     isLoading: false,
+    inProgress: false,
     user: null,
     isEqual: false,
 };
@@ -44,8 +45,14 @@ export default function (state=initialState,action) {
             localStorage.setItem(TOKEN_KEY,action.payload.token);
             return {
                 ...state,
+                isLoading: false,
                 isAuthenticated: true,
                 token:action.payload.token
+            };
+        case LOGIN_STARTED:
+            return {
+              ...state,
+              isLoading: true,
             };
         case AUTH_ERROR:
         case LOGIN_FAIL:

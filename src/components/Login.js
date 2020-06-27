@@ -65,14 +65,13 @@ class Login extends Component {
         const {isLoading} = this.props;
         return (
             <Grommet theme={deepMerge(grommet, customFormFieldTheme)}>
-                {/*<Image className='alignMiddle' src={require('../utils/background2.jpg')}*/}
-                {/*       style={{opacity: "0.6", width: '100%', height: "100%"}}/>*/}
                 {isLoading ? (
                         <Box className='alignMiddle'>
                             <Spinner/>
                         </Box>
                     ) :
-                    (<Box width='100%' height='100%' alignContent='end'>
+                    (<Box><Image className='alignMiddle' src={require('../utils/images/background.jpg')}
+                            style={{opacity: "0.5", width: '100%', height: "100%"}}/><Box width='100%' height='100%' alignContent='end'>
                         <Box className='loginForm'>
                             <Image className='logo' src={require('../utils/images/logo.png')}/>
                             <Form onSubmit={this.onSubmit}>
@@ -138,7 +137,7 @@ class Login extends Component {
                                 </Box>
                             </Form>
                         </Box>
-                    </Box>)}
+                    </Box></Box>)}
             </Grommet>
         )
     }

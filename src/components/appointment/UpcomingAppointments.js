@@ -5,7 +5,7 @@ import Menu from "../menu/Menu";
 import {Box, Grommet} from "grommet";
 import Toolbar from "../menu/Toolbar";
 import {customTheme} from "../../utils/helpers";
-import ListAppointments from "./ListPatientAppointments";
+import ListPatientAppointments from "./ListPatientAppointments";
 import ListDoctorAppointments from "./ListDoctorAppointments";
 
 class UpcomingAppointments extends Component{
@@ -24,7 +24,7 @@ class UpcomingAppointments extends Component{
                         <Toolbar/>
                         <Box direction="row">
                             <Menu/>
-                            {user.role.toUpperCase()==='PATIENT' ? <ListAppointments/> : <ListDoctorAppointments/>}
+                            {user.role.toUpperCase()==='PATIENT' ? <ListPatientAppointments/> : <ListDoctorAppointments/>}
                         </Box>
                     </Box>
                 </Box>

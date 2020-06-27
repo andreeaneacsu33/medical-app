@@ -5,7 +5,7 @@ import {
     CLEAR_ERRORS,
     GET_DOCTOR_APPOINTMENTS, GET_DOCTOR_APPOINTMENTS_FROM_DATE,
     GET_PATIENT_APPOINTMENTS,
-    REMOVE_APPOINTMENT
+    REMOVE_APPOINTMENT, UPDATE_APPOINTMENT
 } from "./actions";
 import {returnErrors} from "./errorActions";
 import {getLogger} from "../utils/logger";
@@ -104,6 +104,25 @@ export const removeAppointment = ({idAppointment}) => (dispatch,getState) => {
             dispatch({
                 type: REMOVE_APPOINTMENT,
                 payload: idAppointment
+            });
+            dispatch({
+                type: CLEAR_ERRORS
+            });
+        })
+        .catch(err => {
+            dispatch(returnErrors(err.response.data, err.response.status));
+        });
+};
+
+export const updateAppointment = ({id, idDoctor, idPatient, idAffiliation, startDate, endDate, title, notes}) => (dispatch,getState) => {
+    const body = JSON.stringify({id, idDoctor, idPatient, idAffiliation, startDate, endDate, title, notes});
+    axios
+        .put(`${url}/appointment`, body, {headers: tokenConfig(getState)})
+        .then(res => {
+            console.log(res.data);
+            dispatch({
+                type: UPDATE_APPOINTMENT,
+                payload: res.data,
             });
             dispatch({
                 type: CLEAR_ERRORS

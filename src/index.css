@@ -220,6 +220,11 @@ code {
     border: 0.1em solid #d50000;
 }
 
+.hourInput button {
+    border-radius: 8px;
+    border: 1px solid #ccc;
+}
+
 .registerForm .inputBox button polyline, .addAppointment .inputBox button polyline {
     stroke: rgb(134, 150, 255);
 }
